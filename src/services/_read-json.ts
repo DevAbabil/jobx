@@ -1,9 +1,4 @@
-import {
-  Efile,
-  IJobxConfig,
-  IServiceAccount,
-  EJobxConfigGroups,
-} from "@/types";
+import { Efile, IJobxConfig, IServiceAccount, EJobxConfigGroups } from "@/types";
 import { loadJson, requireProperties, validateInnerFields } from "@/utils";
 
 export const serviceAccount: IServiceAccount = (() => {
@@ -27,11 +22,7 @@ export const jobxConfig: IJobxConfig = (() => {
   requireProperties(config, jobxConfigFile, Object.keys(EJobxConfigGroups));
 
   (Object.keys(config) as []).forEach((groupName) => {
-    validateInnerFields(
-      config[groupName] as Record<string, string>,
-      groupName,
-      jobxConfigFile
-    );
+    validateInnerFields(config[groupName] as Record<string, string>, groupName, jobxConfigFile);
   });
 
   return config;
