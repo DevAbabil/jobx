@@ -14,7 +14,11 @@ export const loadJson = <T>(fileName: string): T => {
   }
 };
 
-export const requireProperties = (obj: Record<string, any>, fileName: string, fields: string[]) => {
+export const requireProperties = <TObj extends {}>(
+  obj: TObj,
+  fileName: string,
+  fields: string[]
+) => {
   fields.forEach((field) => {
     if (!(field in obj)) {
       console.error(`Missing field '${field}' in '${fileName}'`);
