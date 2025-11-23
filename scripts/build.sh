@@ -2,6 +2,9 @@
 
 set -e
 
+echo "Formatting code..."
+npx biome format --write .
+
 echo "Generating banner..."
 npx tsx banner.ts
 
