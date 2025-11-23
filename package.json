@@ -26,7 +26,7 @@
     "job-application"
   ],
   "author": "Md Ababil Hossain <ababil.webdev@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "type": "commonjs",
   "bugs": {
     "url": "https://github.com/DevAbabil/jobx/issues"
