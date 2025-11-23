@@ -27,5 +27,8 @@
       "trailingCommas": "es5",
       "semicolons": "always"
     }
+  },
+  "assist": {
+    "enabled": true
   }
 }

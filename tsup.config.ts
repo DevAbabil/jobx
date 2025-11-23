@@ -1,14 +1,14 @@
-import { defineConfig } from "tsup";
-import fs from "fs";
+import fs from 'node:fs';
+import { defineConfig } from 'tsup';
 
 export default defineConfig([
   {
-    entry: ["src/index.ts"],
-    format: ["cjs"],
+    entry: ['src/index.ts'],
+    format: ['cjs'],
     banner: {
-      js: fs.readFileSync("./banner.txt", "utf-8"),
+      js: fs.readFileSync('./banner.txt', 'utf-8'),
     },
-    outDir: "dist",
+    outDir: 'dist',
     clean: true,
   },
 ]);

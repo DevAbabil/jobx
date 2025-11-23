@@ -1,7 +1,7 @@
 export enum Efile {
-  "jobx.apply.json" = "jobx.apply.json",
-  "jobx.config.json" = "jobx.config.json",
-  "jobx.service-account.json" = "jobx.service-account.json",
+  'jobx.apply.json' = 'jobx.apply.json',
+  'jobx.config.json' = 'jobx.config.json',
+  'jobx.service-account.json' = 'jobx.service-account.json',
 }
 
 export interface IServiceAccount {
@@ -19,10 +19,10 @@ export interface IServiceAccount {
 }
 
 export enum EJobxConfigGroups {
-  profile = "profile",
-  links = "links",
-  contact = "contact",
-  skills = "skills",
+  profile = 'profile',
+  links = 'links',
+  contact = 'contact',
+  skills = 'skills',
 }
 
 export interface IJobxConfig {

@@ -1,4 +1,4 @@
-import { serviceAccount, jobxConfig } from "@/services";
+import { jobxConfig, serviceAccount } from '@/services';
 
 // console.log("JobX");
 

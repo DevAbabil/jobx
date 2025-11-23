@@ -1,1 +1,1 @@
-export * from "./_read-json";
+export * from './_read-json';

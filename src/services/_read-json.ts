@@ -1,8 +1,8 @@
-import { Efile, IJobxConfig, IServiceAccount, EJobxConfigGroups } from "@/types";
-import { loadJson, requireProperties, validateInnerFields } from "@/utils";
+import { Efile, EJobxConfigGroups, type IJobxConfig, type IServiceAccount } from '@/types';
+import { loadJson, requireProperties, validateInnerFields } from '@/utils';
 
 export const serviceAccount: IServiceAccount = (() => {
-  const serviceAccountFile = Efile["jobx.service-account.json"];
+  const serviceAccountFile = Efile['jobx.service-account.json'];
   const sa = loadJson<IServiceAccount>(serviceAccountFile);
 
   Object.entries(sa).forEach(([prop, value]) => {
@@ -16,7 +16,7 @@ export const serviceAccount: IServiceAccount = (() => {
 })();
 
 export const jobxConfig: IJobxConfig = (() => {
-  const jobxConfigFile = Efile["jobx.config.json"];
+  const jobxConfigFile = Efile['jobx.config.json'];
   const config = loadJson<IJobxConfig>(jobxConfigFile);
 
   requireProperties(config, jobxConfigFile, Object.keys(EJobxConfigGroups));
