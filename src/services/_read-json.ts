@@ -1,8 +1,13 @@
-import { file, IJobxConfig, IServiceAccount } from "@/types";
+import {
+  Efile,
+  IJobxConfig,
+  IServiceAccount,
+  EJobxConfigGroups,
+} from "@/types";
 import { loadJson, requireProperties, validateInnerFields } from "@/utils";
 
 export const serviceAccount: IServiceAccount = (() => {
-  const serviceAccountFile = file["jobx.service-account.json"];
+  const serviceAccountFile = Efile["jobx.service-account.json"];
   const sa = loadJson<IServiceAccount>(serviceAccountFile);
 
   Object.entries(sa).forEach(([prop, value]) => {
@@ -16,21 +21,16 @@ export const serviceAccount: IServiceAccount = (() => {
 })();
 
 export const jobxConfig: IJobxConfig = (() => {
-  const jobxConfigFile = file["jobx.config.json"];
+  const jobxConfigFile = Efile["jobx.config.json"];
   const config = loadJson<IJobxConfig>(jobxConfigFile);
 
-  requireProperties(config, jobxConfigFile, [
-    "profile",
-    "links",
-    "contact",
-    "skills",
-  ]);
+  requireProperties(config, jobxConfigFile, Object.keys(EJobxConfigGroups));
 
   (Object.keys(config) as []).forEach((groupName) => {
     validateInnerFields(
       config[groupName] as Record<string, string>,
       groupName,
-      file["jobx.config.json"]
+      jobxConfigFile
     );
   });
 

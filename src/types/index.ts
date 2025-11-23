@@ -1,4 +1,4 @@
-export enum file {
+export enum Efile {
   "jobx.apply.json" = "jobx.apply.json",
   "jobx.config.json" = "jobx.config.json",
   "jobx.service-account.json" = "jobx.service-account.json",
@@ -18,19 +18,26 @@ export interface IServiceAccount {
   universe_domain: string;
 }
 
+export enum EJobxConfigGroups {
+  profile = "profile",
+  links = "links",
+  contact = "contact",
+  skills = "skills",
+}
+
 export interface IJobxConfig {
-  profile: {
+  [EJobxConfigGroups.profile]: {
     name?: string;
     address?: string;
   };
-  links: {
+  [EJobxConfigGroups.links]: {
     github?: string;
     portfolio?: string;
     linkedIn?: string;
   };
-  contact: {
+  [EJobxConfigGroups.contact]: {
     email?: string;
     phone?: string;
   };
-  skills: string[];
+  [EJobxConfigGroups.skills]: string[];
 }
