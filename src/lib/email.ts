@@ -25,7 +25,7 @@ class Email {
   }
 
   generate = async () => {
-    logger.start('Processing to generate new job email!');
+    logger.start('Generating new job email');
     const email = (
       await this.#client.responses.create({
         model: 'gpt-4o-mini',
@@ -34,34 +34,34 @@ class Email {
     ).output_text;
 
     fs.writeFileSync(resolve(ROOT, Efile['jobx.mail.md']), email, 'utf-8');
-    logger.success('New job email has been generated!');
+    logger.success('Job email generated successfully');
   };
 
   reset = async () => {
-    logger.start('Processing to reset job email!');
+    logger.start('Resetting job email');
     try {
       setTimeout(() => {
         fs.writeFileSync(resolve(ROOT, Efile['jobx.mail.md']), '');
-        logger.success('New job email has been reset!');
+        logger.success('Job email reset successfully');
       }, 1500);
     } catch {
-      logger.error('Failed to reset job mail');
+      logger.error('Failed to reset job email');
     }
   };
 
   submit = async () => {
-    logger.start('Processing to sending job email!');
+    logger.start('Sending job email');
     try {
-      const info = await this.#transport.sendMail({
+      await this.#transport.sendMail({
         subject: data.apply.subject,
         from: data.credentials.lsa_user,
         to: data.apply.company_email,
         html: await markdownToHtml(fs.readFileSync(resolve(ROOT, Efile['jobx.mail.md']), 'utf-8')),
       });
 
-      logger.success('Job email has sended successfully!');
+      logger.success('Job email sent successfully');
     } catch (error) {
-      logger.error('Failed to send job mail');
+      logger.error('Failed to send job email');
     }
   };
 }

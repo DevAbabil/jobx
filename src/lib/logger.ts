@@ -44,12 +44,12 @@ class Logger {
     process.exit(1);
   };
 
-  appriciation = () => {
+  appreciation = () => {
     this.spinner.stopAndPersist({
       symbol: '',
       text: `\n🎉 Dear friends! 🎉\nIf you found this helpful, a ⭐ STAR ⭐ would be ${colors.bold(
         'GREATLY APPRECIATED'
-      )}! 🥰 \n━━\x1b]8;;https://github.com/DevAbabil/make-public\x07🚀 ${colors.bold(
+      )}! 🥰 \n━━\x1b]8;;https://github.com/DevAbabil/jobx\x07🚀 ${colors.bold(
         'STAR ON GITHUB'
       )} 🚀\x1b]8;;\x07━━\n`,
     });
