@@ -10,6 +10,7 @@ export interface IJobxCredentials {
   spreadsheet_id: string;
   lsa_user: string;
   lsa_pass: string;
+  open_ai_secret: string;
 }
 
 export enum EJobxConfigGroups {
