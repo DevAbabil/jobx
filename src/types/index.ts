@@ -1,10 +1,10 @@
 export enum Efile {
   'jobx.apply.json' = 'jobx.apply.json',
   'jobx.config.json' = 'jobx.config.json',
-  'jobx.service-account.json' = 'jobx.service-account.json',
+  'jobx.credentials.json' = 'jobx.credentials.json',
 }
 
-export interface IServiceAccount {
+export interface IJobxCredentials {
   client_email: string;
   private_key: string;
   spreadsheet_id: string;
