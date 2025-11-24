@@ -33,7 +33,7 @@
   "bugs": {
     "url": "https://github.com/DevAbabil/jobx/issues"
   },
-  "homepage": "https://github.com/DevAbabil/jobx#readme",
+  "homepage": "https://jobx.devababil.com",
   "engines": {
     "node": ">=18.0.0"
   },
