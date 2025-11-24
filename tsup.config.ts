@@ -10,5 +10,10 @@ export default defineConfig([
     },
     outDir: 'dist',
     clean: true,
+    minify: false,
+    sourcemap: true,
+    esbuildOptions(options) {
+      options.legalComments = 'none';
+    },
   },
 ]);
