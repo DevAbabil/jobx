@@ -40,8 +40,8 @@ export interface IJobApplication {
   website: string;
   contact: string;
   position: string;
-  submissionLink: string;
-  jobSource: string;
+  submission_link: string;
+  job_source: string;
   status: string;
   location: string;
 }

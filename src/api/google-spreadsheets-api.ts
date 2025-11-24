@@ -8,14 +8,14 @@ class JobApplication {
 
   setHeaders = async (customOrder?: string[]) => {
     const sheet = await this.sheet;
-    const defaultOrder = [
+    const defaultOrder: (keyof IJobApplication)[] = [
       'id',
       'date',
       'website',
       'contact',
       'position',
-      'submissionLink',
-      'jobSource',
+      'submission_link',
+      'job_source',
       'status',
       'location',
     ];
@@ -30,8 +30,8 @@ class JobApplication {
       website: data.website,
       contact: data.contact,
       position: data.position,
-      submissionLink: data.submissionLink,
-      jobSource: data.jobSource,
+      submission_link: data.submission_link,
+      job_source: data.job_source,
       status: data.status,
       location: data.location,
     });
@@ -42,8 +42,8 @@ class JobApplication {
       website: row.get('website'),
       contact: row.get('contact'),
       position: row.get('position'),
-      submissionLink: row.get('submissionLink'),
-      jobSource: row.get('jobSource'),
+      submission_link: row.get('submission_link'),
+      job_source: row.get('job_source'),
       status: row.get('status'),
       location: row.get('location'),
     } as IJobApplication;
@@ -60,8 +60,8 @@ class JobApplication {
       website: row.get('website') || '',
       contact: row.get('contact') || '',
       position: row.get('position') || '',
-      submissionLink: row.get('submissionLink') || '',
-      jobSource: row.get('jobSource') || '',
+      submission_link: row.get('submission_link') || '',
+      job_source: row.get('job_source') || '',
       status: row.get('status') || '',
       location: row.get('location') || '',
     }));
@@ -93,8 +93,8 @@ class JobApplication {
     if (data.website !== undefined) row.set('website', data.website);
     if (data.contact !== undefined) row.set('contact', data.contact);
     if (data.position !== undefined) row.set('position', data.position);
-    if (data.submissionLink !== undefined) row.set('submissionLink', data.submissionLink);
-    if (data.jobSource !== undefined) row.set('jobSource', data.jobSource);
+    if (data.submission_link !== undefined) row.set('submission_link', data.submission_link);
+    if (data.job_source !== undefined) row.set('job_source', data.job_source);
     if (data.status !== undefined) row.set('status', data.status);
     if (data.location !== undefined) row.set('location', data.location);
 
@@ -106,8 +106,8 @@ class JobApplication {
       website: row.get('website'),
       contact: row.get('contact'),
       position: row.get('position'),
-      submissionLink: row.get('submissionLink'),
-      jobSource: row.get('jobSource'),
+      submission_link: row.get('submission_link'),
+      job_source: row.get('job_source'),
       status: row.get('status'),
       location: row.get('location'),
     } as IJobApplication;
