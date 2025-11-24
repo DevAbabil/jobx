@@ -16,13 +16,6 @@ const jobxCredentials = (): IJobxCredentials => {
     'auth_client_secret',
   ] as (keyof IJobxCredentials)[]);
 
-  Object.entries(sa).forEach(([prop, value]) => {
-    if (!value || !value.toString().trim()) {
-      console.error(`Missing property '${prop}' in ${serviceAccountFile}`);
-      process.exit(1);
-    }
-  });
-
   return sa;
 };
 

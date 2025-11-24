@@ -1,10 +1,10 @@
 import type { GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
 import { GoogleSpreadsheet as GoogleSpreadsheetLib } from 'google-spreadsheet';
 import { sheetAuth } from '@/config/auth';
-
 import data from '@/data';
 import type { IJobApplication } from '@/types';
 import { formatDate, generateId } from '@/utils';
+import { logger } from './logger';
 
 export const JOB_APPLICATION_COLUMNS: (keyof IJobApplication)[] = [
   'id',
@@ -39,121 +39,180 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
   }
 
   setHeaders = async () => {
-    await (await this.sheet()).setHeaderRow(JOB_APPLICATION_COLUMNS);
-    return { success: true };
+    logger.start('Setting spreadsheet headers');
+    try {
+      await (await this.sheet()).setHeaderRow(JOB_APPLICATION_COLUMNS);
+      logger.success('Headers set successfully');
+      return { success: true };
+    } catch (error) {
+      logger.error(
+        `Failed to set headers: ${error instanceof Error ? error.message : String(error)}`
+      );
+      return { success: false };
+    }
   };
 
-  insert = async (data: Partial<Omit<T, 'id'>>): Promise<T> => {
-    const now = formatDate();
-    const row = await (await this.sheet()).addRow({
-      ...data,
-      id: generateId(),
-      created_at: now,
-      updated_at: now,
-    });
+  insert = async (data: Partial<Omit<T, 'id'>>): Promise<T | null> => {
+    logger.start('Inserting new record');
+    try {
+      const now = formatDate();
+      const row = await (await this.sheet()).addRow({
+        ...data,
+        id: generateId(),
+        created_at: now,
+        updated_at: now,
+      });
 
-    return this.mapRowToRecord(row);
+      const record = this.mapRowToRecord(row);
+      logger.success(`Record inserted with id '${record.id}'`);
+      return record;
+    } catch (error) {
+      logger.error(
+        `Failed to insert record: ${error instanceof Error ? error.message : String(error)}`
+      );
+      return null;
+    }
   };
 
   find = async (criteria?: Partial<T>, meta?: { page?: number; limit?: number }): Promise<T[]> => {
-    const offset = ((meta?.page || 1) - 1) * (meta?.limit || 20);
-    const rows = await (await this.sheet()).getRows({ limit: meta?.limit || 20, offset });
+    logger.start('Fetching records');
+    try {
+      const offset = ((meta?.page || 1) - 1) * (meta?.limit || 20);
+      const rows = await (await this.sheet()).getRows({ limit: meta?.limit || 20, offset });
 
-    const all = rows.map((row) => this.mapRowToRecord(row));
+      const all = rows.map((row) => this.mapRowToRecord(row));
 
-    if (!criteria) return all;
-
-    return all.filter((record) => this.matchesCriteria(record, criteria));
+      const results = criteria
+        ? all.filter((record) => this.matchesCriteria(record, criteria))
+        : all;
+      logger.success(`Found ${results.length} record(s)`);
+      return results;
+    } catch (error) {
+      logger.error(
+        `Failed to fetch records: ${error instanceof Error ? error.message : String(error)}`
+      );
+      return [];
+    }
   };
 
   update = async (
     id: string,
     data: Partial<Omit<T, 'id' | 'created_at' | 'updated_at'>>
-  ): Promise<T> => {
-    const rows = await (await this.sheet()).getRows({ limit: 10000 });
-    const row = rows.find((r) => r.get('id') === id);
+  ): Promise<T | null> => {
+    logger.start(`Updating record with id '${id}'`);
+    try {
+      const rows = await (await this.sheet()).getRows({ limit: 10000 });
+      const row = rows.find((r) => r.get('id') === id);
 
-    if (!row) {
-      throw new Error(`Record with id ${id} not found`);
-    }
-
-    const now = formatDate();
-    row.set('updated_at', now);
-
-    for (const [key, value] of Object.entries(data)) {
-      if (value !== undefined) {
-        row.set(key, value);
+      if (!row) {
+        logger.error(`Record with id '${id}' not found`);
+        return null;
       }
+
+      const now = formatDate();
+      row.set('updated_at', now);
+
+      for (const [key, value] of Object.entries(data)) {
+        if (value !== undefined) {
+          row.set(key, value);
+        }
+      }
+
+      await row.save();
+
+      const record = this.mapRowToRecord(row);
+      logger.success(`Record with id '${id}' updated successfully`);
+      return record;
+    } catch (error) {
+      logger.error(
+        `Failed to update record: ${error instanceof Error ? error.message : String(error)}`
+      );
+      return null;
     }
-
-    await row.save();
-
-    return this.mapRowToRecord(row);
   };
 
   delete = async (id: string) => {
-    const rows = await (await this.sheet()).getRows({ limit: 10000 });
-    const row = rows.find((r) => r.get('id') === id);
+    logger.start(`Deleting record with id '${id}'`);
+    try {
+      const rows = await (await this.sheet()).getRows({ limit: 10000 });
+      const row = rows.find((r) => r.get('id') === id);
 
-    if (!row) {
-      throw new Error(`Record with id ${id} not found`);
+      if (!row) {
+        logger.error(`Record with id '${id}' not found`);
+        return { success: false };
+      }
+
+      await row.delete();
+      logger.success(`Record with id '${id}' deleted successfully`);
+      return { success: true };
+    } catch (error) {
+      logger.error(
+        `Failed to delete record: ${error instanceof Error ? error.message : String(error)}`
+      );
+      return { success: false };
     }
-
-    await row.delete();
-    return { success: true };
   };
 
   formatCells = async (options?: {
     headerAlignment?: 'LEFT' | 'CENTER' | 'RIGHT';
     columnAlignments?: Partial<Record<keyof T, 'LEFT' | 'CENTER' | 'RIGHT'>>;
   }) => {
-    const sheetId = (await this.sheet()).sheetId;
+    try {
+      logger.start('Formatting cells');
+      const sheetId = (await this.sheet()).sheetId;
 
-    const requests: Record<string, unknown>[] = [
-      {
-        repeatCell: {
-          range: {
-            sheetId,
-            startRowIndex: 0,
-            endRowIndex: 1,
-          },
-          cell: {
-            userEnteredFormat: {
-              horizontalAlignment: options?.headerAlignment || 'CENTER',
-              textFormat: { bold: true },
+      const requests: Record<string, unknown>[] = [
+        {
+          repeatCell: {
+            range: {
+              sheetId,
+              startRowIndex: 0,
+              endRowIndex: 1,
             },
+            cell: {
+              userEnteredFormat: {
+                horizontalAlignment: options?.headerAlignment || 'CENTER',
+                textFormat: { bold: true },
+              },
+            },
+            fields: 'userEnteredFormat(horizontalAlignment,textFormat)',
           },
-          fields: 'userEnteredFormat(horizontalAlignment,textFormat)',
         },
-      },
-    ];
+      ];
 
-    if (options?.columnAlignments) {
-      for (const [key, alignment] of Object.entries(options.columnAlignments)) {
-        const columnIndex = this.columns.indexOf(key as keyof T);
-        if (columnIndex !== -1) {
-          requests.push({
-            repeatCell: {
-              range: {
-                sheetId,
-                startRowIndex: 1,
-                startColumnIndex: columnIndex,
-                endColumnIndex: columnIndex + 1,
-              },
-              cell: {
-                userEnteredFormat: {
-                  horizontalAlignment: alignment,
+      if (options?.columnAlignments) {
+        for (const [key, alignment] of Object.entries(options.columnAlignments)) {
+          const columnIndex = this.columns.indexOf(key as keyof T);
+          if (columnIndex !== -1) {
+            requests.push({
+              repeatCell: {
+                range: {
+                  sheetId,
+                  startRowIndex: 1,
+                  startColumnIndex: columnIndex,
+                  endColumnIndex: columnIndex + 1,
                 },
+                cell: {
+                  userEnteredFormat: {
+                    horizontalAlignment: alignment,
+                  },
+                },
+                fields: 'userEnteredFormat.horizontalAlignment',
               },
-              fields: 'userEnteredFormat.horizontalAlignment',
-            },
-          });
+            });
+          }
         }
       }
-    }
 
-    (await this.sheet())._spreadsheet._makeBatchUpdateRequest(requests);
-    return { success: true };
+      (await this.sheet())._spreadsheet._makeBatchUpdateRequest(requests);
+      logger.success('Cells formatted successfully');
+      return { success: true };
+    } catch (error) {
+      logger.error(
+        `Failed to format cells: ${error instanceof Error ? error.message : String(error)}`
+      );
+      return { success: false };
+    }
   };
 
   private mapRowToRecord = (row: { get: (key: string) => unknown }): T => {

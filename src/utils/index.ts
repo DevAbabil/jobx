@@ -1,8 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import readline from 'node:readline';
 import { format } from 'date-fns';
+import { logger } from '@/lib/logger';
 
 export const ROOT = process.cwd();
 
@@ -19,10 +19,7 @@ export const loadJson = <T>(fileName: string): T => {
     data = JSON.parse(readFileSync(filePath, 'utf-8'));
     return data as T;
   } finally {
-    if (!data) {
-      console.error(`${fileName} is missing or invalid JSON.`);
-      process.exit(1);
-    }
+    if (!data) logger.error(`${fileName} is missing or invalid JSON.`);
   }
 };
 
@@ -32,10 +29,7 @@ export const requireProperties = <TObj extends {}>(
   fields: string[]
 ) => {
   fields.forEach((field) => {
-    if (!(field in obj)) {
-      console.error(`Missing field '${field}' in '${fileName}'`);
-      process.exit(1);
-    }
+    if (!(field in obj)) logger.error(`Missing field '${field}' in '${fileName}'`);
   });
 };
 
@@ -45,20 +39,7 @@ export const validateInnerFields = (
   fileName: string
 ) => {
   Object.entries(groupObj).forEach(([prop, value]) => {
-    if (!value || !value.trim()) {
-      console.error(`Missing property '${prop}' inside '${groupName}' in '${fileName}'`);
-      process.exit(1);
-    }
-  });
-};
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-export const ask = (question: string): Promise<string> => {
-  return new Promise((resolve) => {
-    rl.question(question, (answer) => resolve(answer));
+    if (!value || !value.trim())
+      logger.error(`Missing property '${prop}' inside '${groupName}' in '${fileName}'`);
   });
 };
