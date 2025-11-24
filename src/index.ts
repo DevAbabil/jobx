@@ -1,7 +1,7 @@
-import { jobxConfig, serviceAccount } from '@/services';
+import jobApplication from './api/google_spreadsheets_api';
 
-// console.log("JobX");
+(async () => {
+  const result = await jobApplication.find();
 
-serviceAccount;
-jobxConfig;
-console.log();
+  console.log(result);
+})();

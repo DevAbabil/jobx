@@ -1,7 +1,7 @@
 import { Efile, EJobxConfigGroups, type IJobxConfig, type IServiceAccount } from '@/types';
 import { loadJson, requireProperties, validateInnerFields } from '@/utils';
 
-export const serviceAccount: IServiceAccount = (() => {
+export const jobxServiceAccount: IServiceAccount = (() => {
   const serviceAccountFile = Efile['jobx.service-account.json'];
   const sa = loadJson<IServiceAccount>(serviceAccountFile);
 

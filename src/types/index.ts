@@ -5,17 +5,9 @@ export enum Efile {
 }
 
 export interface IServiceAccount {
-  type: string;
-  project_id: string;
-  private_key_id: string;
-  private_key: string;
   client_email: string;
-  client_id: string;
-  auth_uri: string;
-  token_uri: string;
-  auth_provider_x509_cert_url: string;
-  client_x509_cert_url: string;
-  universe_domain: string;
+  private_key: string;
+  spreadsheet_id: string;
 }
 
 export enum EJobxConfigGroups {
@@ -26,18 +18,30 @@ export enum EJobxConfigGroups {
 }
 
 export interface IJobxConfig {
-  [EJobxConfigGroups.profile]: {
+  profile: {
     name?: string;
     address?: string;
   };
-  [EJobxConfigGroups.links]: {
+  links: {
     github?: string;
     portfolio?: string;
     linkedIn?: string;
   };
-  [EJobxConfigGroups.contact]: {
+  contact: {
     email?: string;
     phone?: string;
   };
-  [EJobxConfigGroups.skills]: string[];
+  skills: string[];
+}
+
+export interface IJobApplication {
+  id: string;
+  date: string;
+  website: string;
+  contact: string;
+  position: string;
+  submissionLink: string;
+  jobSource: string;
+  status: string;
+  location: string;
 }
