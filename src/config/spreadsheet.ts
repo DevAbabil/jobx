@@ -1,6 +1,6 @@
 import { JWT } from 'google-auth-library';
 import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { jobxServiceAccount } from '@/services';
+import { jobxServiceAccount } from '@/helpers';
 
 const sheets = async () => {
   const serviceAccountAuth = new JWT({
