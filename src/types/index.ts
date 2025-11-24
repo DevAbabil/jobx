@@ -52,16 +52,3 @@ export interface IJobApplication {
   status: TStatus;
   location: TLocation;
 }
-
-export const JOB_APPLICATION_COLUMNS: readonly (keyof IJobApplication)[] = [
-  'id',
-  'created_at',
-  'updated_at',
-  'website',
-  'contact',
-  'position',
-  'submission_link',
-  'job_source',
-  'status',
-  'location',
-] as const;
