@@ -32,13 +32,13 @@ class GoogleSpreadsheet<T extends { id: string; created_at: string; updated_at: 
     return { success: true };
   };
 
-  insert = async (data: Omit<T, 'id' | 'created_at' | 'updated_at'>): Promise<T> => {
+  insert = async (data: Partial<Omit<T, 'id'>>): Promise<T> => {
     const now = formatDate();
     const row = await (await this.sheet()).addRow({
+      ...data,
       id: generateId(),
       created_at: now,
       updated_at: now,
-      ...data,
     });
 
     return this.mapRowToRecord(row);
