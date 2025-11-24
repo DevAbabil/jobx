@@ -43,10 +43,13 @@ export interface IJobxConfig {
 export interface IJobxApply {
   company: string;
   company_email: string;
+  company_website: string;
   subject: string;
-  role: string;
+  position: string;
   experience: string;
   education: string;
+  job_source: string;
+  location: TLocation;
 }
 
 export type TStatus = 'Pending' | 'Applied' | 'Hired' | 'Responsed' | 'Terminate' | 'Closed';

@@ -6,9 +6,10 @@ import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import OpenAIBase from 'openai';
 import data from '@/data';
 import { emailPrompts } from '@/promts';
-import { Efile } from '@/types';
+import { Efile, type TLocation } from '@/types';
 import { ROOT } from '@/utils';
 import { logger } from './logger';
+import spreadsheets from './spreadsheets';
 
 class Email {
   #client: OpenAIBase;
@@ -60,6 +61,16 @@ class Email {
       });
 
       logger.success('Job email sent successfully');
+
+      await spreadsheets.insert({
+        website: data.apply.company_website || 'N/A',
+        contact: data.apply.company_email || 'N/A',
+        job_source: data.apply.job_source || 'N/A',
+        location: data.apply.location as TLocation,
+        position: data.apply.position as string,
+        status: 'Applied',
+        submission_link: 'update it now',
+      });
     } catch (error) {
       logger.error('Failed to send job email');
     }

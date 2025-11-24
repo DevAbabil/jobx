@@ -52,7 +52,7 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
     }
   };
 
-  insert = async (data: Partial<Omit<T, 'id'>>): Promise<T | null> => {
+  insert = async (data: Omit<T, 'id' | 'created_at' | 'updated_at'>): Promise<T | null> => {
     logger.start('Inserting new record');
     try {
       const now = formatDate();
