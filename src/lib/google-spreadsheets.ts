@@ -15,13 +15,15 @@ class GoogleSpreadsheet<T extends { id: string; created_at: string; updated_at: 
     }
   ) {
     this.sheet = async () => {
-      const serviceAccountAuth = new JWT({
-        email: config.client_email,
-        key: config.private_key,
-        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-      });
+      const doc = new GoogleSpreadsheetLib(
+        config.spreadsheet_id,
+        new JWT({
+          email: config.client_email,
+          key: config.private_key,
+          scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+        })
+      );
 
-      const doc = new GoogleSpreadsheetLib(config.spreadsheet_id, serviceAccountAuth);
       await doc.loadInfo();
       return doc.sheetsByIndex[0];
     };
