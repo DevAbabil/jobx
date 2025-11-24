@@ -1,5 +1,5 @@
 import type { GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
-import sheets from '@/config/spreadsheet';
+import sheets from '@/config/google-spreadsheet.config';
 import type { IJobApplication } from '@/types';
 import { generateId } from '@/utils';
 
@@ -50,9 +50,11 @@ class JobApplication {
   };
 
   find = async (
-    criteria?: Partial<Pick<IJobApplication, 'position' | 'status' | 'location' | 'contact'>>
+    criteria?: Partial<Pick<IJobApplication, 'position' | 'status' | 'location' | 'contact'>>,
+    meta?: { page?: number; limit?: number }
   ): Promise<IJobApplication[]> => {
-    const rows = await (await this.sheet).getRows();
+    const offset = (meta?.page || 1) - 1 * (meta?.limit || 20);
+    const rows = await (await this.sheet).getRows({ limit: meta?.limit || 20, offset });
 
     const all = rows.map((row) => ({
       id: row.get('id') || '',
@@ -82,7 +84,7 @@ class JobApplication {
   };
 
   update = async (id: string, data: Partial<Omit<IJobApplication, 'id'>>) => {
-    const rows = await (await this.sheet).getRows();
+    const rows = await (await this.sheet).getRows({ limit: 10000 });
     const row = rows.find((r) => r.get('id') === id);
 
     if (!row) {
@@ -114,7 +116,7 @@ class JobApplication {
   };
 
   delete = async (id: string) => {
-    const rows = await (await this.sheet).getRows();
+    const rows = await (await this.sheet).getRows({ limit: 10000 });
     const row = rows.find((r) => r.get('id') === id);
 
     if (!row) {
