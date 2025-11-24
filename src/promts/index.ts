@@ -9,7 +9,7 @@ export const emailPrompts = (payload: {
     apply: {
       company: payload.jobxApply.company ?? '',
       subject: payload.jobxApply.subject ?? '',
-      role: payload.jobxApply.role ?? '',
+      position: payload.jobxApply.position ?? '',
       experience: payload.jobxApply.experience ?? '',
       education: payload.jobxApply.education ?? '',
       ...payload.jobxApply,
