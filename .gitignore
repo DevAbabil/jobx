@@ -1,6 +1,4 @@
 node_modules
 dist
 idea.md
-jobx.apply.json
-jobx.config.json
-jobx.credentials.json
+jobx.*
