@@ -8,6 +8,8 @@ export interface IJobxCredentials {
   client_email: string;
   private_key: string;
   spreadsheet_id: string;
+  lsa_user: string;
+  lsa_pass: string;
 }
 
 export enum EJobxConfigGroups {
