@@ -1,4 +1,4 @@
-import jobApplication from './api/google_spreadsheets_api';
+import jobApplication from '@/api/google-spreadsheets-api';
 
 (async () => {
   const result = await jobApplication.find();

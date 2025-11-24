@@ -11,7 +11,7 @@
     "start": "node ./dist/index.js",
     "build": "sh ./scripts/build.sh",
     "publish:latest": "sh ./scripts/publish.sh",
-    "check": "biome check --write --unsafe .",
+    "check": "sh ./scripts/check-filenames.sh && biome check --write --unsafe .",
     "prepare": "husky"
   },
   "repository": {
@@ -45,6 +45,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.3.7",
     "@types/node": "^24.9.1",
+    "google-spreadsheet": "^5.0.2",
     "googleapis": "^166.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
