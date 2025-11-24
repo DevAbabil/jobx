@@ -1,32 +1,26 @@
 import type { GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
 import sheets from '@/config/google-spreadsheet.config';
 import type { IJobApplication } from '@/types';
-import { generateId } from '@/utils';
+import { JOB_APPLICATION_COLUMNS } from '@/types';
+import { formatDate, generateId } from '@/utils';
 
 class JobApplication {
+  private now = formatDate();
   constructor(private sheet: Promise<GoogleSpreadsheetWorksheet>) {}
 
   setHeaders = async (customOrder?: string[]) => {
     const sheet = await this.sheet;
-    const defaultOrder: (keyof IJobApplication)[] = [
-      'id',
-      'date',
-      'website',
-      'contact',
-      'position',
-      'submission_link',
-      'job_source',
-      'status',
-      'location',
-    ];
-    await sheet.setHeaderRow(customOrder || defaultOrder);
+    await sheet.setHeaderRow(customOrder || [...JOB_APPLICATION_COLUMNS]);
     return { success: true };
   };
 
-  insert = async (data: Omit<IJobApplication, 'id'>) => {
+  insert = async (data: Omit<IJobApplication, 'id' | 'created_at' | 'updated_at'>) => {
+    await this.setHeaders();
+
     const row = await (await this.sheet).addRow({
       id: generateId(),
-      date: data.date,
+      created_at: this.now,
+      updated_at: this.now,
       website: data.website,
       contact: data.contact,
       position: data.position,
@@ -38,7 +32,8 @@ class JobApplication {
 
     return {
       id: row.get('id'),
-      date: row.get('date'),
+      created_at: row.get('created_at'),
+      updated_at: row.get('updated_at'),
       website: row.get('website'),
       contact: row.get('contact'),
       position: row.get('position'),
@@ -53,12 +48,13 @@ class JobApplication {
     criteria?: Partial<Pick<IJobApplication, 'position' | 'status' | 'location' | 'contact'>>,
     meta?: { page?: number; limit?: number }
   ): Promise<IJobApplication[]> => {
-    const offset = (meta?.page || 1) - 1 * (meta?.limit || 20);
+    const offset = ((meta?.page || 1) - 1) * (meta?.limit || 20);
     const rows = await (await this.sheet).getRows({ limit: meta?.limit || 20, offset });
 
     const all = rows.map((row) => ({
       id: row.get('id') || '',
-      date: row.get('date') || '',
+      created_at: row.get('created_at') || '',
+      updated_at: row.get('updated_at') || '',
       website: row.get('website') || '',
       contact: row.get('contact') || '',
       position: row.get('position') || '',
@@ -83,7 +79,10 @@ class JobApplication {
     });
   };
 
-  update = async (id: string, data: Partial<Omit<IJobApplication, 'id'>>) => {
+  update = async (
+    id: string,
+    data: Partial<Omit<IJobApplication, 'id' | 'created_at' | 'updated_at'>>
+  ) => {
     const rows = await (await this.sheet).getRows({ limit: 10000 });
     const row = rows.find((r) => r.get('id') === id);
 
@@ -91,7 +90,7 @@ class JobApplication {
       throw new Error(`Job application with id ${id} not found`);
     }
 
-    if (data.date !== undefined) row.set('date', data.date);
+    row.set('updated_at', this.now);
     if (data.website !== undefined) row.set('website', data.website);
     if (data.contact !== undefined) row.set('contact', data.contact);
     if (data.position !== undefined) row.set('position', data.position);
@@ -104,7 +103,8 @@ class JobApplication {
 
     return {
       id: row.get('id'),
-      date: row.get('date'),
+      created_at: row.get('created_at'),
+      updated_at: row.get('updated_at'),
       website: row.get('website'),
       contact: row.get('contact'),
       position: row.get('position'),
@@ -124,6 +124,61 @@ class JobApplication {
     }
 
     await row.delete();
+    return { success: true };
+  };
+
+  formatCells = async (options?: {
+    headerAlignment?: 'LEFT' | 'CENTER' | 'RIGHT';
+    columnAlignments?: Partial<Record<keyof IJobApplication, 'LEFT' | 'CENTER' | 'RIGHT'>>;
+  }) => {
+    const sheet = await this.sheet;
+    const sheetId = sheet.sheetId;
+
+    const requests: unknown[] = [
+      {
+        repeatCell: {
+          range: {
+            sheetId,
+            startRowIndex: 0,
+            endRowIndex: 1,
+          },
+          cell: {
+            userEnteredFormat: {
+              horizontalAlignment: options?.headerAlignment || 'CENTER',
+              textFormat: { bold: true },
+            },
+          },
+          fields: 'userEnteredFormat(horizontalAlignment,textFormat)',
+        },
+      },
+    ];
+
+    if (options?.columnAlignments) {
+      Object.entries(options.columnAlignments).forEach(([key, alignment]) => {
+        const columnIndex = JOB_APPLICATION_COLUMNS.indexOf(key as keyof IJobApplication);
+        if (columnIndex !== -1) {
+          requests.push({
+            repeatCell: {
+              range: {
+                sheetId,
+                startRowIndex: 1,
+                startColumnIndex: columnIndex,
+                endColumnIndex: columnIndex + 1,
+              },
+              cell: {
+                userEnteredFormat: {
+                  horizontalAlignment: alignment,
+                },
+              },
+              fields: 'userEnteredFormat.horizontalAlignment',
+            },
+          });
+        }
+      });
+    }
+
+    await sheet._spreadsheet._makeBatchUpdateRequest(requests);
+
     return { success: true };
   };
 }

@@ -34,14 +34,32 @@ export interface IJobxConfig {
   skills: string[];
 }
 
+export type TStatus = 'Pending' | 'Applied' | 'Hired' | 'Responsed' | 'Terminate' | 'Closed';
+
+export type TLocation = 'Remote' | 'Onsite';
+
 export interface IJobApplication {
   id: string;
-  date: string;
+  created_at: string;
+  updated_at: string;
   website: string;
   contact: string;
   position: string;
   submission_link: string;
   job_source: string;
-  status: string;
-  location: string;
+  status: TStatus;
+  location: TLocation;
 }
+
+export const JOB_APPLICATION_COLUMNS: readonly (keyof IJobApplication)[] = [
+  'id',
+  'created_at',
+  'updated_at',
+  'website',
+  'contact',
+  'position',
+  'submission_link',
+  'job_source',
+  'status',
+  'location',
+] as const;

@@ -1,10 +1,15 @@
 import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { format } from 'date-fns';
 
 export const ROOT = process.cwd();
 
 export const generateId = () => randomUUID().slice(0, 12);
+
+export const formatDate = (date: Date = new Date()): string => {
+  return format(date, 'MMM d, yyyy, h:mmaaa');
+};
 
 export const loadJson = <T>(fileName: string): T => {
   const filePath = resolve(ROOT, fileName);
