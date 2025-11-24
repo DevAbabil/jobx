@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "tsx --watch ./src/index.ts",
+    "test": "tsx ./src/index.ts",
     "start": "node ./dist/index.js",
     "build": "sh ./scripts/build.sh",
     "publish:latest": "sh ./scripts/publish.sh",
