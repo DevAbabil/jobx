@@ -49,14 +49,16 @@
     "@types/nodemailer": "^7.0.4",
     "date-fns": "^4.1.0",
     "google-spreadsheet": "^5.0.2",
-    "googleapis": "^166.0.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
+    "mth-htm": "^1.0.2",
     "nodemailer": "^7.0.10",
     "openai": "^6.9.1",
     "rimraf": "^6.0.1",
     "tsup": "^8.5.0",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "googleapis": "^166.0.0"
   }
 }

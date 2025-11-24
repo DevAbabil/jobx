@@ -1,9 +1,25 @@
-import { JWT } from 'google-auth-library';
 import type { GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
 import { GoogleSpreadsheet as GoogleSpreadsheetLib } from 'google-spreadsheet';
+import { sheetAuth } from '@/config/auth';
+
+import data from '@/data';
+import type { IJobApplication } from '@/types';
 import { formatDate, generateId } from '@/utils';
 
-class GoogleSpreadsheet<T extends { id: string; created_at: string; updated_at: string }> {
+export const JOB_APPLICATION_COLUMNS: (keyof IJobApplication)[] = [
+  'id',
+  'created_at',
+  'updated_at',
+  'website',
+  'contact',
+  'position',
+  'submission_link',
+  'job_source',
+  'status',
+  'location',
+] as const;
+
+class Spreadsheet<T extends { id: string; created_at: string; updated_at: string }> {
   private sheet: () => Promise<GoogleSpreadsheetWorksheet>;
 
   constructor(
@@ -15,22 +31,15 @@ class GoogleSpreadsheet<T extends { id: string; created_at: string; updated_at: 
     }
   ) {
     this.sheet = async () => {
-      const doc = new GoogleSpreadsheetLib(
-        config.spreadsheet_id,
-        new JWT({
-          email: config.client_email,
-          key: config.private_key,
-          scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-        })
-      );
+      const doc = new GoogleSpreadsheetLib(config.spreadsheet_id, sheetAuth);
 
       await doc.loadInfo();
       return doc.sheetsByIndex[0];
     };
   }
 
-  setHeaders = async (order: (keyof T)[]) => {
-    await (await this.sheet()).setHeaderRow(order as string[]);
+  setHeaders = async () => {
+    await (await this.sheet()).setHeaderRow(JOB_APPLICATION_COLUMNS);
     return { success: true };
   };
 
@@ -173,4 +182,8 @@ class GoogleSpreadsheet<T extends { id: string; created_at: string; updated_at: 
   };
 }
 
-export default GoogleSpreadsheet;
+export default new Spreadsheet<IJobApplication>(JOB_APPLICATION_COLUMNS, {
+  client_email: data.credentials.client_email,
+  private_key: data.credentials.private_key,
+  spreadsheet_id: data.credentials.spreadsheet_id,
+});

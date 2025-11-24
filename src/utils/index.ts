@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import readline from 'node:readline';
 import { format } from 'date-fns';
 
 export const ROOT = process.cwd();
@@ -48,5 +49,16 @@ export const validateInnerFields = (
       console.error(`Missing property '${prop}' inside '${groupName}' in '${fileName}'`);
       process.exit(1);
     }
+  });
+};
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+export const ask = (question: string): Promise<string> => {
+  return new Promise((resolve) => {
+    rl.question(question, (answer) => resolve(answer));
   });
 };

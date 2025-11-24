@@ -2,6 +2,7 @@ export enum Efile {
   'jobx.apply.json' = 'jobx.apply.json',
   'jobx.config.json' = 'jobx.config.json',
   'jobx.credentials.json' = 'jobx.credentials.json',
+  'jobx.mail.md' = 'jobx.mail.md',
 }
 
 export interface IJobxCredentials {
@@ -11,6 +12,8 @@ export interface IJobxCredentials {
   lsa_user: string;
   lsa_pass: string;
   open_ai_secret: string;
+  auth_client_id: string;
+  auth_client_secret: string;
 }
 
 export enum EJobxConfigGroups {
@@ -35,6 +38,15 @@ export interface IJobxConfig {
     phone?: string;
   };
   skills: string[];
+}
+
+export interface IJobxApply {
+  company: string;
+  company_email: string;
+  subject: string;
+  role: string;
+  experience: string;
+  education: string;
 }
 
 export type TStatus = 'Pending' | 'Applied' | 'Hired' | 'Responsed' | 'Terminate' | 'Closed';

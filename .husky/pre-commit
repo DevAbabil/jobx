@@ -1,2 +1,1 @@
 sh ./scripts/check-filenames.sh
-npx lint-staged

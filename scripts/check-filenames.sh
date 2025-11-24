@@ -9,7 +9,7 @@ for file in $files; do
   filename=$(basename "$file")
   
   case "$filename" in
-    index.ts|index.tsx|*.config.ts|*.config.js)
+    index.ts|index.tsx|*.config.ts|*.config.js|*.d.ts)
       continue
       ;;
   esac
