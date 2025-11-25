@@ -2,7 +2,7 @@ import type { GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
 import { GoogleSpreadsheet as GoogleSpreadsheetLib } from 'google-spreadsheet';
 import { sheetAuth } from '@/config/auth';
 import data from '@/data';
-import type { IJobApplication } from '@/types';
+import type { IJobApplication, TStatus } from '@/types';
 import { formatDate, generateId } from '@/utils';
 import { logger } from './logger';
 
@@ -17,6 +17,15 @@ export const JOB_APPLICATION_COLUMNS: (keyof IJobApplication)[] = [
   'job_source',
   'status',
   'location',
+] as const;
+
+const status: readonly TStatus[] = [
+  'Applied',
+  'Closed',
+  'Hired',
+  'Pending',
+  'Responsed',
+  'Terminate',
 ] as const;
 
 class Spreadsheet<T extends { id: string; created_at: string; updated_at: string }> {
@@ -52,8 +61,17 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
     }
   };
 
-  insert = async (data: Omit<T, 'id' | 'created_at' | 'updated_at'>): Promise<T | null> => {
+  insert = async (
+    data: Omit<T, 'id' | 'created_at' | 'updated_at'> & { status: TStatus }
+  ): Promise<T | null> => {
+    status.forEach(() => {
+      if (!status.includes(data.status)) {
+        logger.error(`status must be in [${status.join(' ')}]`);
+      }
+    });
+
     logger.start('Inserting new record');
+
     try {
       const now = formatDate();
       const row = await (await this.sheet()).addRow({
@@ -97,8 +115,14 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
 
   update = async (
     id: string,
-    data: Partial<Omit<T, 'id' | 'created_at' | 'updated_at'>>
+    data: Partial<Omit<T, 'id' | 'created_at' | 'updated_at'>> & { status: TStatus }
   ): Promise<T | null> => {
+    status.forEach(() => {
+      if (!status.includes(data.status)) {
+        logger.error(`status must be in [${status.join(' ')}]`);
+      }
+    });
+
     logger.start(`Updating record with id '${id}'`);
     try {
       const rows = await (await this.sheet()).getRows({ limit: 10000 });

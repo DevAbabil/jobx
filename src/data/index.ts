@@ -1,4 +1,11 @@
-import { Efile, type IJobxApply, type IJobxConfig, type IJobxCredentials } from '@/types';
+import { logger } from '@/lib/logger';
+import {
+  Efile,
+  type IJobxApply,
+  type IJobxConfig,
+  type IJobxCredentials,
+  type TLocation,
+} from '@/types';
 import { loadJson, requireProperties, validateInnerFields } from '@/utils';
 
 const jobxCredentials = (): IJobxCredentials => {
@@ -41,6 +48,14 @@ const jobxApply = (): Partial<IJobxApply> => {
   const jobxApplyFile = Efile['jobx.apply.json'];
   const apply = loadJson<Partial<IJobxApply>>(jobxApplyFile);
   requireProperties(apply, Efile['jobx.apply.json'], ['company_email'] as (keyof IJobxApply)[]);
+
+  const location: readonly TLocation[] = ['Onsite', 'Remote'] as const;
+
+  location.forEach(() => {
+    if (!location.includes(apply.location as TLocation))
+      logger.error(`Location must be in 'Remote' or 'Onsite'`);
+  });
+
   return apply;
 };
 
