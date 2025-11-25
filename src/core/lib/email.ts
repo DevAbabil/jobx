@@ -4,10 +4,10 @@ import { markdownToHtml } from 'mth-htm';
 import { createTransport, type Transporter } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import OpenAIBase from 'openai';
-import data from '@/data';
-import { emailPrompts } from '@/promts';
-import { Efile, type TLocation } from '@/types';
-import { ROOT } from '@/utils';
+import data from '@/core/data';
+import { emailPrompts } from '@/core/promts';
+import { Efile, type TLocation } from '@/core/types';
+import { ROOT } from '@/core/utils';
 import { logger } from './logger';
 import spreadsheets from './spreadsheets';
 
