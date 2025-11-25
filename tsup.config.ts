@@ -3,7 +3,7 @@ import { defineConfig } from 'tsup';
 
 export default defineConfig([
   {
-    entry: ['src/index.ts'],
+    entry: ['src/cli/bin/cli.ts'],
     format: ['cjs'],
     banner: {
       js: fs.readFileSync('./banner.txt', 'utf-8'),

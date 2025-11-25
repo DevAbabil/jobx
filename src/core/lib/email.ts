@@ -6,9 +6,8 @@ import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import OpenAIBase from 'openai';
 import data from '@/core/data';
 import { emailPrompts } from '@/core/promts';
-import { Efile, type TLocation } from '@/core/types';
-import { ROOT } from '@/core/utils';
-import { logger } from './logger';
+import { Efile, type TLocation } from '@/types';
+import { logger, ROOT } from '@/utils';
 import spreadsheets from './spreadsheets';
 
 class Email {

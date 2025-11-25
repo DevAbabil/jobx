@@ -2,14 +2,14 @@
   "name": "jobx",
   "version": "1.0.0",
   "description": "AI-powered CLI tool to automate job applications, generate personalized emails, and track applications using Google Sheets.",
-  "main": "./dist/index.js",
+  "main": "./dist/cli.js",
   "bin": {
-    "jobx": "./dist/index.js"
+    "jobx": "./dist/cli.js"
   },
   "scripts": {
-    "dev": "tsx --watch ./src/index.ts",
-    "test": "tsx ./src/index.ts",
-    "start": "node ./dist/index.js",
+    "dev": "tsx --watch ./src/cli/bin/cli.ts",
+    "test": "tsx ./src/cli/bin/cli.ts",
+    "start": "node ./dist/cli.js",
     "build": "sh ./scripts/build.sh",
     "publish:latest": "sh ./scripts/publish.sh",
     "check": "sh ./scripts/check-filenames.sh && biome check --write --unsafe .",
@@ -51,6 +51,7 @@
     "date-fns": "^4.1.0",
     "google-spreadsheet": "^5.0.2",
     "husky": "^9.1.7",
+    "inquirer": "^13.0.1",
     "mth-htm": "^1.0.2",
     "nodemailer": "^7.0.10",
     "openai": "^6.9.1",

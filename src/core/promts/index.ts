@@ -1,4 +1,4 @@
-import type { IJobxApply, IJobxConfig } from '@/core/types';
+import type { IJobxApply, IJobxConfig } from '@/types';
 
 export const emailPrompts = (payload: {
   jobxApply: Partial<IJobxApply>;

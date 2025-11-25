@@ -1,12 +1,11 @@
-import { logger } from '@/core/lib/logger';
 import {
   Efile,
   type IJobxApply,
   type IJobxConfig,
   type IJobxCredentials,
   type TLocation,
-} from '@/core/types';
-import { loadJson, requireProperties, validateInnerFields } from '@/core/utils';
+} from '@/types';
+import { loadJson, logger, requireProperties, validateInnerFields } from '@/utils';
 
 const jobxCredentials = (): IJobxCredentials => {
   const serviceAccountFile = Efile['jobx.credentials.json'];

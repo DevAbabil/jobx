@@ -12,8 +12,6 @@ export interface IJobxCredentials {
   lsa_user: string;
   lsa_pass: string;
   open_ai_secret: string;
-  auth_client_id: string;
-  auth_client_secret: string;
 }
 
 export enum EJobxConfigGroups {

@@ -2,7 +2,8 @@ import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { format } from 'date-fns';
-import { logger } from '@/core/lib/logger';
+import { default as logger } from '@/utils/logger';
+export { logger };
 
 export const ROOT = process.cwd();
 
@@ -23,11 +24,7 @@ export const loadJson = <T>(fileName: string): T => {
   }
 };
 
-export const requireProperties = <TObj extends {}>(
-  obj: TObj,
-  fileName: string,
-  fields: string[]
-) => {
+export const requireProperties = <T extends {}>(obj: T, fileName: string, fields: string[]) => {
   fields.forEach((field) => {
     if (!(field in obj)) logger.error(`Missing field '${field}' in '${fileName}'`);
   });

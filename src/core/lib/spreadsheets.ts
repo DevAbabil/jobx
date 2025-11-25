@@ -2,9 +2,8 @@ import type { GoogleSpreadsheetWorksheet } from 'google-spreadsheet';
 import { GoogleSpreadsheet as GoogleSpreadsheetLib } from 'google-spreadsheet';
 import { sheetAuth } from '@/core/config/auth';
 import data from '@/core/data';
-import type { IJobApplication, TStatus } from '@/core/types';
-import { formatDate, generateId } from '@/core/utils';
-import { logger } from './logger';
+import type { IJobApplication, TStatus } from '@/types';
+import { formatDate, generateId, logger } from '@/utils';
 
 export const JOB_APPLICATION_COLUMNS: (keyof IJobApplication)[] = [
   'id',
