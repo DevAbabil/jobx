@@ -10,10 +10,11 @@ export default defineConfig([
     },
     outDir: 'dist',
     clean: true,
-    minify: false,
+    minify: true,
     sourcemap: true,
     esbuildOptions(options) {
       options.legalComments = 'none';
+      options.external = ['mth-htm'];
     },
   },
 ]);
