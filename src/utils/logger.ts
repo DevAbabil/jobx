@@ -1,53 +1,56 @@
 import colors from 'colors';
-import ora, { type Ora } from 'ora';
+import { createSpinner, type Spinner } from 'nanospinner';
+
+type TMethod = (message: string, config?: { terminate: boolean; code: 1 | 0 }) => void;
 
 class Logger {
-  private spinner: Ora;
+  private spinner: Spinner;
 
   constructor() {
-    this.spinner = ora({
-      spinner: 'dots',
-      color: 'yellow',
-    });
+    this.spinner = createSpinner();
   }
 
-  start = (message: string) => {
-    this.spinner.start(`  ${colors.bold('[LOADING]').red} : ${message}`);
+  start: TMethod = (message, config) => {
+    this.spinner.start(message).start();
+    if (config?.terminate) process.exit(config.code);
   };
 
-  info = (message: string) => {
-    this.spinner.stopAndPersist({
-      symbol: '',
-      text: `ℹ️   ${colors.blue('[INFO]')}    : ${message}`,
+  info: TMethod = (message, config) => {
+    this.spinner.info({
+      mark: 'ℹ️',
+      text: ` ${message}`,
     });
+    if (config?.terminate) process.exit(config.code);
   };
 
-  success = (message: string) => {
-    this.spinner.stopAndPersist({
-      symbol: '',
-      text: `✅  ${colors.green('[SUCCESS]')} : ${message}`,
+  success: TMethod = (message, config) => {
+    this.spinner.success({
+      mark: '✅',
+      text: message,
     });
+    if (config?.terminate) process.exit(config.code);
   };
 
-  warning = (message: string) => {
-    this.spinner.stopAndPersist({
-      symbol: '',
-      text: `⚠️   ${colors.yellow('[WARNING]')} : ${message}`,
+  warn: TMethod = (message, config) => {
+    this.spinner.warn({
+      mark: '⚠️',
+      text: ` ${message}`,
     });
+    if (config?.terminate) process.exit(config.code);
   };
 
-  error = (message: string) => {
-    this.spinner.stopAndPersist({
-      symbol: '',
-      text: `❌  ${colors.red('[ERROR]')}   : ${message}`,
+  error: TMethod = (message, config) => {
+    this.spinner.error({
+      mark: '❌',
+      text: message,
     });
-    process.exit(1);
+    if (config?.terminate) process.exit(config.code);
   };
 
   appreciation = () => {
-    this.spinner.stopAndPersist({
-      symbol: '',
-      text: `\n🎉 Dear friends! 🎉\nIf you found this helpful, a ⭐ STAR ⭐ would be ${colors.bold(
+    this.spinner.success({
+      mark: '\n',
+      text: `🎉 Dear friends! 🎉\nIf you found this helpful, a ⭐ STAR ⭐ would be ${colors.bold(
         'GREATLY APPRECIATED'
       )}! 🥰 \n━━\x1b]8;;https://github.com/DevAbabil/jobx\x07🚀 ${colors.bold(
         'STAR ON GITHUB'

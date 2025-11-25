@@ -45,13 +45,13 @@ class Email {
         logger.success('Job email reset successfully');
       }, 1500);
     } catch {
-      logger.error('Failed to reset job email');
+      logger.error('Failed to reset job email', { terminate: true, code: 1 });
     }
   };
 
   submit = async () => {
-    logger.start('Sending job email');
     try {
+      logger.start('Sending job email');
       await this.#transport.sendMail({
         subject: data.apply.subject,
         from: data.credentials.lsa_user,

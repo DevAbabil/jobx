@@ -9,6 +9,8 @@ export const ROOT = process.cwd();
 
 export const generateId = () => randomUUID().slice(0, 12);
 
+export const delay = (ms = 100) => new Promise((r) => setTimeout(r, ms));
+
 export const formatDate = (date: Date = new Date()): string => {
   return format(date, 'MMM d, yyyy, h:mmaaa');
 };

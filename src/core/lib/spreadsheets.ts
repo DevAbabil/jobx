@@ -54,7 +54,8 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
       return { success: true };
     } catch (error) {
       logger.error(
-        `Failed to set headers: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to set headers: ${error instanceof Error ? error.message : String(error)}`,
+        { terminate: true, code: 1 }
       );
       return { success: false };
     }
@@ -65,7 +66,7 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
   ): Promise<T | null> => {
     status.forEach(() => {
       if (!status.includes(data.status)) {
-        logger.error(`status must be in [${status.join(' ')}]`);
+        logger.error(`status must be in [${status.join(' ')}]`, { terminate: true, code: 1 });
       }
     });
 
@@ -85,7 +86,8 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
       return record;
     } catch (error) {
       logger.error(
-        `Failed to insert record: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to insert record: ${error instanceof Error ? error.message : String(error)}`,
+        { terminate: true, code: 1 }
       );
       return null;
     }
@@ -106,7 +108,8 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
       return results;
     } catch (error) {
       logger.error(
-        `Failed to fetch records: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to fetch records: ${error instanceof Error ? error.message : String(error)}`,
+        { terminate: true, code: 1 }
       );
       return [];
     }
@@ -148,7 +151,8 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
       return record;
     } catch (error) {
       logger.error(
-        `Failed to update record: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to update record: ${error instanceof Error ? error.message : String(error)}`,
+        { terminate: true, code: 1 }
       );
       return null;
     }
@@ -170,7 +174,8 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
       return { success: true };
     } catch (error) {
       logger.error(
-        `Failed to delete record: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to delete record: ${error instanceof Error ? error.message : String(error)}`,
+        { terminate: true, code: 1 }
       );
       return { success: false };
     }
@@ -232,7 +237,8 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
       return { success: true };
     } catch (error) {
       logger.error(
-        `Failed to format cells: ${error instanceof Error ? error.message : String(error)}`
+        `Failed to format cells: ${error instanceof Error ? error.message : String(error)}`,
+        { terminate: true, code: 1 }
       );
       return { success: false };
     }

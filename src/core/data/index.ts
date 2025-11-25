@@ -52,7 +52,7 @@ const jobxApply = (): Partial<IJobxApply> => {
 
   location.forEach(() => {
     if (!location.includes(apply.location as TLocation))
-      logger.error(`Location must be in 'Remote' or 'Onsite'`);
+      logger.error(`Location must be in 'Remote' or 'Onsite'`, { terminate: true, code: 1 });
   });
 
   return apply;
