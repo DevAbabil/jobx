@@ -25,20 +25,3 @@ export const loadJson = <T>(fileName: string): T => {
     if (!data) logger.error(`${fileName} is missing or invalid JSON.`);
   }
 };
-
-export const requireProperties = <T extends {}>(obj: T, fileName: string, fields: string[]) => {
-  fields.forEach((field) => {
-    if (!(field in obj)) logger.error(`Missing field '${field}' in '${fileName}'`);
-  });
-};
-
-export const validateInnerFields = (
-  groupObj: Record<string, string>,
-  groupName: string,
-  fileName: string
-) => {
-  Object.entries(groupObj).forEach(([prop, value]) => {
-    if (!value || !value.trim())
-      logger.error(`Missing property '${prop}' inside '${groupName}' in '${fileName}'`);
-  });
-};

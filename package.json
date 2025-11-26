@@ -13,7 +13,8 @@
     "build": "sh ./scripts/build.sh",
     "publish:latest": "sh ./scripts/publish.sh",
     "check": "sh ./scripts/check-filenames.sh && biome check --write --unsafe .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "reset-json": "rm jobx.apply.json jobx.config.json jobx.credentials.json && cp -r jsons/* ./"
   },
   "repository": {
     "type": "git",
@@ -62,6 +63,7 @@
     "rimraf": "^6.0.1",
     "tsup": "^8.5.0",
     "tsx": "^4.20.6",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "zod": "^4.1.13"
   }
 }

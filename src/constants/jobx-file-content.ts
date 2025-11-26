@@ -1,6 +1,8 @@
-import type { IJobxApply, IJobxConfig, IJobxCredentials } from '@/types';
+import { resolve } from 'node:path';
+import { Efile, type IJobxApply, type IJobxConfig, type IJobxCredentials } from '@/types';
+import { ROOT } from '@/utils';
 
-export const jobxFileContent: {
+const data: {
   apply: Partial<Record<keyof IJobxApply, string>>;
   config: IJobxConfig;
   credentials: Record<keyof IJobxCredentials, string>;
@@ -41,3 +43,24 @@ export const jobxFileContent: {
     lsa_user: '<smtp or login service username>',
   },
 };
+
+const jobxFileContent: Record<keyof typeof Efile, { path: string; data: unknown }> = {
+  'jobx.apply.json': {
+    path: resolve(ROOT, Efile['jobx.apply.json']),
+    data: data.apply,
+  },
+  'jobx.config.json': {
+    path: resolve(ROOT, Efile['jobx.config.json']),
+    data: data.config,
+  },
+  'jobx.credentials.json': {
+    path: resolve(ROOT, Efile['jobx.credentials.json']),
+    data: data.credentials,
+  },
+  'jobx.mail.md': {
+    path: resolve(ROOT, Efile['jobx.mail.md']),
+    data: '',
+  },
+};
+
+export default jobxFileContent;
