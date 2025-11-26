@@ -7,7 +7,14 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": ["src/**/*", "scripts/**/*", "*.ts", "*.js", "*.json"]
+    "includes": [
+      "src/**/*",
+      "scripts/**/*",
+      "docs/src/**/*.{ts,tsx,js,jsx}",
+      "*.ts",
+      "*.js",
+      "*.json"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -30,6 +37,11 @@
       "quoteStyle": "single",
       "trailingCommas": "es5",
       "semicolons": "always"
+    }
+  },
+  "css": {
+    "parser": {
+      "cssModules": false
     }
   },
   "assist": {
