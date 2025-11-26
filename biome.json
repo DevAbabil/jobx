@@ -13,14 +13,15 @@
       "docs/src/**/*.{ts,tsx,js,jsx}",
       "*.ts",
       "*.js",
-      "*.json"
+      "*.json",
+      "*.md"
     ]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
-    "lineWidth": 100
+    "lineWidth": 80
   },
   "linter": {
     "enabled": true,
