@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "tsx --watch ./src/cli/bin/cli.ts",
-    "test": "tsx --interactive ./src/cli/bin/cli.ts apply",
+    "test": "tsx --interactive ./src/cli/bin/cli.ts",
     "start": "node ./dist/cli.js",
     "build": "sh ./scripts/build.sh",
     "publish:latest": "sh ./scripts/publish.sh",
