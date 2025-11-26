@@ -3,7 +3,6 @@ export enum Efile {
   'jobx.config.json' = 'jobx.config.json',
   'jobx.credentials.json' = 'jobx.credentials.json',
   'jobx.mail.md' = 'jobx.mail.md',
-  'package.json' = 'package.json',
 }
 
 export interface IJobxCredentials {

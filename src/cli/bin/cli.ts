@@ -8,9 +8,9 @@ const command = new Command();
 command.name(pkg.name).description(pkg.description).version(pkg.version);
 
 commands.init(command);
-commands.test(command);
-commands.reset(command);
-commands.mail(command);
+// commands.test(command);
+// commands.reset(command);
+// commands.mail(command);
 
 command.on('command:*', ([cmd]) => {
   logger.error(
