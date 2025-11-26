@@ -1,27 +1,14 @@
-import { Efile } from '@/types';
-import { loadJson, logger } from '@/utils';
-
 interface PackageJson {
   name: string;
   version: string;
   description: string;
-  repository?: {
-    type: string;
-    url: string;
-  };
-  keywords?: string[];
-  author?: string;
-  license?: string;
-  homepage?: string;
 }
 
-const pkg = ((): PackageJson => {
-  try {
-    return loadJson<PackageJson>(Efile['package.json']);
-  } catch {
-    logger.error(`Failed to load package.json or invaldi format of package.json`);
-    process.exit(1);
-  }
-})();
+const pkg: PackageJson = {
+  name: 'jobx',
+  version: '1.0.1',
+  description:
+    'AI-powered CLI tool to automate job applications, generate personalized emails, and track applications using Google Sheets.',
+};
 
 export default pkg;

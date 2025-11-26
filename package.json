@@ -1,6 +1,6 @@
 {
   "name": "jobx",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "AI-powered CLI tool to automate job applications, generate personalized emails, and track applications using Google Sheets.",
   "main": "./dist/cli.js",
   "bin": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "tsx --watch ./src/cli/bin/cli.ts",
-    "test": "tsx --interactive ./src/cli/bin/cli.ts",
+    "test": "tsx --interactive ./src/cli/bin/cli.ts apply",
     "start": "node ./dist/cli.js",
     "build": "sh ./scripts/build.sh",
     "publish:latest": "sh ./scripts/publish.sh",
