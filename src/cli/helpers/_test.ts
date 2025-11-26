@@ -74,7 +74,7 @@ const ZJobxApplySchema = z
     company_website: z.string().url('Company website must be a valid URL'),
     education: z.string().min(3, 'Education info is too short'),
     experience: z.string().min(3, 'Experience info is too short'),
-    job_source: z.string().min(2, 'Job source is too short'),
+    job_source: z.string().url('Company website must be a valid URL'),
     location: z.enum(['Remote', 'Onsite']),
     position: z.string().min(2, 'Position title is too short'),
   })
@@ -121,7 +121,11 @@ const test = async (testFiles: (keyof typeof Efile)[]) => {
     }
   }
 
-  if (err) process.exit(1);
+  if (err) {
+    process.exit(1);
+  } else {
+    logger.info(`All test has been passed!`);
+  }
 };
 
 export default test;

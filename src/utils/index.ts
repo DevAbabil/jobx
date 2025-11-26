@@ -22,6 +22,7 @@ export const loadJson = <T>(fileName: string): T => {
     data = JSON.parse(readFileSync(filePath, 'utf-8'));
     return data as T;
   } finally {
-    if (!data) logger.error(`${fileName} is missing or invalid JSON.`);
+    if (!data)
+      logger.error(`${fileName} is missing or invalid JSON.`, { terminate: true, code: 1 });
   }
 };
