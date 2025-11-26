@@ -27,7 +27,9 @@ const status: readonly TStatus[] = [
   'Terminate',
 ] as const;
 
-class Spreadsheet<T extends { id: string; created_at: string; updated_at: string }> {
+class Spreadsheet<
+  T extends { id: string; created_at: string; updated_at: string },
+> {
   private sheet: () => Promise<GoogleSpreadsheetWorksheet>;
 
   constructor(
@@ -66,7 +68,10 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
   ): Promise<T | null> => {
     status.forEach(() => {
       if (!status.includes(data.status)) {
-        logger.error(`status must be in [${status.join(' ')}]`, { terminate: true, code: 1 });
+        logger.error(`status must be in [${status.join(' ')}]`, {
+          terminate: true,
+          code: 1,
+        });
       }
     });
 
@@ -93,11 +98,17 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
     }
   };
 
-  find = async (criteria?: Partial<T>, meta?: { page?: number; limit?: number }): Promise<T[]> => {
+  find = async (
+    criteria?: Partial<T>,
+    meta?: { page?: number; limit?: number }
+  ): Promise<T[]> => {
     logger.start('Fetching records');
     try {
       const offset = ((meta?.page || 1) - 1) * (meta?.limit || 20);
-      const rows = await (await this.sheet()).getRows({ limit: meta?.limit || 20, offset });
+      const rows = await (await this.sheet()).getRows({
+        limit: meta?.limit || 20,
+        offset,
+      });
 
       const all = rows.map((row) => this.mapRowToRecord(row));
 
@@ -117,7 +128,9 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
 
   update = async (
     id: string,
-    data: Partial<Omit<T, 'id' | 'created_at' | 'updated_at'>> & { status: TStatus }
+    data: Partial<Omit<T, 'id' | 'created_at' | 'updated_at'>> & {
+      status: TStatus;
+    }
   ): Promise<T | null> => {
     status.forEach(() => {
       if (!status.includes(data.status)) {
@@ -209,7 +222,9 @@ class Spreadsheet<T extends { id: string; created_at: string; updated_at: string
       ];
 
       if (options?.columnAlignments) {
-        for (const [key, alignment] of Object.entries(options.columnAlignments)) {
+        for (const [key, alignment] of Object.entries(
+          options.columnAlignments
+        )) {
           const columnIndex = this.columns.indexOf(key as keyof T);
           if (columnIndex !== -1) {
             requests.push({

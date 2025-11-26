@@ -23,6 +23,9 @@ export const loadJson = <T>(fileName: string): T => {
     return data as T;
   } finally {
     if (!data)
-      logger.error(`${fileName} is missing or invalid JSON.`, { terminate: true, code: 1 });
+      logger.error(`${fileName} is missing or invalid JSON.`, {
+        terminate: true,
+        code: 1,
+      });
   }
 };

@@ -1,7 +1,10 @@
 import colors from 'colors';
 import { createSpinner, type Spinner } from 'nanospinner';
 
-type TMethod = (message: string, config?: { terminate: boolean; code: 1 | 0 }) => void;
+type TMethod = (
+  message: string,
+  config?: { terminate: boolean; code: 1 | 0 }
+) => void;
 
 class Logger {
   private spinner: Spinner;

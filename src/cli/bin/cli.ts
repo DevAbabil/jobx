@@ -13,10 +13,13 @@ commands.reset(command);
 commands.mail(command);
 
 command.on('command:*', ([cmd]) => {
-  logger.error(`Invalid command: ${cmd}\nTry jobx --help for a list of available commands.`, {
-    terminate: true,
-    code: 1,
-  });
+  logger.error(
+    `Invalid command: ${cmd}\nTry jobx --help for a list of available commands.`,
+    {
+      terminate: true,
+      code: 1,
+    }
+  );
 });
 
 command.exitOverride((err) => {
@@ -31,8 +34,11 @@ command.exitOverride((err) => {
 command.parse(process.argv);
 
 if (!process.argv.slice(2).length) {
-  logger.error('No command provided! Try jobx --help to see available commands.', {
-    terminate: true,
-    code: 1,
-  });
+  logger.error(
+    'No command provided! Try jobx --help to see available commands.',
+    {
+      terminate: true,
+      code: 1,
+    }
+  );
 }

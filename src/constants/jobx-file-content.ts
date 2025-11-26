@@ -1,5 +1,10 @@
 import { resolve } from 'node:path';
-import { Efile, type IJobxApply, type IJobxConfig, type IJobxCredentials } from '@/types';
+import {
+  Efile,
+  type IJobxApply,
+  type IJobxConfig,
+  type IJobxCredentials,
+} from '@/types';
 import { ROOT } from '@/utils';
 
 const data: {
@@ -44,7 +49,10 @@ const data: {
   },
 };
 
-const jobxFileContent: Record<keyof typeof Efile, { path: string; data: unknown }> = {
+const jobxFileContent: Record<
+  keyof typeof Efile,
+  { path: string; data: unknown }
+> = {
   'jobx.apply.json': {
     path: resolve(ROOT, Efile['jobx.apply.json']),
     data: data.apply,

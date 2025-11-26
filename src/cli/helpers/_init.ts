@@ -4,7 +4,9 @@ import jobxFileContent from '@/constants/jobx-file-content';
 import { logger } from '@/utils';
 
 const init = () => {
-  const existFile = Object.entries(jobxFileContent).filter(([_, { path }]) => fs.existsSync(path));
+  const existFile = Object.entries(jobxFileContent).filter(([_, { path }]) =>
+    fs.existsSync(path)
+  );
 
   if (existFile.length) {
     const files = `[ ${existFile.map(([file]) => `'${file}'`).join(', ')} ]`;

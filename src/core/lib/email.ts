@@ -20,7 +20,10 @@ class Email {
       service: 'Gmail',
       secure: true,
       port: 465,
-      auth: { user: data.credentials.lsa_user, pass: data.credentials.lsa_pass },
+      auth: {
+        user: data.credentials.lsa_user,
+        pass: data.credentials.lsa_pass,
+      },
     });
   }
 
@@ -56,7 +59,9 @@ class Email {
         subject: data.apply.subject,
         from: data.credentials.lsa_user,
         to: data.apply.company_email,
-        html: await markdownToHtml(fs.readFileSync(resolve(ROOT, Efile['jobx.mail.md']), 'utf-8')),
+        html: await markdownToHtml(
+          fs.readFileSync(resolve(ROOT, Efile['jobx.mail.md']), 'utf-8')
+        ),
       });
 
       logger.success('Job email sent successfully');

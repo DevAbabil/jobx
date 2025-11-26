@@ -16,7 +16,8 @@ const ZJobxCredentialsSchema = z
             s
           ),
         {
-          message: 'private_key must be a valid PEM (-----BEGIN PRIVATE KEY----- ...).',
+          message:
+            'private_key must be a valid PEM (-----BEGIN PRIVATE KEY----- ...).',
         }
       ),
     spreadsheet_id: z.string().refine((s) => /^[A-Za-z0-9-_]{20,}$/.test(s), {
@@ -24,14 +25,20 @@ const ZJobxCredentialsSchema = z
     }),
     lsa_user: z.string().email(),
     lsa_pass: z.string().min(6),
-    open_ai_secret: z.string().refine((s) => /^sk-[A-Za-z0-9\-_]{20,}$/.test(s), {
-      message: "open_ai_secret must start with 'sk-' and follow expected pattern.",
-    }),
+    open_ai_secret: z
+      .string()
+      .refine((s) => /^sk-[A-Za-z0-9\-_]{20,}$/.test(s), {
+        message:
+          "open_ai_secret must start with 'sk-' and follow expected pattern.",
+      }),
     auth_client_id: z
       .string()
-      .refine((s) => /^\d{9,}-[A-Za-z0-9_]+\.apps\.googleusercontent\.com$/.test(s), {
-        message: 'auth_client_id must match Google client id pattern.',
-      }),
+      .refine(
+        (s) => /^\d{9,}-[A-Za-z0-9_]+\.apps\.googleusercontent\.com$/.test(s),
+        {
+          message: 'auth_client_id must match Google client id pattern.',
+        }
+      ),
     auth_client_secret: z.string().min(10),
   })
   .strict();
@@ -41,7 +48,10 @@ const ZJobxConfigSchema = z
     contact: z
       .object({
         email: z.string().email('Invalid email address'),
-        phone: z.string().min(7, 'Phone number is too short').max(20, 'Phone number is too long'),
+        phone: z
+          .string()
+          .min(7, 'Phone number is too short')
+          .max(20, 'Phone number is too long'),
       })
       .strict(),
 
@@ -69,7 +79,9 @@ const ZJobxConfigSchema = z
 const ZJobxApplySchema = z
   .object({
     subject: z.string().min(3, 'Subject is too short'),
-    company_email: z.string().email('Company email must be a valid email address'),
+    company_email: z
+      .string()
+      .email('Company email must be a valid email address'),
     company: z.string().min(2, 'Company name is too short'),
     company_website: z.string().url('Company website must be a valid URL'),
     education: z.string().min(3, 'Education info is too short'),
@@ -80,7 +92,9 @@ const ZJobxApplySchema = z
   })
   .strict();
 
-const testMap: Partial<Record<keyof typeof Efile, { data: unknown; schema: ZodTypeAny }>> = {
+const testMap: Partial<
+  Record<keyof typeof Efile, { data: unknown; schema: ZodTypeAny }>
+> = {
   'jobx.apply.json': {
     data: data.apply,
     schema: ZJobxApplySchema,

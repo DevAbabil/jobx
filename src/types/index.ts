@@ -51,7 +51,13 @@ export interface IJobxApply {
   location: TLocation;
 }
 
-export type TStatus = 'Pending' | 'Applied' | 'Hired' | 'Responsed' | 'Terminate' | 'Closed';
+export type TStatus =
+  | 'Pending'
+  | 'Applied'
+  | 'Hired'
+  | 'Responsed'
+  | 'Terminate'
+  | 'Closed';
 
 export type TLocation = 'Remote' | 'Onsite';
 
