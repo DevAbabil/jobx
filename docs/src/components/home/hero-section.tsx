@@ -1,6 +1,7 @@
 'use client';
 
 import { Check, Copy, GithubIcon } from 'lucide-react';
+import Image from 'next/image';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 
@@ -58,6 +59,11 @@ export default function HeroSection() {
           <Button
             size="lg"
             className="bg-accent text-accent-foreground hover:bg-accent/90 text-base"
+            onClick={() => {
+              document
+                .getElementById('installation')
+                ?.scrollIntoView({ behavior: 'smooth' });
+            }}
           >
             Get Started
           </Button>
@@ -72,6 +78,37 @@ export default function HeroSection() {
             <GithubIcon className="w-4 h-4 mr-2" />
             View on GitHub
           </Button>
+        </div>
+
+        <div className="mb-6 flex flex-wrap items-center justify-center gap-2">
+          <Image
+            src="https://img.shields.io/npm/v/jobx?style=flat&logo=npm&color=10b981"
+            alt="npm version"
+            width={100}
+            height={20}
+            unoptimized
+          />
+          <Image
+            src="https://img.shields.io/npm/dt/jobx?style=flat&logo=npm&color=10b981"
+            alt="npm downloads"
+            width={120}
+            height={20}
+            unoptimized
+          />
+          <Image
+            src="https://img.shields.io/github/stars/DevAbabil/jobx?style=flat&logo=github&color=10b981"
+            alt="GitHub stars"
+            width={100}
+            height={20}
+            unoptimized
+          />
+          <Image
+            src="https://img.shields.io/github/license/DevAbabil/jobx?style=flat&color=10b981"
+            alt="License"
+            width={90}
+            height={20}
+            unoptimized
+          />
         </div>
 
         <div className="text-sm text-muted-foreground">

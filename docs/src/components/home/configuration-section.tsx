@@ -1,20 +1,10 @@
 'use client';
 
-import { Check, Copy } from 'lucide-react';
-import { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { CodeBlock } from '@/components/ui/code-block';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const ConfigurationSection = () => {
-  const [copied, setCopied] = useState<string | null>(null);
-
-  const copyToClipboard = (text: string, id: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(id);
-    setTimeout(() => setCopied(null), 2000);
-  };
-
   const configs = {
     config: `{
   "profile": {
@@ -73,25 +63,11 @@ const ConfigurationSection = () => {
         </TabsList>
 
         <TabsContent value="config" className="mt-6">
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => copyToClipboard(configs.config, 'config')}
-              className="absolute top-4 right-4 z-10 text-accent hover:bg-accent/10 p-2 rounded transition"
-              title="Copy to clipboard"
-            >
-              {copied === 'config' ? (
-                <Check className="w-4 h-4" />
-              ) : (
-                <Copy className="w-4 h-4" />
-              )}
-            </button>
-            <CodeBlock
-              code={configs.config}
-              language="json"
-              filename="jobx.config.json"
-            />
-          </div>
+          <CodeBlock
+            code={configs.config}
+            language="json"
+            filename="jobx.config.json"
+          />
           <p className="mt-4 text-sm text-muted-foreground">
             Your personal profile, contact information, and skills. This file is
             generated when you run{' '}
@@ -106,25 +82,11 @@ const ConfigurationSection = () => {
               it to .gitignore
             </p>
           </div>
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => copyToClipboard(configs.credentials, 'creds')}
-              className="absolute top-4 right-4 z-10 text-accent hover:bg-accent/10 p-2 rounded transition"
-              title="Copy to clipboard"
-            >
-              {copied === 'creds' ? (
-                <Check className="w-4 h-4" />
-              ) : (
-                <Copy className="w-4 h-4" />
-              )}
-            </button>
-            <CodeBlock
-              code={configs.credentials}
-              language="json"
-              filename="jobx.credentials.json"
-            />
-          </div>
+          <CodeBlock
+            code={configs.credentials}
+            language="json"
+            filename="jobx.credentials.json"
+          />
           <div className="mt-4 space-y-2 text-sm text-muted-foreground">
             <p>
               <strong className="text-foreground">
@@ -154,25 +116,11 @@ const ConfigurationSection = () => {
         </TabsContent>
 
         <TabsContent value="apply" className="mt-6">
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => copyToClipboard(configs.apply, 'apply')}
-              className="absolute top-4 right-4 z-10 text-accent hover:bg-accent/10 p-2 rounded transition"
-              title="Copy to clipboard"
-            >
-              {copied === 'apply' ? (
-                <Check className="w-4 h-4" />
-              ) : (
-                <Copy className="w-4 h-4" />
-              )}
-            </button>
-            <CodeBlock
-              code={configs.apply}
-              language="json"
-              filename="jobx.apply.json"
-            />
-          </div>
+          <CodeBlock
+            code={configs.apply}
+            language="json"
+            filename="jobx.apply.json"
+          />
           <p className="mt-4 text-sm text-muted-foreground">
             Job application metadata. Fill this out for each job you're applying
             to. This information is used to generate personalized emails and
