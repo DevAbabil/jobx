@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import colors from 'colors';
 import jobxFileContent from '@/constants/jobx-file-content';
 import { logger } from '@/utils';
 
@@ -9,15 +8,15 @@ const init = () => {
   );
 
   if (existFile.length) {
-    const files = `[ ${existFile.map(([file]) => `'${file}'`).join(', ')} ]`;
-    logger.error(
-      `Initialization failed because the following files already exist: ${colors.green(files)}`,
-      {
-        terminate: true,
-        code: 1,
-      }
-    );
+    return logger.error(`Directory is not empty`, {
+      terminate: true,
+      code: 1,
+    });
   }
+
+  Object.entries(jobxFileContent).forEach(([_file, { path, data }]) => {
+    fs.writeFileSync(path, JSON.stringify(data, null, 2), 'utf-8');
+  });
 };
 
 export default init;

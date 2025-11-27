@@ -1,6 +1,5 @@
 import colors from 'colors';
 import z, { ZodError, type ZodTypeAny } from 'zod';
-import data from '@/core/data';
 import type { Efile } from '@/types';
 import { logger } from '@/utils';
 
@@ -92,24 +91,24 @@ const ZJobxApplySchema = z
   })
   .strict();
 
-const testMap: Partial<
-  Record<keyof typeof Efile, { data: unknown; schema: ZodTypeAny }>
-> = {
-  'jobx.apply.json': {
-    data: data.apply,
-    schema: ZJobxApplySchema,
-  },
-  'jobx.config.json': {
-    data: data.config,
-    schema: ZJobxConfigSchema,
-  },
-  'jobx.credentials.json': {
-    data: data.credentials,
-    schema: ZJobxCredentialsSchema,
-  },
-};
-
 const test = async (testFiles: (keyof typeof Efile)[]) => {
+  const testMap: Partial<
+    Record<keyof typeof Efile, { data: unknown; schema: ZodTypeAny }>
+  > = {
+    'jobx.apply.json': {
+      data: (await import('@/core/data')).default.apply,
+      schema: ZJobxApplySchema,
+    },
+    'jobx.config.json': {
+      data: (await import('@/core/data')).default.config,
+      schema: ZJobxConfigSchema,
+    },
+    'jobx.credentials.json': {
+      data: (await import('@/core/data')).default.credentials,
+      schema: ZJobxCredentialsSchema,
+    },
+  };
+
   let err: boolean = false;
   const i = 1;
   for (const testFile of testFiles) {

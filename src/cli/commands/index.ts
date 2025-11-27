@@ -1,6 +1,5 @@
 import type { Command } from 'commander';
 import * as helper from '@/cli/helpers';
-import { email } from '@/core';
 import { Efile } from '@/types';
 import { logger } from '@/utils';
 
@@ -49,6 +48,8 @@ export const mail = (command: Command) => {
     .option('-g, --generate', 'Generate new job mail')
     .option('-s, --submit', 'Submit job mail')
     .action(async (opts: { generate?: boolean; submit?: boolean }) => {
+      const { email } = await import('@/core');
+
       if (opts.generate && opts.submit) {
         await Promise.all([email.generate(), email.submit()]);
       } else if (opts.generate) {

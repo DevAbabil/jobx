@@ -7,8 +7,8 @@
     "jobx": "./dist/cli.js"
   },
   "scripts": {
-    "dev": "tsx --watch ./src/cli/bin/cli.ts",
-    "test": "tsx --interactive ./src/cli/bin/cli.ts apply",
+    "dev": "tsx -r tsconfig-paths/register --watch ./src/cli/bin/cli.ts",
+    "test": "tsx -r tsconfig-paths/register --interactive ./src/cli/bin/cli.ts",
     "start": "node ./dist/cli.js",
     "build": "sh ./scripts/build.sh",
     "publish:latest": "sh ./scripts/publish.sh",
@@ -61,6 +61,7 @@
     "nodemailer": "^7.0.10",
     "openai": "^6.9.1",
     "rimraf": "^6.0.1",
+    "tsconfig-paths": "^4.2.0",
     "tsup": "^8.5.0",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
