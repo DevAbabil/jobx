@@ -84,29 +84,33 @@ export default function HeroSection() {
           <Image
             src="https://img.shields.io/npm/v/jobx?style=flat&logo=npm&color=10b981"
             alt="npm version"
-            width={100}
-            height={20}
+            width={0}
+            height={0}
+            className="h-5 w-auto"
             unoptimized
           />
           <Image
             src="https://img.shields.io/npm/dt/jobx?style=flat&logo=npm&color=10b981"
             alt="npm downloads"
-            width={120}
-            height={20}
+            width={0}
+            height={0}
+            className="h-5 w-auto"
             unoptimized
           />
           <Image
             src="https://img.shields.io/github/stars/DevAbabil/jobx?style=flat&logo=github&color=10b981"
             alt="GitHub stars"
-            width={100}
-            height={20}
+            width={0}
+            height={0}
+            className="h-5 w-auto"
             unoptimized
           />
           <Image
             src="https://img.shields.io/github/license/DevAbabil/jobx?style=flat&color=10b981"
             alt="License"
-            width={90}
-            height={20}
+            width={0}
+            height={0}
+            className="h-5 w-auto"
             unoptimized
           />
         </div>

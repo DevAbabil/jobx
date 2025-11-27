@@ -2,12 +2,13 @@
 import { Code2, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../ui/button';
+import { ThemeToggle } from './theme-toggle';
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-2">
@@ -37,9 +38,11 @@ const Header = () => {
             <a href="#config" className="text-sm hover:text-accent transition">
               Config
             </a>
+            <ThemeToggle />
           </div>
 
           <div className="flex md:hidden items-center gap-2">
+            <ThemeToggle />
             <Button onClick={() => setMenuOpen(!menuOpen)}>
               {menuOpen ? (
                 <X className="w-5 h-5" />
