@@ -110,10 +110,6 @@ export default function HeroSection() {
             unoptimized
           />
         </div>
-
-        <div className="text-sm text-muted-foreground">
-          <p>Requirements: Node.js ≥ 18.0.0 • npm or yarn • TypeScript</p>
-        </div>
       </div>
     </section>
   );
