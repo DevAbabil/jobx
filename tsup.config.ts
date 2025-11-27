@@ -14,7 +14,6 @@ export default defineConfig([
     sourcemap: true,
     esbuildOptions(options) {
       options.legalComments = 'none';
-      options.external = ['mth-htm'];
     },
   },
 ]);
