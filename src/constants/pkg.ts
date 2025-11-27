@@ -6,7 +6,7 @@ interface PackageJson {
 
 const pkg: PackageJson = {
   name: 'jobx',
-  version: '1.0.3',
+  version: '1.0.4',
   description:
     'AI-powered CLI tool to automate job applications, generate personalized emails, and track applications using Google Sheets.',
 };
