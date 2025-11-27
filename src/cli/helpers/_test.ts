@@ -30,15 +30,6 @@ const ZJobxCredentialsSchema = z
         message:
           "open_ai_secret must start with 'sk-' and follow expected pattern.",
       }),
-    auth_client_id: z
-      .string()
-      .refine(
-        (s) => /^\d{9,}-[A-Za-z0-9_]+\.apps\.googleusercontent\.com$/.test(s),
-        {
-          message: 'auth_client_id must match Google client id pattern.',
-        }
-      ),
-    auth_client_secret: z.string().min(10),
   })
   .strict();
 
