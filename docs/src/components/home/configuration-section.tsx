@@ -25,11 +25,9 @@ const configs = {
   "client_email": "your-service-account@project.iam.gserviceaccount.com",
   "private_key": "-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----\\n",
   "spreadsheet_id": "YOUR_SPREADSHEET_ID",
+  "open_ai_secret": "sk-proj-...",
   "lsa_user": "your.email@gmail.com",
   "lsa_pass": "your_app_specific_password",
-  "open_ai_secret": "sk-proj-...",
-  "auth_client_id": "your-client-id.apps.googleusercontent.com",
-  "auth_client_secret": "GOCSPX-..."
 }`,
   apply: `{
   "company": "Company Name",
