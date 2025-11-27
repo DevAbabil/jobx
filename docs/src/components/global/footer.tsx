@@ -1,4 +1,4 @@
-import { GithubIcon, Heart, Cpu as Npm } from 'lucide-react';
+import { Code2, GithubIcon, Heart, Cpu as Npm } from 'lucide-react';
 import Link from 'next/link';
 
 const Footer = () => {
@@ -7,7 +7,10 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto">
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div>
-            <h3 className="font-semibold mb-4">JobX</h3>
+            <div className="flex items-center gap-2 mb-4">
+              <Code2 className="w-6 h-6 text-accent" />
+              <h3 className="font-semibold text-lg">JobX</h3>
+            </div>
             <p className="text-sm text-muted-foreground">
               Automate your job hunt with AI-powered automation and tracking
             </p>

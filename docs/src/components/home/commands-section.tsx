@@ -2,8 +2,8 @@
 
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
+import { CodeBlock } from '@/components/code';
 import { Card } from '@/components/ui/card';
-import { CodeBlock } from '@/components/ui/code-block';
 
 const commands = [
   {

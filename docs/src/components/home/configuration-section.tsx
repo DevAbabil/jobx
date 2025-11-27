@@ -1,12 +1,11 @@
 'use client';
 
+import { useState } from 'react';
+import { CodeBlock } from '@/components/code';
 import { Card } from '@/components/ui/card';
-import { CodeBlock } from '@/components/ui/code-block';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const ConfigurationSection = () => {
-  const configs = {
-    config: `{
+const configs = {
+  config: `{
   "profile": {
     "name": "Your Name",
     "address": "City, Country"
@@ -22,7 +21,7 @@ const ConfigurationSection = () => {
   },
   "skills": ["React", "Node.js", "TypeScript", "MongoDB"]
 }`,
-    credentials: `{
+  credentials: `{
   "client_email": "your-service-account@project.iam.gserviceaccount.com",
   "private_key": "-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----\\n",
   "spreadsheet_id": "YOUR_SPREADSHEET_ID",
@@ -32,7 +31,7 @@ const ConfigurationSection = () => {
   "auth_client_id": "your-client-id.apps.googleusercontent.com",
   "auth_client_secret": "GOCSPX-..."
 }`,
-    apply: `{
+  apply: `{
   "company": "Company Name",
   "company_email": "hiring@company.com",
   "company_website": "https://company.com",
@@ -43,7 +42,32 @@ const ConfigurationSection = () => {
   "education": "Bachelor's Degree",
   "job_source": "https://jobboard.com/posting/12345"
 }`,
-  };
+};
+
+const tabs = [
+  {
+    id: 'apply',
+    label: 'jobx.apply.json',
+    description:
+      'Job application metadata. Fill this out for each job you are applying to.',
+  },
+  {
+    id: 'config',
+    label: 'jobx.config.json',
+    description:
+      'Your personal profile, contact information, and skills. Generated when you run jobx init.',
+  },
+  {
+    id: 'credentials',
+    label: 'jobx.credentials.json',
+    description:
+      'API keys and credentials for OpenAI, Google Sheets, and SMTP. Keep this file secure!',
+    warning: true,
+  },
+];
+
+const ConfigurationSection = () => {
+  const [selectedTab, setSelectedTab] = useState('apply');
 
   return (
     <section id="config" className="py-20 px-4 max-w-7xl mx-auto">
@@ -55,87 +79,58 @@ const ConfigurationSection = () => {
         </p>
       </div>
 
-      <Tabs defaultValue="config" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-card border border-border/50">
-          <TabsTrigger value="config">jobx.config.json</TabsTrigger>
-          <TabsTrigger value="credentials">jobx.credentials.json</TabsTrigger>
-          <TabsTrigger value="apply">jobx.apply.json</TabsTrigger>
-        </TabsList>
+      <div className="grid lg:grid-cols-[320px_1fr] gap-8 w-full overflow-hidden">
+        <div className="space-y-3">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setSelectedTab(tab.id)}
+              className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                selectedTab === tab.id
+                  ? 'border-accent bg-accent/10'
+                  : 'border-border hover:border-accent/50 hover:bg-accent/5'
+              }`}
+            >
+              <div className="font-mono text-sm font-semibold mb-1 text-accent">
+                {tab.label}
+              </div>
+              <p className="text-xs text-muted-foreground">{tab.description}</p>
+              {tab.warning && (
+                <p className="text-xs text-destructive mt-2">
+                  ⚠️ Never commit to version control
+                </p>
+              )}
+            </button>
+          ))}
+        </div>
 
-        <TabsContent value="config" className="mt-6">
+        <div className="min-w-0 w-full">
           <CodeBlock
-            code={configs.config}
+            code={configs[selectedTab as keyof typeof configs]}
             language="json"
-            filename="jobx.config.json"
+            filename={tabs.find((t) => t.id === selectedTab)?.label}
           />
-          <p className="mt-4 text-sm text-muted-foreground">
-            Your personal profile, contact information, and skills. This file is
-            generated when you run{' '}
-            <code className="text-accent">jobx init</code>.
-          </p>
-        </TabsContent>
-
-        <TabsContent value="credentials" className="mt-6">
-          <div className="mb-3 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
-            <p className="text-xs text-destructive">
-              ⚠️ Keep this file secure and never commit to version control. Add
-              it to .gitignore
-            </p>
-          </div>
-          <CodeBlock
-            code={configs.credentials}
-            language="json"
-            filename="jobx.credentials.json"
-          />
-          <div className="mt-4 space-y-2 text-sm text-muted-foreground">
-            <p>
-              <strong className="text-foreground">
-                client_email & private_key:
-              </strong>{' '}
-              Google Sheets service account credentials
-            </p>
-            <p>
-              <strong className="text-foreground">spreadsheet_id:</strong> Your
-              Google Sheets ID for tracking applications
-            </p>
-            <p>
-              <strong className="text-foreground">lsa_user & lsa_pass:</strong>{' '}
-              Gmail SMTP credentials for sending emails
-            </p>
-            <p>
-              <strong className="text-foreground">open_ai_secret:</strong>{' '}
-              OpenAI API key for AI-powered email generation
-            </p>
-            <p>
-              <strong className="text-foreground">
-                auth_client_id & auth_client_secret:
-              </strong>{' '}
-              Google OAuth credentials
-            </p>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="apply" className="mt-6">
-          <CodeBlock
-            code={configs.apply}
-            language="json"
-            filename="jobx.apply.json"
-          />
-          <p className="mt-4 text-sm text-muted-foreground">
-            Job application metadata. Fill this out for each job you're applying
-            to. This information is used to generate personalized emails and
-            track your applications.
-          </p>
-        </TabsContent>
-      </Tabs>
+        </div>
+      </div>
 
       <div className="mt-12 grid md:grid-cols-2 gap-6">
-        <Card className="p-6 border-border/50 bg-card/50">
+        <Card
+          id="openai-setup"
+          className="p-6 border-border/50 bg-card/50 scroll-mt-20"
+        >
           <h3 className="font-semibold mb-4">OpenAI API Setup</h3>
           <ol className="space-y-3 text-sm text-muted-foreground">
             <li>
               1. Visit{' '}
-              <code className="text-accent font-mono">platform.openai.com</code>
+              <a
+                href="https://platform.openai.com/api-keys"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                OpenAI API Keys
+              </a>
             </li>
             <li>2. Create an API key in your account</li>
             <li>
@@ -149,26 +144,96 @@ const ConfigurationSection = () => {
           </ol>
         </Card>
 
-        <Card className="p-6 border-border/50 bg-card/50">
+        <Card
+          id="sheets-setup"
+          className="p-6 border-border/50 bg-card/50 scroll-mt-20"
+        >
           <h3 className="font-semibold mb-4">Google Sheets Setup</h3>
           <ol className="space-y-3 text-sm text-muted-foreground">
-            <li>1. Create a Google Cloud project</li>
-            <li>2. Enable Google Sheets API</li>
-            <li>3. Create a service account and download JSON key</li>
+            <li>
+              1. Go to{' '}
+              <a
+                href="https://console.cloud.google.com/projectcreate"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                Google Cloud Console
+              </a>{' '}
+              and create a project
+            </li>
+            <li>
+              2. Enable{' '}
+              <a
+                href="https://console.cloud.google.com/apis/library/sheets.googleapis.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                Google Sheets API
+              </a>
+            </li>
+            <li>
+              3. Create a{' '}
+              <a
+                href="https://console.cloud.google.com/iam-admin/serviceaccounts"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                service account
+              </a>{' '}
+              and download JSON key
+            </li>
             <li>
               4. Add <code className="text-accent font-mono">client_email</code>{' '}
               and <code className="text-accent font-mono">private_key</code> to
               credentials
             </li>
-            <li>5. Share your spreadsheet with the service account email</li>
+            <li>
+              5. Create a{' '}
+              <a
+                href="https://sheets.google.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                Google Sheet
+              </a>{' '}
+              and share it with the service account email
+            </li>
           </ol>
         </Card>
 
-        <Card className="p-6 border-border/50 bg-card/50">
+        <Card
+          id="smtp-setup"
+          className="p-6 border-border/50 bg-card/50 scroll-mt-20"
+        >
           <h3 className="font-semibold mb-4">Gmail SMTP Setup</h3>
           <ol className="space-y-3 text-sm text-muted-foreground">
-            <li>1. Enable 2-factor authentication on your Gmail account</li>
-            <li>2. Generate an app-specific password</li>
+            <li>
+              1. Enable{' '}
+              <a
+                href="https://myaccount.google.com/signinoptions/two-step-verification"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                2-factor authentication
+              </a>{' '}
+              on your Gmail account
+            </li>
+            <li>
+              2. Generate an{' '}
+              <a
+                href="https://myaccount.google.com/apppasswords"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent hover:underline"
+              >
+                app-specific password
+              </a>
+            </li>
             <li>
               3. Add your email to{' '}
               <code className="text-accent font-mono">lsa_user</code>
