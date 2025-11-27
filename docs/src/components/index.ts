@@ -1,0 +1,7 @@
+export { default as Footer } from './global/footer';
+export { default as Header } from './global/header';
+export { default as CommandsSection } from './home/commands-section';
+export { default as ConfigurationSection } from './home/configuration-section';
+export { default as FeaturesSection } from './home/features-section';
+export { default as HeroSection } from './home/hero-section';
+export { default as InstallationSection } from './home/installation-section';
