@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
-import { Footer, Header } from '@/components';
+import { Analytics, Footer, Header } from '@/components';
 import { ThemeProvider } from '@/providers/theme-provider';
 
 const geistSans = Geist({
@@ -17,11 +17,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'JobX - AI-Powered Job Application Automation',
   description:
-    'Automate your job hunt with AI-powered CLI tool. Generate personalized emails, track applications with Google Sheets, and streamline your job search.',
+    'Automate your job hunt with AI-powered CLI tool. Generate personalized emails, track applications with Google Sheets',
   openGraph: {
     title: 'JobX - AI-Powered Job Application Automation',
     description:
-      'Automate your job hunt with AI-powered CLI tool. Generate personalized emails, track applications with Google Sheets, and streamline your job search.',
+      'Automate your job hunt with AI-powered CLI tool. Generate personalized emails, track applications with Google Sheets',
     url: 'https://jobx.devababil.com',
     siteName: 'JobX',
     images: [
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'JobX - AI-Powered Job Application Automation',
     description:
-      'Automate your job hunt with AI-powered CLI tool. Generate personalized emails, track applications with Google Sheets, and streamline your job search.',
+      'Automate your job hunt with AI-powered CLI tool. Generate personalized emails, track applications with Google Sheets',
     images: [
       'https://api.devababil.com/v1/assets/share/69279b1ff0138b6121267fbd',
     ],
@@ -66,6 +66,7 @@ export default function RootLayout({
           {children}
           <Footer />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
