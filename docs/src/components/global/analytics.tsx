@@ -8,7 +8,7 @@ const Analytics = () => {
     <SiteViews
       projectName="jobx documantation"
       suppressLogs
-      style={{ position: 'absolute', opacity: 0 }}
+      style={{ display: 'none' }}
     />
   );
 };
