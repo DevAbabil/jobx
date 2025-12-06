@@ -1,7 +1,6 @@
 import type { Command } from 'commander';
 import * as helper from '@/cli/helpers';
 import { Efile } from '@/types';
-import { logger } from '@/utils';
 
 export const init = (command: Command) => {
   command
@@ -13,22 +12,22 @@ export const init = (command: Command) => {
 };
 
 export const reset = (command: Command) => {
-  command
+  const reset = command
     .command('reset')
-    .description('Reset the project (soft or hard)')
-    .option('-s, --soft', 'Soft reset')
-    .option('-h, --hard', 'Hard reset')
-    .action((opts: { soft?: boolean; hard?: boolean }) => {
-      if (opts.soft && opts.hard) {
-        logger.error('Cannot use both --soft and --hard at the same time.', {
-          terminate: true,
-          code: 1,
-        });
-      } else if (opts.hard) {
-        helper.reset('HARD');
-      } else {
-        helper.reset('SOFT');
-      }
+    .description('Reset the project (soft or hard)');
+
+  reset
+    .command('soft')
+    .description('Perform a soft reset')
+    .action(() => {
+      helper.reset('SOFT');
+    });
+
+  reset
+    .command('hard')
+    .description('Perform a hard reset')
+    .action(() => {
+      helper.reset('HARD');
     });
 };
 
@@ -42,22 +41,23 @@ export const test = (command: Command) => {
 };
 
 export const mail = (command: Command) => {
-  command
+  const mail = command
     .command('mail')
-    .description('Generate or submit job mail')
-    .option('-g, --generate', 'Generate new job mail')
-    .option('-s, --submit', 'Submit job mail')
-    .action(async (opts: { generate?: boolean; submit?: boolean }) => {
-      const { email } = await import('@/core');
+    .description('Generate or submit job mail');
 
-      if (opts.generate && opts.submit) {
-        await Promise.all([email.generate(), email.submit()]);
-      } else if (opts.generate) {
-        await email.generate();
-      } else if (opts.submit) {
-        await email.submit();
-      } else {
-        logger.warn('No action specified. Use --generate or --submit.');
-      }
+  mail
+    .command('generate')
+    .description('Generate new job mail')
+    .action(async () => {
+      const { email } = await import('@/core');
+      await email.generate();
+    });
+
+  mail
+    .command('submit')
+    .description('Submit job mail')
+    .action(async () => {
+      const { email } = await import('@/core');
+      await email.submit();
     });
 };
