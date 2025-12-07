@@ -4,8 +4,8 @@ export enum Efile {
   'jobx.credentials.json' = 'jobx.credentials.json',
   'jobx.mail.md' = 'jobx.mail.md',
   'jobx.resume.pdf' = 'jobx.resume.pdf',
-  'jobx.cv.md' = 'jobx.cv.md',
-  'jobx.context.md' = 'jobx.context.md',
+  'jobx.cv.pdf' = 'jobx.cv.pdf',
+  'jobx.context.txt' = 'jobx.context.txt',
 }
 
 export interface IJobxCredentials {

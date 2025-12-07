@@ -11,7 +11,11 @@ const reset = (reset?: 'HARD' | 'SOFT') => {
 
   if (reset === 'HARD') {
     Object.values(jobxFileContent).forEach(({ path, data }) => {
-      fs.writeFileSync(path, JSON.stringify(data, null, 2), 'utf-8');
+      if (path.includes('.pdf')) {
+        fs.unlinkSync(path);
+      } else {
+        fs.writeFileSync(path, JSON.stringify(data, null, 2), 'utf-8');
+      }
     });
     logger.info(`Jobx has been reseted!`);
   }

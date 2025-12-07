@@ -18,7 +18,7 @@ const apply: Partial<IJobxApply> = loadJson<Partial<IJobxApply>>(
 
 const AditionalFile: IAdditionalFile = {
   context: {
-    name: Efile['jobx.context.md'],
+    name: Efile['jobx.context.txt'],
     path: resolve(ROOT, 'jobx.context.txt'),
   },
   resume: {
@@ -26,8 +26,8 @@ const AditionalFile: IAdditionalFile = {
     path: resolve(ROOT, Efile['jobx.resume.pdf']),
   },
   cv: {
-    name: Efile['jobx.cv.md'],
-    path: resolve(ROOT, Efile['jobx.cv.md']),
+    name: Efile['jobx.cv.pdf'],
+    path: resolve(ROOT, Efile['jobx.cv.pdf']),
   },
 };
 

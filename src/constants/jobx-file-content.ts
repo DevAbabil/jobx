@@ -53,32 +53,32 @@ const jobxFileContent: Record<
   keyof typeof Efile,
   { path: string; data: unknown }
 > = {
-  'jobx.apply.json': {
+  [Efile['jobx.apply.json']]: {
     path: resolve(ROOT, Efile['jobx.apply.json']),
     data: data.apply,
   },
-  'jobx.config.json': {
+  [Efile['jobx.config.json']]: {
     path: resolve(ROOT, Efile['jobx.config.json']),
     data: data.config,
   },
-  'jobx.credentials.json': {
+  [Efile['jobx.credentials.json']]: {
     path: resolve(ROOT, Efile['jobx.credentials.json']),
     data: data.credentials,
   },
-  'jobx.mail.md': {
+  [Efile['jobx.mail.md']]: {
     path: resolve(ROOT, Efile['jobx.mail.md']),
     data: '',
   },
-  'jobx.resume.pdf': {
+  [Efile['jobx.resume.pdf']]: {
     path: resolve(ROOT, Efile['jobx.resume.pdf']),
     data: '',
   },
-  'jobx.cv.md': {
-    path: resolve(ROOT, Efile['jobx.cv.md']),
+  [Efile['jobx.cv.pdf']]: {
+    path: resolve(ROOT, Efile['jobx.cv.pdf']),
     data: '',
   },
-  'jobx.context.md': {
-    path: resolve(ROOT, Efile['jobx.context.md']),
+  [Efile['jobx.context.txt']]: {
+    path: resolve(ROOT, Efile['jobx.context.txt']),
     data: '',
   },
 };
