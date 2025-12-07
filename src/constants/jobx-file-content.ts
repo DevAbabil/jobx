@@ -69,6 +69,18 @@ const jobxFileContent: Record<
     path: resolve(ROOT, Efile['jobx.mail.md']),
     data: '',
   },
+  'jobx.resume.pdf': {
+    path: resolve(ROOT, Efile['jobx.resume.pdf']),
+    data: '',
+  },
+  'jobx.cv.md': {
+    path: resolve(ROOT, Efile['jobx.cv.md']),
+    data: '',
+  },
+  'jobx.context.md': {
+    path: resolve(ROOT, Efile['jobx.context.md']),
+    data: '',
+  },
 };
 
 export default jobxFileContent;

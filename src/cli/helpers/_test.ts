@@ -1,7 +1,9 @@
+import { existsSync, readFileSync, statSync } from 'node:fs';
+import { resolve } from 'node:path';
 import colors from 'colors';
 import z, { ZodError, type ZodTypeAny } from 'zod';
-import type { Efile } from '@/types';
-import { logger } from '@/utils';
+import { Efile } from '@/types';
+import { logger, ROOT } from '@/utils';
 
 const ZJobxCredentialsSchema = z
   .object({
@@ -32,6 +34,7 @@ const ZJobxCredentialsSchema = z
       }),
   })
   .strict();
+resolve(ROOT, 'jobx.context.txt');
 
 const ZJobxConfigSchema = z
   .object({
@@ -82,6 +85,83 @@ const ZJobxApplySchema = z
   })
   .strict();
 
+const validateTextFile = ({
+  name,
+  path,
+}: {
+  path: string;
+  name: string;
+}): boolean => {
+  if (!existsSync(path)) {
+    logger.error(
+      `${colors.bold(colors.green(name))} -> ${colors.gray('File does not exist')}`,
+      { code: 1, terminate: true }
+    );
+    return false;
+  }
+
+  try {
+    const content = readFileSync(path, 'utf-8');
+    if (content.trim().length === 0) {
+      logger.warn(
+        `${colors.bold(colors.green(name))} -> ${colors.gray('File is empty')}`
+      );
+      return false;
+    }
+    return true;
+  } catch (error) {
+    logger.error(
+      `${colors.bold(colors.green(name))} -> ${colors.gray('Failed to read file')}`,
+      { code: 1, terminate: true }
+    );
+    return false;
+  }
+};
+
+const validatePdfFile = ({
+  name,
+  path,
+}: {
+  path: string;
+  name: string;
+}): boolean => {
+  if (!existsSync(path)) {
+    logger.error(
+      `${colors.bold(colors.green(name))} -> ${colors.gray('File does not exist')}`,
+      { code: 1, terminate: true }
+    );
+    return false;
+  }
+
+  try {
+    const stats = statSync(path);
+    if (stats.size === 0) {
+      logger.error(
+        `${colors.bold(colors.green(name))} -> ${colors.gray('PDF file is empty')}`,
+        { code: 1, terminate: true }
+      );
+      return false;
+    }
+
+    const buffer = readFileSync(path);
+    const isPdf = buffer.toString('utf-8', 0, 4) === '%PDF';
+    if (!isPdf) {
+      logger.error(
+        `${colors.bold(colors.green(name))} -> ${colors.gray('File is not a valid PDF')}`,
+        { code: 1, terminate: true }
+      );
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    logger.error(
+      `${colors.bold(colors.green(name))} -> ${colors.gray('Failed to validate PDF file')}`
+    );
+    return false;
+  }
+};
+
 const test = async (testFiles: (keyof typeof Efile)[]) => {
   const testMap: Partial<
     Record<keyof typeof Efile, { data: unknown; schema: ZodTypeAny }>
@@ -101,7 +181,33 @@ const test = async (testFiles: (keyof typeof Efile)[]) => {
   };
 
   let err: boolean = false;
-  const i = 1;
+
+  const AditionalFile = {
+    context: {
+      name: Efile['jobx.context.md'],
+      path: resolve(ROOT, 'jobx.context.txt'),
+    },
+    resume: {
+      name: Efile['jobx.resume.pdf'],
+      path: resolve(ROOT, Efile['jobx.resume.pdf']),
+    },
+    cv: {
+      name: Efile['jobx.cv.md'],
+      path: resolve(ROOT, Efile['jobx.cv.md']),
+    },
+  };
+
+  if (!validateTextFile(AditionalFile.context)) {
+    err = true;
+  }
+
+  if (
+    !validatePdfFile(AditionalFile.resume) ||
+    !validatePdfFile(AditionalFile.resume)
+  ) {
+    err = true;
+  }
+
   for (const testFile of testFiles) {
     const entry = testMap[testFile];
 
