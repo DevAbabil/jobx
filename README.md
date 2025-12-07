@@ -39,14 +39,19 @@ This command generates the required configuration files:
 
 ## Commands
 
-| Command              | Description                              | Options                  |
-| -------------------- | ---------------------------------------- | ------------------------ |
-| `npx jobx init`      | Initialize configuration files           | —                        |
-| `npx jobx test`      | Validate configuration files             | —                        |
-| `npx jobx mail`      | Generate or send a job application email | `--generate`, `--submit` |
-| `npx jobx reset`     | Reset project configuration              | `--soft`, `--hard`       |
-| `npx jobx --version` | Display version information              | —                        |
-| `npx jobx --help`    | Display help information                 | —                        |
+| Command                                  | Description                                      |
+| ---------------------------------------- | ------------------------------------------------ |
+| `jobx init`                              | Initialize configuration files                   |
+| `jobx mail generate`                     | Generate job application email using AI          |
+| `jobx mail submit`                       | Submit generated job application email           |
+| `jobx test`                              | Validate configuration files                     |
+| `jobx reset soft`                        | Soft reset (keep credentials)                    |
+| `jobx reset hard`                        | Hard reset (reset everything)                    |
+| `jobx sheet find <id>`                   | Find job application by ID                       |
+| `jobx sheet delete <id>`                 | Delete job application by ID                     |
+| `jobx sheet update <id> <field> <value>` | Update job application field                     |
+| `jobx --version`                         | Display version information                      |
+| `jobx --help`                            | Display help information                         |
 
 ## Development
 
