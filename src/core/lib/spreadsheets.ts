@@ -66,14 +66,12 @@ class Spreadsheet<
   insert = async (
     data: Omit<T, 'id' | 'created_at' | 'updated_at'> & { status: TStatus }
   ): Promise<T | null> => {
-    status.forEach(() => {
-      if (!status.includes(data.status)) {
-        logger.error(`status must be in [${status.join(' ')}]`, {
-          terminate: true,
-          code: 1,
-        });
-      }
-    });
+    if (!status.includes(data.status)) {
+      logger.error(`status must be in [${status.join(' ')}]`, {
+        terminate: true,
+        code: 1,
+      });
+    }
 
     logger.start('Inserting new record');
 
@@ -102,11 +100,15 @@ class Spreadsheet<
     criteria?: Partial<T>,
     meta?: { page?: number; limit?: number }
   ): Promise<T[]> => {
-    logger.start('Fetching records');
     try {
-      const offset = ((meta?.page || 1) - 1) * (meta?.limit || 20);
+      const shouldFetchAll = criteria?.id !== undefined;
+      const limit = shouldFetchAll ? 10000 : meta?.limit || 20;
+      const offset = shouldFetchAll
+        ? 0
+        : ((meta?.page || 1) - 1) * (meta?.limit || 20);
+
       const rows = await (await this.sheet()).getRows({
-        limit: meta?.limit || 20,
+        limit,
         offset,
       });
 
@@ -115,28 +117,27 @@ class Spreadsheet<
       const results = criteria
         ? all.filter((record) => this.matchesCriteria(record, criteria))
         : all;
-      logger.success(`Found ${results.length} record(s)`);
+
       return results;
-    } catch (error) {
-      logger.error(
-        `Failed to fetch records: ${error instanceof Error ? error.message : String(error)}`,
-        { terminate: true, code: 1 }
-      );
+    } catch {
       return [];
     }
   };
 
   update = async (
     id: string,
-    data: Partial<Omit<T, 'id' | 'created_at' | 'updated_at'>> & {
-      status: TStatus;
-    }
+    data: Partial<Omit<T, 'id' | 'created_at' | 'updated_at'>>
   ): Promise<T | null> => {
-    status.forEach(() => {
-      if (!status.includes(data.status)) {
-        logger.error(`status must be in [${status.join(' ')}]`);
-      }
-    });
+    if (
+      'status' in data &&
+      data.status &&
+      !status.includes(data.status as TStatus)
+    ) {
+      logger.error(`status must be in [${status.join(' ')}]`, {
+        terminate: true,
+        code: 1,
+      });
+    }
 
     logger.start(`Updating record with id '${id}'`);
     try {
@@ -268,20 +269,17 @@ class Spreadsheet<
   };
 
   private matchesCriteria = (record: T, criteria: Partial<T>): boolean => {
-    for (const [key, value] of Object.entries(criteria)) {
-      if (value === undefined) continue;
+    return Object.entries(criteria).every(([key, value]) => {
+      if (value === undefined || value === null) return true;
 
       const recordValue = record[key as keyof T];
 
       if (typeof value === 'string' && typeof recordValue === 'string') {
-        if (!recordValue.toLowerCase().includes(value.toLowerCase())) {
-          return false;
-        }
-      } else if (recordValue !== value) {
-        return false;
+        return recordValue.toLowerCase().includes(value.toLowerCase());
       }
-    }
-    return true;
+
+      return recordValue === value;
+    });
   };
 }
 

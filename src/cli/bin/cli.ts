@@ -11,6 +11,7 @@ commands.init(command);
 commands.test(command);
 commands.reset(command);
 commands.mail(command);
+commands.sheet(command);
 
 command.on('command:*', ([cmd]) => {
   logger.error(
