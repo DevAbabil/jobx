@@ -11,9 +11,9 @@ const reset = (reset?: 'HARD' | 'SOFT') => {
 
   if (reset === 'HARD') {
     Object.values(jobxFileContent).forEach(({ path, data }) => {
-      if (path.includes('.pdf')) {
+      if (path.includes('.pdf') && fs.existsSync(path)) {
         fs.unlinkSync(path);
-      } else {
+      } else if (!path.includes('.pdf')) {
         fs.writeFileSync(path, JSON.stringify(data, null, 2), 'utf-8');
       }
     });
