@@ -12,8 +12,12 @@ export default defineConfig([
     clean: true,
     minify: true,
     sourcemap: true,
+    platform: 'node',
+    target: 'node18',
+    noExternal: [/.*/],
     esbuildOptions(options) {
       options.legalComments = 'none';
+      options.platform = 'node';
     },
   },
 ]);
