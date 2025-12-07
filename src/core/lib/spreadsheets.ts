@@ -48,21 +48,6 @@ class Spreadsheet<
     };
   }
 
-  setHeaders = async () => {
-    logger.start('Setting spreadsheet headers');
-    try {
-      await (await this.sheet()).setHeaderRow(JOB_APPLICATION_COLUMNS);
-      logger.success('Headers set successfully');
-      return { success: true };
-    } catch (error) {
-      logger.error(
-        `Failed to set headers: ${error instanceof Error ? error.message : String(error)}`,
-        { terminate: true, code: 1 }
-      );
-      return { success: false };
-    }
-  };
-
   insert = async (
     data: Omit<T, 'id' | 'created_at' | 'updated_at'> & { status: TStatus }
   ): Promise<T | null> => {
@@ -77,6 +62,9 @@ class Spreadsheet<
 
     try {
       const now = formatDate();
+
+      await (await this.sheet()).setHeaderRow(JOB_APPLICATION_COLUMNS);
+
       const row = await (await this.sheet()).addRow({
         ...data,
         id: generateId(),
