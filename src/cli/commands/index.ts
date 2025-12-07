@@ -69,6 +69,12 @@ export const sheet = (command: Command) => {
     .command('sheet')
     .description('Manage Google Sheets job records');
 
+  const table = new Table({
+    head: ['Field', 'Value'],
+    colWidths: [20, 70],
+    wordWrap: true,
+  });
+
   sheet
     .command('find <id>')
     .description('Find job by submitted ID')
@@ -84,12 +90,6 @@ export const sheet = (command: Command) => {
         });
 
       logger.success(`A record found with id: ${id}`);
-
-      const table = new Table({
-        head: ['Field', 'Value'],
-        colWidths: [20, 70],
-        wordWrap: true,
-      });
 
       result.forEach((record) => {
         for (const [key, value] of Object.entries(record)) {
@@ -127,12 +127,6 @@ export const sheet = (command: Command) => {
           code: 1,
           terminate: true,
         });
-
-      const table = new Table({
-        head: ['Field', 'Value'],
-        colWidths: [20, 70],
-        wordWrap: true,
-      });
 
       for (const [key, value] of Object.entries(result)) {
         table.push([key, value]);
