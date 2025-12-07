@@ -42,10 +42,11 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <section id="features" className="py-20 px-4 max-w-7xl mx-auto">
-      <div className="text-center mb-16">
+    <section id="features" className="py-20 px-4 max-w-7xl mx-auto relative">
+      <div className="absolute inset-0 gradient-mesh opacity-20 pointer-events-none"></div>
+      <div className="text-center mb-16 relative z-10">
         <h2 className="text-4xl md:text-5xl font-bold mb-4">
-          Powerful Features
+          <span className="text-gradient">Powerful Features</span>
         </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           Everything you need to automate your job search and land your dream
@@ -53,15 +54,17 @@ const FeaturesSection = () => {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
         {features.map((feature, idx) => {
           const Icon = feature.icon;
           return (
             <Card
               key={idx.toString()}
-              className="p-6 hover:border-accent/50 hover:bg-card/50 transition border-border/50"
+              className="p-6 hover:border-accent/50 hover:bg-card/50 transition border-border/50 card-hover-glow group"
             >
-              <Icon className="w-8 h-8 text-accent mb-4" />
+              <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 transition">
+                <Icon className="w-6 h-6 text-accent" />
+              </div>
               <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
               <p className="text-sm text-muted-foreground">
                 {feature.description}

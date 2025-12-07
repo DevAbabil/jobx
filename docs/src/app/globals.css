@@ -134,3 +134,83 @@
     @apply text-accent font-mono;
   }
 }
+
+/* Stunning gradient backgrounds */
+@layer utilities {
+  .gradient-mesh {
+    background: radial-gradient(
+        at 27% 37%,
+        oklch(0.7 0.25 142.5 / 0.15) 0px,
+        transparent 50%
+      ),
+      radial-gradient(at 97% 21%, oklch(0.65 0.2 200 / 0.12) 0px, transparent 50%),
+      radial-gradient(at 52% 99%, oklch(0.7 0.2 280 / 0.1) 0px, transparent 50%),
+      radial-gradient(at 10% 29%, oklch(0.65 0.25 30 / 0.08) 0px, transparent 50%),
+      radial-gradient(at 97% 96%, oklch(0.75 0.25 140 / 0.12) 0px, transparent 50%),
+      radial-gradient(at 33% 50%, oklch(0.7 0.25 142.5 / 0.1) 0px, transparent 50%),
+      radial-gradient(at 79% 53%, oklch(0.65 0.2 200 / 0.08) 0px, transparent 50%);
+  }
+
+  .dark .gradient-mesh {
+    background: radial-gradient(
+        at 27% 37%,
+        oklch(0.7 0.25 142.5 / 0.2) 0px,
+        transparent 50%
+      ),
+      radial-gradient(at 97% 21%, oklch(0.65 0.2 200 / 0.15) 0px, transparent 50%),
+      radial-gradient(at 52% 99%, oklch(0.7 0.2 280 / 0.12) 0px, transparent 50%),
+      radial-gradient(at 10% 29%, oklch(0.65 0.25 30 / 0.1) 0px, transparent 50%),
+      radial-gradient(at 97% 96%, oklch(0.75 0.25 140 / 0.15) 0px, transparent 50%),
+      radial-gradient(at 33% 50%, oklch(0.7 0.25 142.5 / 0.12) 0px, transparent 50%),
+      radial-gradient(at 79% 53%, oklch(0.65 0.2 200 / 0.1) 0px, transparent 50%);
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 20px oklch(0.7 0.25 142.5 / 0.3),
+      0 0 40px oklch(0.7 0.25 142.5 / 0.15);
+  }
+
+  .dark .glow-accent {
+    box-shadow: 0 0 30px oklch(0.7 0.25 142.5 / 0.4),
+      0 0 60px oklch(0.7 0.25 142.5 / 0.2);
+  }
+
+  .glass-effect {
+    background: oklch(1 0 0 / 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid oklch(0.92 0 0 / 0.5);
+  }
+
+  .dark .glass-effect {
+    background: oklch(0.15 0 0 / 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid oklch(0.25 0 0 / 0.5);
+  }
+
+  .text-gradient {
+    background: linear-gradient(
+      135deg,
+      oklch(0.7 0.25 142.5),
+      oklch(0.65 0.2 200),
+      oklch(0.7 0.2 280)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .card-hover-glow {
+    transition: all 0.3s ease;
+  }
+
+  .card-hover-glow:hover {
+    box-shadow: 0 8px 32px oklch(0.7 0.25 142.5 / 0.15),
+      0 0 0 1px oklch(0.7 0.25 142.5 / 0.2);
+    transform: translateY(-2px);
+  }
+
+  .dark .card-hover-glow:hover {
+    box-shadow: 0 8px 32px oklch(0.7 0.25 142.5 / 0.25),
+      0 0 0 1px oklch(0.7 0.25 142.5 / 0.3);
+  }
+}

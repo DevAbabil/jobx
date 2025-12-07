@@ -1,6 +1,7 @@
 'use client';
 
 import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import {
   oneDark,
@@ -19,7 +20,12 @@ export function CodeBlock({
   language = 'json',
   filename,
 }: CodeBlockProps) {
-  const { theme } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const customStyle = {
     margin: 0,
@@ -30,8 +36,10 @@ export function CodeBlock({
     fontFamily: 'var(--font-geist-mono)',
   };
 
+  const currentTheme = mounted ? resolvedTheme || theme : 'light';
+
   const selectedTheme =
-    theme === 'dark'
+    currentTheme === 'dark'
       ? {
           ...oneDark,
           'pre[class*="language-"]': {

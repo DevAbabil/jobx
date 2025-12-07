@@ -60,16 +60,19 @@ const commands = [
 
 const CommandsSection = () => {
   return (
-    <section id="commands" className="py-20 px-4 max-w-7xl mx-auto">
-      <div className="mb-12">
-        <h2 className="text-4xl font-bold mb-4">CLI Commands</h2>
+    <section id="commands" className="py-20 px-4 max-w-7xl mx-auto relative">
+      <div className="absolute inset-0 gradient-mesh opacity-30 pointer-events-none"></div>
+      <div className="mb-12 relative z-10">
+        <h2 className="text-4xl font-bold mb-4">
+          <span className="text-gradient">CLI Commands</span>
+        </h2>
         <p className="text-lg text-muted-foreground">
           All available commands and their options for full job automation
           control
         </p>
       </div>
 
-      <Card className="border-border/50 overflow-hidden">
+      <Card className="border-border/50 overflow-hidden card-hover-glow shadow-xl relative z-10">
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent border-border/50">
