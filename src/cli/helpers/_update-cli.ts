@@ -1,10 +1,11 @@
 import { execSync } from 'node:child_process';
 import colors from 'colors';
-import figlet from 'figlet';
 import fetch from 'node-fetch';
 import semver from 'semver';
 import pkg from '@/constants/pkg';
 import logger from '@/utils/logger';
+
+const figlet = require('figlet');
 
 (async () => {
   const packageName = 'jobx';
