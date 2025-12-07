@@ -57,7 +57,7 @@ class Logger {
         'GREATLY APPRECIATED'
       )}! 🥰 \n━━\x1b]8;;https://github.com/DevAbabil/jobx\x07🚀 ${colors.bold(
         'STAR ON GITHUB'
-      )} 🚀\x1b]8;;\x07━━\n`,
+      )} 🚀\x1b]8;;\x07━━\n\n`,
     });
   };
 }
