@@ -2,6 +2,9 @@
 
 set -e
 
+echo "Updating package info..."
+sh scripts/update-pkg.sh
+
 echo "Formatting code..."
 npx biome format --write .
 

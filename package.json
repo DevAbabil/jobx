@@ -40,9 +40,10 @@
     "node": ">=18.0.0"
   },
   "files": [
-    "dist/index.js",
+    "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "package.json"
   ],
   "devDependencies": {
     "@biomejs/biome": "2.3.7",
