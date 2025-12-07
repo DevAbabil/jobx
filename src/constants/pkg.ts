@@ -1,14 +1,14 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
 interface PackageJson {
   name: string;
   version: string;
   description: string;
 }
 
-const pkg: PackageJson = {
-  name: 'jobx',
-  version: '1.0.4',
-  description:
-    'AI-powered CLI tool to automate job applications, generate personalized emails, and track applications using Google Sheets.',
-};
+const pkg: PackageJson = JSON.parse(
+  fs.readFileSync(path.resolve(process.cwd(), 'package.json'), 'utf-8')
+);
 
 export default pkg;
