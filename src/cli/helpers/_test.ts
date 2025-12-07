@@ -166,15 +166,15 @@ const test = async (testFiles: (keyof typeof Efile)[]) => {
   const testMap: Partial<
     Record<keyof typeof Efile, { data: unknown; schema: ZodTypeAny }>
   > = {
-    'jobx.apply.json': {
+    [Efile['jobx.apply.json']]: {
       data: (await import('@/core/data')).default.apply,
       schema: ZJobxApplySchema,
     },
-    'jobx.config.json': {
+    [Efile['jobx.config.json']]: {
       data: (await import('@/core/data')).default.config,
       schema: ZJobxConfigSchema,
     },
-    'jobx.credentials.json': {
+    [Efile['jobx.credentials.json']]: {
       data: (await import('@/core/data')).default.credentials,
       schema: ZJobxCredentialsSchema,
     },
@@ -182,20 +182,7 @@ const test = async (testFiles: (keyof typeof Efile)[]) => {
 
   let err: boolean = false;
 
-  const AditionalFile = {
-    context: {
-      name: Efile['jobx.context.md'],
-      path: resolve(ROOT, 'jobx.context.txt'),
-    },
-    resume: {
-      name: Efile['jobx.resume.pdf'],
-      path: resolve(ROOT, Efile['jobx.resume.pdf']),
-    },
-    cv: {
-      name: Efile['jobx.cv.md'],
-      path: resolve(ROOT, Efile['jobx.cv.md']),
-    },
-  };
+  const { AditionalFile } = (await import('@/core/data')).default;
 
   if (!validateTextFile(AditionalFile.context)) {
     err = true;

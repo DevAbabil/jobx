@@ -75,3 +75,18 @@ export interface IJobApplication {
   status: TStatus;
   location: TLocation;
 }
+
+export interface IAdditionalFile {
+  context: {
+    name: string;
+    path: string;
+  };
+  resume: {
+    name: string;
+    path: string;
+  };
+  cv: {
+    name: string;
+    path: string;
+  };
+}
