@@ -1,6 +1,6 @@
 {
   "name": "jobx",
-  "version": "1.0.7",
+  "version": "1.1.2",
   "description": "AI-powered CLI tool to automate job applications, generate personalized emails, and track applications using Google Sheets.",
   "main": "./dist/cli.js",
   "bin": {
@@ -40,10 +40,9 @@
     "node": ">=18.0.0"
   },
   "files": [
-    "dist",
+    "dist/cli.js",
     "README.md",
-    "LICENSE",
-    "package.json"
+    "LICENSE"
   ],
   "devDependencies": {
     "@biomejs/biome": "2.3.7",
