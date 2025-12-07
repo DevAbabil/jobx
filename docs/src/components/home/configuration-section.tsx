@@ -262,10 +262,13 @@ const ConfigurationSection = () => {
             </li>
             <li>
               4. Run{' '}
-              <code className="text-accent font-mono">
-                jobx mail --generate
-              </code>{' '}
+              <code className="text-accent font-mono">jobx mail generate</code>{' '}
               to create emails
+            </li>
+            <li>
+              5. Run{' '}
+              <code className="text-accent font-mono">jobx mail submit</code> to
+              send your application
             </li>
           </ol>
         </Card>
