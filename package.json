@@ -49,6 +49,7 @@
     "@types/inquirer": "^9.0.9",
     "@types/node": "^24.9.1",
     "@types/nodemailer": "^7.0.4",
+    "cli-table3": "^0.6.5",
     "colors": "^1.4.0",
     "commander": "^14.0.2",
     "date-fns": "^4.1.0",
