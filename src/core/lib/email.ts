@@ -4,9 +4,9 @@ import { markdownToHtml } from 'mth-htm';
 import { createTransport, type Transporter } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import OpenAIBase from 'openai';
-import { emailPrompts } from '@/constants/prompts';
+import * as prompts from '@/constants/prompts';
 import data from '@/core/data';
-import { Efile, type TLocation } from '@/types';
+import { Efile, type IJobxApply, type TLocation } from '@/types';
 import { logger, ROOT } from '@/utils';
 import spreadsheets from './spreadsheets';
 
@@ -27,17 +27,70 @@ class Email {
     });
   }
 
-  generate = async () => {
-    logger.start('Generating new job email');
-    const email = (
-      await this.#client.responses.create({
-        model: 'gpt-4o-mini',
-        input: emailPrompts({ jobxApply: data.apply, jobxConfig: data.config }),
-      })
-    ).output_text;
+  private extractInfoFromContext = async () => {
+    const context = fs.readFileSync(
+      resolve(ROOT, data.AditionalFile.context.path),
+      'utf-8'
+    );
 
-    fs.writeFileSync(resolve(ROOT, Efile['jobx.mail.md']), email, 'utf-8');
-    logger.success('Job email generated successfully');
+    return JSON.parse(
+      (
+        await this.#client.responses.create({
+          model: 'gpt-4o-mini',
+          input: prompts.exactJobInfo(context),
+        })
+      ).output_text
+    ) as Pick<
+      IJobxApply,
+      | 'company'
+      | 'company_email'
+      | 'company_website'
+      | 'location'
+      | 'position'
+      | 'attachment_type'
+    >;
+  };
+
+  generate = async () => {
+    try {
+      logger.start('AI is thingking....');
+      const context = fs.readFileSync(
+        resolve(ROOT, data.AditionalFile.context.path),
+        'utf-8'
+      );
+
+      const info = await this.extractInfoFromContext();
+
+      const apply = {
+        ...JSON.parse(
+          fs.readFileSync(resolve(ROOT, Efile['jobx.apply.json']), 'utf-8')
+        ),
+        ...info,
+      } as IJobxApply;
+
+      fs.writeFileSync(
+        resolve(ROOT, Efile['jobx.apply.json']),
+        JSON.stringify(apply, null, 2),
+        'utf-8'
+      );
+
+      const email = (
+        await this.#client.responses.create({
+          model: 'gpt-4o-mini',
+          input: prompts.emailPrompts({
+            jobxApply: data.apply,
+            jobxConfig: data.config,
+            context,
+            attachmentType: info.attachment_type,
+          }),
+        })
+      ).output_text;
+
+      fs.writeFileSync(resolve(ROOT, Efile['jobx.mail.md']), email, 'utf-8');
+      logger.success('Job email generated successfully');
+    } catch (error) {
+      logger.error((error as Error).message, { code: 1, terminate: true });
+    }
   };
 
   reset = async () => {
@@ -62,6 +115,13 @@ class Email {
         html: await markdownToHtml(
           fs.readFileSync(resolve(ROOT, Efile['jobx.mail.md']), 'utf-8')
         ),
+        attachments: [
+          {
+            filename: `${data.config.profile.name}-${data.apply.attachment_type}.psf`,
+            path: `jobx.${data.apply.attachment_type?.toLowerCase() || 'cv'}.pdf`,
+            contentType: 'application/pdf',
+          },
+        ],
       });
 
       logger.success('Job email sent successfully');
@@ -76,7 +136,10 @@ class Email {
         submission_link: 'update it now',
       });
     } catch (error) {
-      logger.error('Failed to send job email');
+      logger.error(`Failed to send job email\n${(error as Error).message}`, {
+        code: 1,
+        terminate: true,
+      });
     }
   };
 }

@@ -16,12 +16,13 @@ const data: {
     subject: '<write subject line of the email>',
     company_email: '<write company email>',
     company: '<write company name>',
-    company_website: '<write company website URL>',
+    company_website: '<write company website URL or N/A>',
     education: '<write your education info>',
     experience: '<write your experience>',
     job_source: '<write where you found the job>',
     location: '<write job/company location>',
     position: '<write job position title>',
+    attachment_type: '<cv or resume>',
   },
   config: {
     contact: {

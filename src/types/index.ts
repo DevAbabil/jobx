@@ -51,6 +51,7 @@ export interface IJobxApply {
   education: string;
   job_source: string;
   location: TLocation;
+  attachment_type: 'cv' | 'resume';
 }
 
 export type TStatus =

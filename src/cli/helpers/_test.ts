@@ -76,12 +76,20 @@ const ZJobxApplySchema = z
       .string()
       .email('Company email must be a valid email address'),
     company: z.string().min(2, 'Company name is too short'),
-    company_website: z.string().url('Company website must be a valid URL'),
+    company_website: z
+      .string()
+      .refine(
+        (val) => val === 'N/A' || z.string().url().safeParse(val).success,
+        {
+          message: 'Company website must be a valid URL or "N/A"',
+        }
+      ),
     education: z.string().min(3, 'Education info is too short'),
     experience: z.string().min(3, 'Experience info is too short'),
-    job_source: z.string().url('Company website must be a valid URL'),
+    job_source: z.string().url('Job source must be a valid URL'),
     location: z.enum(['Remote', 'Onsite']),
     position: z.string().min(2, 'Position title is too short'),
+    attachment_type: z.enum(['cv', 'resume']),
   })
   .strict();
 
