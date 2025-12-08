@@ -48,7 +48,7 @@ const tabs = [
     id: 'apply',
     label: 'jobx.apply.json',
     description:
-      'Job application metadata. company_website can be a URL or "N/A". attachment_type must be "cv" or "resume".',
+      'Job application metadata. AI may auto-update fields during email generation - always review before submitting.',
   },
   {
     id: 'config',
@@ -274,11 +274,37 @@ const ConfigurationSection = () => {
               to create emails
             </li>
             <li>
-              6. Run{' '}
+              6. <strong className="text-accent">Review</strong>{' '}
+              <code className="text-accent font-mono">jobx.apply.json</code> and{' '}
+              <code className="text-accent font-mono">jobx.mail.md</code> (AI
+              may update fields)
+            </li>
+            <li>
+              7. Run{' '}
               <code className="text-accent font-mono">jobx mail submit</code> to
               send your application
             </li>
           </ol>
+        </Card>
+
+        <Card className="p-6 border-destructive/50 bg-destructive/5">
+          <h3 className="font-semibold mb-4 text-destructive flex items-center gap-2">
+            <span>⚠️</span> Important Note
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            When you run{' '}
+            <code className="text-accent font-mono">jobx mail generate</code>,
+            the AI may automatically update certain fields in{' '}
+            <code className="text-accent font-mono">jobx.apply.json</code> based
+            on the context from{' '}
+            <code className="text-accent font-mono">jobx.context.txt</code>.
+            Always review both{' '}
+            <code className="text-accent font-mono">jobx.apply.json</code> and
+            the generated email in{' '}
+            <code className="text-accent font-mono">jobx.mail.md</code> before
+            running{' '}
+            <code className="text-accent font-mono">jobx mail submit</code>.
+          </p>
         </Card>
       </div>
     </section>
