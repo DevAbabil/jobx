@@ -14,7 +14,7 @@
     "publish:latest": "sh ./scripts/publish.sh",
     "check": "sh ./scripts/check-filenames.sh && biome check --write --unsafe .",
     "prepare": "husky",
-    "reset-json": "rm jobx.apply.json jobx.config.json jobx.credentials.json jobx.resume.pdf jobx.cv.pdf && cp -r jsons/* ./"
+    "reset-data": "rm jobx.* && cp -r data/* ./"
   },
   "repository": {
     "type": "git",
