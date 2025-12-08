@@ -38,7 +38,8 @@ const configs = {
   "position": "Position Title",
   "experience": "2 years",
   "education": "Bachelor's Degree",
-  "job_source": "https://jobboard.com/posting/12345"
+  "job_source": "https://jobboard.com/posting/12345",
+  "attachment_type": "resume"
 }`,
 };
 
@@ -47,7 +48,7 @@ const tabs = [
     id: 'apply',
     label: 'jobx.apply.json',
     description:
-      'Job application metadata. Fill this out for each job you are applying to.',
+      'Job application metadata. company_website can be a URL or "N/A". attachment_type must be "cv" or "resume".',
   },
   {
     id: 'config',
@@ -257,16 +258,23 @@ const ConfigurationSection = () => {
               </code>
             </li>
             <li>
-              3. Update job details in{' '}
+              3. Add your{' '}
+              <code className="text-accent font-mono">jobx.context.txt</code>,{' '}
+              <code className="text-accent font-mono">jobx.cv.pdf</code>, and{' '}
+              <code className="text-accent font-mono">jobx.resume.pdf</code>{' '}
+              files
+            </li>
+            <li>
+              4. Update job details in{' '}
               <code className="text-accent font-mono">jobx.apply.json</code>
             </li>
             <li>
-              4. Run{' '}
+              5. Run{' '}
               <code className="text-accent font-mono">jobx mail generate</code>{' '}
               to create emails
             </li>
             <li>
-              5. Run{' '}
+              6. Run{' '}
               <code className="text-accent font-mono">jobx mail submit</code> to
               send your application
             </li>

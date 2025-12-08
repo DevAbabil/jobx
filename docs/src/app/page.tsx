@@ -2,6 +2,7 @@ import {
   CommandsSection,
   ConfigurationSection,
   FeaturesSection,
+  FolderStructureSection,
   HeroSection,
   InstallationSection,
 } from '@/components';
@@ -12,6 +13,7 @@ export default function Home() {
       <HeroSection />
       <FeaturesSection />
       <InstallationSection />
+      <FolderStructureSection />
       <CommandsSection />
       <ConfigurationSection />
     </main>

@@ -41,6 +41,12 @@ const Header = () => {
               Install
             </a>
             <a
+              href="#structure"
+              className="text-sm hover:text-accent transition"
+            >
+              Structure
+            </a>
+            <a
               href="#commands"
               className="text-sm hover:text-accent transition"
             >
@@ -77,6 +83,12 @@ const Header = () => {
               className="block text-sm hover:text-accent transition py-2"
             >
               Install
+            </a>
+            <a
+              href="#structure"
+              className="block text-sm hover:text-accent transition py-2"
+            >
+              Structure
             </a>
             <a
               href="#commands"

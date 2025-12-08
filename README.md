@@ -30,12 +30,42 @@ npx jobx init
 
 This command generates the required configuration files:
 
-| File                    | Description                     |
-| ----------------------- | ------------------------------- |
-| `jobx.config.json`      | Profile and contact information |
-| `jobx.credentials.json` | API keys and authentication     |
-| `jobx.apply.json`       | Active job application metadata |
-| `jobx.mail.md`          | Generated email output          |
+| File                    | Description                                      |
+| ----------------------- | ------------------------------------------------ |
+| `jobx.config.json`      | Profile and contact information                  |
+| `jobx.credentials.json` | API keys and authentication                      |
+| `jobx.apply.json`       | Active job application metadata                  |
+| `jobx.mail.md`          | Generated email output                           |
+| `jobx.context.txt`      | Additional context for AI email generation       |
+| `jobx.cv.pdf`           | Your CV/curriculum vitae (PDF format)            |
+| `jobx.resume.pdf`       | Your resume (PDF format)                         |
+
+## Configuration
+
+### jobx.apply.json
+
+The `jobx.apply.json` file contains metadata for your current job application:
+
+```json
+{
+  "company": "Company Name",
+  "company_email": "jobs@company.com",
+  "company_website": "https://company.com",
+  "subject": "Application for Software Engineer Position",
+  "position": "Software Engineer",
+  "experience": "3 years of experience in full-stack development",
+  "education": "Bachelor's in Computer Science",
+  "job_source": "https://company.com/careers/job-id",
+  "location": "Remote",
+  "attachment_type": "resume"
+}
+```
+
+**Field Details:**
+
+- `company_website`: Can be a valid URL or `"N/A"` if not available
+- `location`: Must be either `"Remote"` or `"Onsite"`
+- `attachment_type`: Must be either `"cv"` or `"resume"` (determines which PDF file to attach)
 
 ## Commands
 

@@ -111,6 +111,28 @@ const InstallationSection = () => {
                 desc: 'Active job application metadata',
               },
               { file: 'jobx.mail.md', desc: 'Generated email output' },
+              {
+                file: 'jobx.context.txt',
+                desc: 'Additional context for AI generation',
+              },
+              {
+                file: 'jobx.cv.pdf',
+                desc: (
+                  <>
+                    Your CV (<span className="underline">you provide this</span>
+                    )
+                  </>
+                ),
+              },
+              {
+                file: 'jobx.resume.pdf',
+                desc: (
+                  <>
+                    Your resume (
+                    <span className="underline">you provide this</span>)
+                  </>
+                ),
+              },
             ].map((item, idx) => (
               <div
                 key={idx.toString()}
