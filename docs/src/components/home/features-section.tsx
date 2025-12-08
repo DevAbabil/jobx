@@ -31,6 +31,7 @@ const features = [
     title: 'Templates & Profiles',
     description:
       'Create reusable templates and profiles for different job application scenarios',
+    comingSoon: true,
   },
   {
     icon: Shield,
@@ -60,8 +61,16 @@ const FeaturesSection = () => {
           return (
             <Card
               key={idx.toString()}
-              className="p-6 hover:border-accent/50 hover:bg-card/50 transition border-border/50 card-hover-glow group"
+              className="p-6 hover:border-accent/50 hover:bg-card/50 transition border-border/50 card-hover-glow group relative overflow-hidden"
             >
+              {feature.comingSoon && (
+                <div className="absolute top-3 right-3">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-gradient-to-r from-accent/20 to-accent/10 text-accent border border-accent/30 animate-pulse">
+                    <Sparkles className="w-3 h-3" />
+                    Coming Soon
+                  </span>
+                </div>
+              )}
               <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4 group-hover:bg-accent/20 transition">
                 <Icon className="w-6 h-6 text-accent" />
               </div>
