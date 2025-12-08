@@ -76,22 +76,61 @@ export const sheet = (command: Command) => {
   });
 
   sheet
-    .command('find <id>')
-    .description('Find job by submitted ID')
-    .action(async (id: string) => {
+    .command('find')
+    .description('Find all job records with pagination')
+    .option('-p, --page <page>', 'Page number', '1')
+    .option('-l, --limit <limit>', 'Records per page', '20')
+    .option('-i, --id <id>', 'Find by specific ID')
+    .action(async (options: { page: string; limit: string; id?: string }) => {
       logger.start('Finding job records...');
       const { spreadsheets } = await import('@/core');
-      const result = await spreadsheets.find({ id });
 
-      if (!result || result.length === 0)
-        return logger.warn(`No record found with id: ${id}`, {
+      const page = Number.parseInt(options.page, 10);
+      const limit = Number.parseInt(options.limit, 10);
+
+      if (Number.isNaN(page) || page < 1) {
+        return logger.error('Page must be a positive number', {
           code: 1,
           terminate: true,
         });
+      }
 
-      logger.success(`A record found with id: ${id}`);
+      if (Number.isNaN(limit) || limit < 1) {
+        return logger.error('Limit must be a positive number', {
+          code: 1,
+          terminate: true,
+        });
+      }
 
-      result.forEach((record) => {
+      const criteria = options.id ? { id: options.id } : undefined;
+      const result = await spreadsheets.find(criteria, { page, limit });
+
+      if (!result || result.length === 0) {
+        const message = options.id
+          ? `No record found with id: ${options.id}`
+          : 'No records found';
+        return logger.warn(message, {
+          code: 1,
+          terminate: true,
+        });
+      }
+
+      if (options.id) {
+        logger.success(`Found record with id: ${options.id}`);
+      } else {
+        // Get total count
+        const totalRecords = await spreadsheets.count();
+        const startRecord = (page - 1) * limit + 1;
+        const endRecord = startRecord + result.length - 1;
+        logger.success(
+          `Found ${result.length} record(s) (showing ${startRecord}-${endRecord} of ${totalRecords} total)`
+        );
+      }
+
+      result.forEach((record, index) => {
+        if (index > 0) {
+          table.push([{ colSpan: 2, content: '*'.repeat(88) }]);
+        }
         for (const [key, value] of Object.entries(record)) {
           table.push([key, value]);
         }

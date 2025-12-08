@@ -88,6 +88,12 @@ class Email {
 
       fs.writeFileSync(resolve(ROOT, Efile['jobx.mail.md']), email, 'utf-8');
       logger.success('Job email generated successfully');
+      logger.warn(
+        'Please review jobx.apply.json - AI may have updated fields based on context'
+      );
+      logger.info(
+        'Check the generated email in jobx.mail.md before submitting'
+      );
     } catch (error) {
       logger.error((error as Error).message, { code: 1, terminate: true });
     }

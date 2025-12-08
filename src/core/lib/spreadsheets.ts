@@ -91,9 +91,8 @@ class Spreadsheet<
     try {
       const shouldFetchAll = criteria?.id !== undefined;
       const limit = shouldFetchAll ? 10000 : meta?.limit || 20;
-      const offset = shouldFetchAll
-        ? 0
-        : ((meta?.page || 1) - 1) * (meta?.limit || 20);
+      const page = meta?.page || 1;
+      const offset = shouldFetchAll ? 0 : (page - 1) * limit;
 
       const rows = await (await this.sheet()).getRows({
         limit,
@@ -109,6 +108,15 @@ class Spreadsheet<
       return results;
     } catch {
       return [];
+    }
+  };
+
+  count = async (): Promise<number> => {
+    try {
+      const rows = await (await this.sheet()).getRows({ limit: 10000 });
+      return rows.length;
+    } catch {
+      return 0;
     }
   };
 
