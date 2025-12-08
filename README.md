@@ -67,6 +67,10 @@ The `jobx.apply.json` file contains metadata for your current job application:
 - `location`: Must be either `"Remote"` or `"Onsite"`
 - `attachment_type`: Must be either `"cv"` or `"resume"` (determines which PDF file to attach)
 
+**⚠️ Important Note:**
+
+When you run `jobx mail generate`, the AI may automatically update certain fields in `jobx.apply.json` based on the context from `jobx.context.txt`. Always review `jobx.apply.json` and the generated email in `jobx.mail.md` before running `jobx mail submit`.
+
 ## Commands
 
 | Command                                  | Description                                      |
@@ -77,11 +81,40 @@ The `jobx.apply.json` file contains metadata for your current job application:
 | `jobx test`                              | Validate configuration files                     |
 | `jobx reset soft`                        | Soft reset (keep credentials)                    |
 | `jobx reset hard`                        | Hard reset (reset everything)                    |
-| `jobx sheet find <id>`                   | Find job application by ID                       |
+| `jobx sheet find`                        | Find all job applications with pagination        |
+| `jobx sheet find -i <id>`                | Find job application by specific ID              |
+| `jobx sheet find -p <page> -l <limit>`   | Find jobs with custom page and limit             |
 | `jobx sheet delete <id>`                 | Delete job application by ID                     |
 | `jobx sheet update <id> <field> <value>` | Update job application field                     |
 | `jobx --version`                         | Display version information                      |
 | `jobx --help`                            | Display help information                         |
+
+### Sheet Find Options
+
+The `jobx sheet find` command supports the following options:
+
+- `-p, --page <page>` - Page number (default: 1)
+- `-l, --limit <limit>` - Records per page (default: 20)
+- `-i, --id <id>` - Find by specific ID
+
+**Examples:**
+
+```bash
+# Find first 20 records (default)
+jobx sheet find
+
+# Find page 2
+jobx sheet find -p 2
+
+# Find first 50 records
+jobx sheet find -l 50
+
+# Find page 3 with 10 records per page
+jobx sheet find -p 3 -l 10
+
+# Find specific record by ID
+jobx sheet find -i abc123
+```
 
 ## Development
 
