@@ -12,9 +12,11 @@ const figlet = require('figlet');
   const localVersion = pkg.version;
 
   try {
-    const res = await fetch(`https://registry.npmjs.org/${packageName}/latest`);
+    const res = await fetch(`https://registry.npmjs.org/${packageName}`);
     const data = await res.json();
-    const latestVersion = (data as { version: string }).version;
+    const latestVersion = (data as { 'dist-tags': { latest: string } })[
+      'dist-tags'
+    ].latest;
 
     if (semver.lt(localVersion, latestVersion)) {
       console.log(
@@ -39,14 +41,9 @@ const figlet = require('figlet');
       logger.appreciation();
     }
   } catch (err: unknown) {
-    logger.error(colors.red.bold('Failed to check or update version'), {
-      code: 1,
-      terminate: true,
-    });
-    if (err instanceof Error) {
-      logger.error(colors.red(err.message), { code: 1, terminate: true });
-    } else {
-      logger.error(colors.red(String(err)), { code: 1, terminate: true });
-    }
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    logger.error(
+      colors.red.bold(`Failed to check or update version: ${errorMessage}`)
+    );
   }
 })();
