@@ -15,6 +15,5 @@
       "dest": "dist/index.js"
     }
   ],
-  "installCommand": "corepack enable pnpm && corepack prepare pnpm@10.20.0 --activate && pnpm install",
   "buildCommand": "pnpm build"
 }

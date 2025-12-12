@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { authApi, useAppDispatch, userApi } from '@/redux';
+import { Avatar } from '../ui/avatar';
 import { Button } from '../ui/button';
 import { ThemeToggle } from './theme-toggle';
 

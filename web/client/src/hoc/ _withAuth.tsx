@@ -1,7 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import type { ComponentType } from 'react';
-import { useEffect } from 'react';
+import { type ComponentType, useEffect, useState } from 'react';
 import { userApi } from '@/redux';
 import type { Role } from '@/types';
 
@@ -9,26 +8,39 @@ const withAuth = (Component: ComponentType, requiredRole?: Role[]) => {
   return function AuthWrapper() {
     const router = useRouter();
     const { data, isLoading, error } = userApi.useMyProfileQuery();
+    const [checked, setChecked] = useState(false);
+
+    const user = data?.data;
 
     useEffect(() => {
-      if (error || (!isLoading && !data?.data?.email))
-        return router.push('/login');
+      if (isLoading) return;
 
-      if (!isLoading && data?.data && !data.data.isVerified)
-        return router.push(`/verify?email=${data.data.email}`);
+      // Not logged in
+      if (error || !user?.email) {
+        router.push('/login');
+        return;
+      }
 
-      if (
-        requiredRole &&
-        !isLoading &&
-        !data?.data &&
-        !requiredRole.includes(data.data.role)
-      )
-        return router.push('/unauthorized');
-    }, [error, isLoading, data, requiredRole, router]);
+      // Not verified
+      if (!user.isVerified) {
+        router.push(`/verify?email=${user.email}`);
+        return;
+      }
 
-    if (isLoading) return null;
+      // Role mismatch
+      if (requiredRole && !requiredRole.includes(user.role)) {
+        router.push('/unauthorized');
+        return;
+      }
 
-    return data?.data?.email ? <Component /> : null;
+      // If passed all checks
+      setChecked(true);
+    }, [isLoading, error, user, requiredRole, router]);
+
+    // waiting for RTK Query OR redirect
+    if (!checked) return null;
+
+    return <Component />;
   };
 };
 

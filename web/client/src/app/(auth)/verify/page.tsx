@@ -104,6 +104,7 @@ const VerifyContent = () => {
       const response = await verifyEmailOtp(data).unwrap();
       toast.success(response.message);
       setIsSuccess(true);
+      router.push('/dashboard');
     } catch (error) {
       toast.error(
         extractError(error) || 'OTP verification failed. Please try again.'

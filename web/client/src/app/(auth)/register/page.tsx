@@ -48,7 +48,7 @@ const RegisterPage = () => {
       const { confirmPassword, ...signupData } = data;
       const response = await signup(signupData).unwrap();
       toast.success(response.message);
-      router.push('/login');
+      router.push('/dashboard');
     } catch (error) {
       toast.error(
         extractError(error) || 'Registration failed. Please try again.'

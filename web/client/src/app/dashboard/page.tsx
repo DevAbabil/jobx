@@ -20,6 +20,8 @@ const DashboardPage = () => {
         router.push('/dashboard/user');
       }
     }
+
+    if (!isLoading && !user?.data) router.push('/login');
   }, [user, isLoading, router]);
 
   return (

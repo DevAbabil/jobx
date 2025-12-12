@@ -13,5 +13,17 @@ router.put(
   validateRequest(validator.zUpdatePictureSchema),
   controller.updatePicture
 );
+router.put(
+  '/profile',
+  checkAuth(...Object.values(Role)),
+  validateRequest(validator.zUpdateProfileSchema),
+  controller.updateProfile
+);
+router.put(
+  '/change-password',
+  checkAuth(...Object.values(Role)),
+  validateRequest(validator.zChangePasswordSchema),
+  controller.changePassword
+);
 
 export default router;

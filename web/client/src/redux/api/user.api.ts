@@ -16,5 +16,30 @@ export default baseApi.injectEndpoints({
       }),
       invalidatesTags: ['USER'],
     }),
+    updateProfile: builder.mutation<
+      IResponse<IUser>,
+      { name?: string; picture?: string }
+    >({
+      query: (body) => ({
+        url: '/user/profile',
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['USER'],
+    }),
+    changePassword: builder.mutation<
+      IResponse<{ message: string }>,
+      {
+        currentPassword: string;
+        newPassword: string;
+        confirmPassword: string;
+      }
+    >({
+      query: (body) => ({
+        url: '/user/change-password',
+        method: 'PUT',
+        body,
+      }),
+    }),
   }),
 });

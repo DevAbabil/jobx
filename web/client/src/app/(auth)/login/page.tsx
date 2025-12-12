@@ -38,7 +38,7 @@ const LoginPage = () => {
     try {
       const response = await signin(data).unwrap();
       toast.success(response.message);
-      router.push('/dashboard'); // Redirect to dashboard or home
+      router.push('/dashboard');
     } catch (error) {
       toast.error(extractError(error) || 'Sign in failed. Please try again.');
     }
