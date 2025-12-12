@@ -2,13 +2,16 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import { AuthCard, AuthFormField } from '@/components/auth';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { withPreventAccessInAuth } from '@/hoc';
+import authApi from '@/redux/api/auth.api';
+import { extractError } from '@/utils';
 
 const signUpSchema = z
   .object({
@@ -27,7 +30,8 @@ const signUpSchema = z
 type SignUpFormData = z.infer<typeof signUpSchema>;
 
 const RegisterPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const [signup, { isLoading }] = authApi.useSignupMutation();
 
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
@@ -40,14 +44,15 @@ const RegisterPage = () => {
   });
 
   const onSubmit = async (data: SignUpFormData) => {
-    setIsLoading(true);
     try {
-      console.log('Register data:', data);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const { confirmPassword, ...signupData } = data;
+      const response = await signup(signupData).unwrap();
+      toast.success(response.message);
+      router.push('/login');
     } catch (error) {
-      console.error('Register error:', error);
-    } finally {
-      setIsLoading(false);
+      toast.error(
+        extractError(error) || 'Registration failed. Please try again.'
+      );
     }
   };
 

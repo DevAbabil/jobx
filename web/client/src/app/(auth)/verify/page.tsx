@@ -1,64 +1,115 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
-import { AuthCard, LoadingSpinner } from '@/components/auth';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import { AuthCard, AuthFormField, LoadingSpinner } from '@/components/auth';
 import { Button } from '@/components/ui/button';
-import { withPreventAccessInAuth } from '@/hoc';
+import { Form } from '@/components/ui/form';
+import { userApi } from '@/redux';
+import authApi from '@/redux/api/auth.api';
+import { extractError } from '@/utils';
+
+const verifyOtpSchema = z.object({
+  email: z.string().email({ message: 'Invalid email address' }),
+  otp: z
+    .string()
+    .min(6, { message: 'OTP must be 6 digits' })
+    .max(6, { message: 'OTP must be 6 digits' })
+    .regex(/^\d+$/, { message: 'OTP must contain only numbers' }),
+});
+
+type VerifyOtpFormData = z.infer<typeof verifyOtpSchema>;
 
 const VerifyContent = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+
   const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const searchParams = useSearchParams();
-  const token = searchParams.get('token');
+  const [otpSent, setOtpSent] = useState(false);
+
+  const {
+    data: userData,
+    isLoading: isUserLoading,
+    error: userError,
+  } = userApi.useMyProfileQuery();
+
+  const [verifyEmailOtp, { isLoading: isVerifying }] =
+    authApi.useVerifyEmailOtpMutation();
+  const [resendOtp, { isLoading: isResending }] =
+    authApi.useResendOtpMutation();
+
+  const userEmail = userData?.data?.email;
+
+  const form = useForm<VerifyOtpFormData>({
+    resolver: zodResolver(verifyOtpSchema),
+    defaultValues: {
+      email: userEmail,
+      otp: '',
+    },
+  });
 
   useEffect(() => {
-    const verifyEmail = async () => {
-      if (!token) {
-        setError('Invalid verification link');
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        console.log('Verifying email with token:', token);
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        setIsSuccess(true);
-      } catch (error) {
-        console.error('Verification error:', error);
-        setError('Verification failed. The link may be expired or invalid.');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    verifyEmail();
-  }, [token]);
-
-  const resendVerification = async () => {
-    setIsLoading(true);
-    try {
-      console.log('Resending verification email');
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-    } catch (error) {
-      console.error('Resend verification error:', error);
-    } finally {
-      setIsLoading(false);
+    if (userEmail) {
+      form.setValue('email', userEmail);
     }
-  };
+  }, [userEmail, form]);
 
-  if (isLoading) {
+  useEffect(() => {
+    if (!isUserLoading && userError) {
+      toast.error('Please log in to verify your email');
+      router.push('/login');
+    }
+  }, [isUserLoading, userError, router]);
+
+  useEffect(() => {
+    if (userData?.data?.isVerified) {
+      toast.success('Your email is already verified');
+      router.push('/dashboard');
+    }
+  }, [userData?.data?.isVerified, router]);
+
+  if (isUserLoading) {
     return (
-      <AuthCard
-        title="Verifying..."
-        description="Please wait while we verify your email address"
-      >
+      <AuthCard title="Loading..." description="Checking your account status">
         <LoadingSpinner />
       </AuthCard>
     );
   }
+
+  const sendVerificationOtp = async () => {
+    const email = form.getValues('email');
+    if (!email) {
+      form.setError('email', { message: 'Please enter your email first' });
+      return;
+    }
+
+    try {
+      const response = await resendOtp({
+        email,
+        type: 'EMAIL_VERIFICATION',
+      }).unwrap();
+      toast.success(response.message);
+      setOtpSent(true);
+    } catch (error) {
+      toast.error(extractError(error) || 'Failed to send verification OTP.');
+    }
+  };
+
+  const onSubmit = async (data: VerifyOtpFormData) => {
+    try {
+      const response = await verifyEmailOtp(data).unwrap();
+      toast.success(response.message);
+      setIsSuccess(true);
+    } catch (error) {
+      toast.error(
+        extractError(error) || 'OTP verification failed. Please try again.'
+      );
+    }
+  };
 
   if (isSuccess) {
     return (
@@ -69,40 +120,95 @@ const VerifyContent = () => {
         <div className="text-center space-y-4">
           <div className="text-green-600 dark:text-green-400 text-4xl">✓</div>
           <p className="text-sm text-muted-foreground">
-            You can now sign in to your account
+            {userData?.data?.email
+              ? 'Your account is now fully verified'
+              : 'You can now sign in to your account'}
           </p>
-          <Link href="/login">
-            <Button className="w-full">Continue to sign in</Button>
+          <Link href={userData?.data?.email ? '/dashboard' : '/login'}>
+            <Button className="w-full">
+              {userData?.data?.email
+                ? 'Go to Dashboard'
+                : 'Continue to sign in'}
+            </Button>
           </Link>
         </div>
       </AuthCard>
     );
   }
 
-  if (error) {
-    return (
-      <AuthCard title="Verification failed" description={error}>
-        <div className="text-center space-y-4">
-          <div className="text-destructive text-4xl">✗</div>
-          <div className="space-y-2">
-            <Button onClick={resendVerification} disabled={isLoading}>
-              {isLoading ? 'Sending...' : 'Resend verification email'}
-            </Button>
-            <div>
-              <Link
-                href="/login"
-                className="text-sm text-primary hover:text-primary/80"
+  return (
+    <AuthCard
+      title="Verify your email"
+      description={
+        userData?.data?.email
+          ? `Verify your email address: ${userData.data.email}`
+          : 'Enter your email and the OTP sent to verify your account'
+      }
+    >
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <div className="flex gap-2">
+            <div className="flex-1">
+              <AuthFormField
+                control={form.control}
+                name="email"
+                label="Email"
+                placeholder="Enter your email"
+                type="email"
+              />
+              {userData?.data?.email && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  Using email from your account
+                </p>
+              )}
+            </div>
+            <div className="flex items-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={sendVerificationOtp}
+                disabled={isResending || !form.watch('email')}
+                className="whitespace-nowrap"
               >
-                Back to sign in
-              </Link>
+                {isResending
+                  ? 'Sending...'
+                  : otpSent
+                    ? 'Resend OTP'
+                    : 'Send OTP'}
+              </Button>
             </div>
           </div>
-        </div>
-      </AuthCard>
-    );
-  }
 
-  return null;
+          {otpSent && (
+            <div className="text-sm text-green-600 dark:text-green-400">
+              ✓ Verification OTP sent to your email address
+            </div>
+          )}
+
+          <AuthFormField
+            control={form.control}
+            name="otp"
+            label="Verification Code"
+            placeholder="Enter 6-digit OTP"
+            type="text"
+          />
+
+          <Button type="submit" className="w-full" disabled={isVerifying}>
+            {isVerifying ? 'Verifying...' : 'Verify Email'}
+          </Button>
+        </form>
+      </Form>
+
+      <div className="mt-6 text-center">
+        <Link
+          href="/login"
+          className="text-sm text-primary hover:text-primary/80"
+        >
+          Back to sign in
+        </Link>
+      </div>
+    </AuthCard>
+  );
 };
 
 const VerifyPage = () => {
@@ -119,4 +225,4 @@ const VerifyPage = () => {
   );
 };
 
-export default withPreventAccessInAuth(VerifyPage);
+export default VerifyPage;

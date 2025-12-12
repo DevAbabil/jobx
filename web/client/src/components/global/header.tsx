@@ -1,12 +1,30 @@
 'use client';
 import { Code2, Menu, X } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { toast } from 'sonner';
+import { authApi, useAppDispatch, userApi } from '@/redux';
 import { Button } from '../ui/button';
 import { ThemeToggle } from './theme-toggle';
 
 const Header = () => {
+  const dispatch = useAppDispatch();
   const [menuOpen, setMenuOpen] = useState(false);
+  const router = useRouter();
+  const { data: user } = userApi.useMyProfileQuery();
+  const [signout] = authApi.useSignoutMutation();
+
+  const handleSignOut = async () => {
+    try {
+      await signout().unwrap();
+      dispatch(userApi.util.resetApiState());
+      toast.success('Signed out successfully');
+      router.push('/login');
+    } catch (error) {
+      toast.error('Failed to sign out');
+    }
+  };
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -48,13 +66,34 @@ const Header = () => {
             >
               Config
             </Link>
-            <Link
-              href="/login"
-              className="block text-sm hover:text-accent transition py-2"
-              onClick={() => setMenuOpen(false)}
-            >
-              Login
-            </Link>
+            {user && (
+              <Link
+                href="/dashboard"
+                className="text-sm hover:text-accent transition"
+              >
+                Dashboard
+              </Link>
+            )}
+            {user ? (
+              <Link
+                href={'/'}
+                onClick={() => {
+                  handleSignOut();
+                  setMenuOpen(false);
+                }}
+              >
+                Logout
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="block text-sm hover:text-accent transition py-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                Login
+              </Link>
+            )}
+
             <ThemeToggle />
           </div>
 
@@ -107,13 +146,34 @@ const Header = () => {
             >
               Config
             </Link>
-            <Link
-              href="/login"
-              className="block text-sm hover:text-accent transition py-2"
-              onClick={() => setMenuOpen(false)}
-            >
-              Login
-            </Link>
+            {user && (
+              <Link
+                href="/dashboard"
+                className="block text-sm hover:text-accent transition py-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                Dashboard
+              </Link>
+            )}
+            {user ? (
+              <Link
+                href={'/'}
+                onClick={() => {
+                  handleSignOut();
+                  setMenuOpen(false);
+                }}
+              >
+                Logout
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="block text-sm hover:text-accent transition py-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                Login
+              </Link>
+            )}
           </div>
         )}
       </div>

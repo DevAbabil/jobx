@@ -4,11 +4,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import { AuthCard, AuthFormField } from '@/components/auth';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { withPreventAccessInAuth } from '@/hoc';
+import authApi from '@/redux/api/auth.api';
+import { extractError } from '@/utils';
 
 const resetPasswordSchema = z
   .object({
@@ -31,9 +34,13 @@ const resetPasswordSchema = z
 type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
 const ForgotPasswordPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
+
+  const [forgotPassword, { isLoading: isSendingOtp }] =
+    authApi.useForgotPasswordMutation();
+  const [resetPassword, { isLoading: isResettingPassword }] =
+    authApi.useResetPasswordMutation();
 
   const form = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordSchema),
@@ -47,35 +54,31 @@ const ForgotPasswordPage = () => {
 
   const sendOtp = async () => {
     const email = form.getValues('email');
-    if (!email) {
-      form.setError('email', { message: 'Please enter your email first' });
-      return;
-    }
 
-    setIsLoading(true);
     try {
-      console.log('Sending OTP to:', email);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await forgotPassword({ email }).unwrap();
+      toast.success(response.message);
       setOtpSent(true);
     } catch (error) {
-      console.error('Send OTP error:', error);
-    } finally {
-      setIsLoading(false);
+      toast.error(
+        extractError(error) || 'Failed to send OTP. Please try again.'
+      );
     }
   };
 
   const onSubmit = async (data: ResetPasswordFormData) => {
-    setIsLoading(true);
     try {
-      console.log('Reset password data:', data);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await resetPassword(data).unwrap();
+      toast.success(response.message);
       setIsSuccess(true);
     } catch (error) {
-      console.error('Reset password error:', error);
-    } finally {
-      setIsLoading(false);
+      toast.error(
+        extractError(error) || 'Password reset failed. Please try again.'
+      );
     }
   };
+
+  const isLoading = isSendingOtp || isResettingPassword;
 
   if (isSuccess) {
     return (

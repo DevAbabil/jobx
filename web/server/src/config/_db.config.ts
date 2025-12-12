@@ -9,6 +9,7 @@ export enum Collection {
   Newsletter = 'Newsletter',
   Share = 'Share',
   Blog = 'Blog',
+  Otp = 'Otp',
 }
 
 export const connectDB = async () => {

@@ -4,6 +4,7 @@ import * as modules from '@/app/modules';
 const moduleRoutes: Array<Record<string, Router>> = [
   { auth: modules.authRoutes },
   { user: modules.userRoutes },
+  { otp: modules.otpRoutes },
 ];
 
 export default moduleRoutes.reduce((router, module) => {

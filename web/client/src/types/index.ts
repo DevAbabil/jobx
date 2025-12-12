@@ -11,7 +11,7 @@ export interface IUser {
   email: string;
   picture: string | null;
   role: Role;
-  isVerified: boolean;
+  isVerified?: boolean;
   createdAt: string;
   updatedAt: string;
   __v: number;
