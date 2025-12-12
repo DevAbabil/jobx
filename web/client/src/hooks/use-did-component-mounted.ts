@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const useDidComponentMount = () => {
   const [mount, setMount] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     setMount(true);
   }, []);
 
