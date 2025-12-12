@@ -8,53 +8,46 @@ import { ThemeToggle } from './theme-toggle';
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    window.history.pushState({}, '', '/');
-  };
-
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link
-            href="/"
-            className="flex items-center gap-2"
-            onClick={handleLogoClick}
-          >
+          <Link href="/" className="flex items-center gap-2">
             <Code2 className="w-6 h-6 text-accent" />
             <span className="font-bold text-lg">JobX</span>
           </Link>
 
           <div className="hidden md:flex gap-8 items-center">
-            <a
-              href="#features"
+            <Link
+              href="/features"
               className="text-sm hover:text-accent transition"
             >
               Features
-            </a>
-            <a
-              href="#installation"
+            </Link>
+            <Link
+              href="/installation"
               className="text-sm hover:text-accent transition"
             >
               Install
-            </a>
-            <a
-              href="#structure"
+            </Link>
+            <Link
+              href="/structure"
               className="text-sm hover:text-accent transition"
             >
               Structure
-            </a>
-            <a
-              href="#commands"
+            </Link>
+            <Link
+              href="/commands"
               className="text-sm hover:text-accent transition"
             >
               Commands
-            </a>
-            <a href="#config" className="text-sm hover:text-accent transition">
+            </Link>
+            <Link
+              href="/config"
+              className="text-sm hover:text-accent transition"
+            >
               Config
-            </a>
+            </Link>
             <ThemeToggle />
           </div>
 
@@ -72,36 +65,41 @@ const Header = () => {
 
         {menuOpen && (
           <div className="md:hidden pb-4 space-y-2">
-            <a
-              href="#features"
+            <Link
+              href="/features"
               className="block text-sm hover:text-accent transition py-2"
+              onClick={() => setMenuOpen(false)}
             >
               Features
-            </a>
-            <a
-              href="#installation"
+            </Link>
+            <Link
+              href="/installation"
               className="block text-sm hover:text-accent transition py-2"
+              onClick={() => setMenuOpen(false)}
             >
               Install
-            </a>
-            <a
-              href="#structure"
+            </Link>
+            <Link
+              href="/structure"
               className="block text-sm hover:text-accent transition py-2"
+              onClick={() => setMenuOpen(false)}
             >
               Structure
-            </a>
-            <a
-              href="#commands"
+            </Link>
+            <Link
+              href="/commands"
               className="block text-sm hover:text-accent transition py-2"
+              onClick={() => setMenuOpen(false)}
             >
               Commands
-            </a>
-            <a
-              href="#config"
+            </Link>
+            <Link
+              href="/config"
               className="block text-sm hover:text-accent transition py-2"
+              onClick={() => setMenuOpen(false)}
             >
               Config
-            </a>
+            </Link>
           </div>
         )}
       </div>

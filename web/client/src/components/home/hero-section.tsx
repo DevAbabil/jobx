@@ -2,6 +2,7 @@
 
 import { Check, Copy, Github, Sparkles, Terminal } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 
@@ -115,17 +116,14 @@ export default function HeroSection() {
           />
         </div>
         <div className="flex flex-col sm:flex-row gap-4 justify-center mt-16">
-          <Button
-            size="lg"
-            className="bg-accent text-accent-foreground hover:bg-accent/90 text-base"
-            onClick={() => {
-              document
-                .getElementById('installation')
-                ?.scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            Get Started
-          </Button>
+          <Link href="/installation">
+            <Button
+              size="lg"
+              className="bg-accent text-accent-foreground hover:bg-accent/90 text-base"
+            >
+              Get Started
+            </Button>
+          </Link>
           <Button
             size="lg"
             variant="outline"
