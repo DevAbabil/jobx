@@ -12,6 +12,7 @@
 
 ## Features
 
+### CLI Tool
 - AI-powered email generation using the OpenAI API
 - Google Sheets integration for application tracking
 - Optional email submission directly from the CLI
@@ -19,6 +20,14 @@
 - Profile and template system for reusable workflows
 - Application status logging and monitoring
 - Fully written in TypeScript for reliability
+
+### Web Application
+- **Full-Stack Integration**: Modern web application with Next.js frontend and Node.js backend
+- **User Authentication**: Secure JWT-based authentication system
+- **Pro Features**: Premium subscription model with lifetime access
+- **Payment Integration**: SSLCommerz payment gateway for Bangladeshi users
+- **Dashboard**: User-friendly dashboard for managing applications and settings
+- **Real-time Updates**: Redux-powered state management for seamless user experience
 
 ## Quick Start
 
@@ -138,23 +147,162 @@ npm run build      # Build for production
 
 ```
 jobx/
-├── src/
-│   ├── cli/           # Command definitions
-│   ├── core/          # Core logic
-│   ├── types/         # TypeScript types
-│   ├── utils/         # Utility functions
-│   └── constants/     # Constant values
-├── scripts/           # Build and support scripts
-├── docs/              # Documentation site
-└── dist/              # Compiled output
+├── src/                    # CLI Source Code
+│   ├── cli/               # Command definitions
+│   ├── core/              # Core logic
+│   ├── types/             # TypeScript types
+│   ├── utils/             # Utility functions
+│   └── constants/         # Constant values
+├── web/                   # Web Application
+│   ├── client/            # Next.js Frontend
+│   │   ├── src/app/       # App router pages
+│   │   ├── src/components/# React components
+│   │   ├── src/redux/     # Redux store & API
+│   │   └── src/types/     # TypeScript types
+│   └── server/            # Node.js Backend
+│       ├── src/app/       # Express application
+│       ├── src/config/    # Configuration files
+│       └── src/shared/    # Shared utilities
+├── scripts/               # Build and support scripts
+├── data/                  # Sample configuration files
+└── dist/                  # Compiled CLI output
 ```
+
+## Web Application
+
+### Architecture
+
+The JobX web application consists of two main components:
+
+#### Frontend (Next.js)
+- **Framework**: Next.js 14 with App Router
+- **Styling**: Tailwind CSS with custom components
+- **State Management**: Redux Toolkit with RTK Query
+- **Authentication**: JWT-based with secure cookie storage
+- **Payment UI**: Integrated SSLCommerz payment interface
+
+#### Backend (Node.js)
+- **Framework**: Express.js with TypeScript
+- **Database**: MongoDB with Mongoose ODM
+- **Authentication**: JWT tokens with refresh mechanism
+- **Payment Gateway**: SSLCommerz integration for BDT payments
+- **API Architecture**: RESTful API with modular route structure
+
+### Payment Integration
+
+JobX Pro features are available through a **one-time payment of ৳500** with **lifetime access**.
+
+#### SSLCommerz Integration Features:
+- **Secure Payment Processing**: Industry-standard SSL encryption
+- **Multiple Payment Methods**: Mobile banking, cards, and net banking
+- **Bangladeshi Currency**: Native BDT support
+- **Real-time Status Updates**: Automatic payment verification
+- **Redirect Handling**: Success, failure, and cancellation flows
+
+#### Payment Flow:
+1. User clicks "Subscribe to Pro" in dashboard
+2. Enters phone number for payment verification
+3. Redirects to SSLCommerz payment gateway
+4. Completes payment using preferred method
+5. Automatic redirect back to JobX with status update
+6. Pro features activated immediately upon successful payment
+
+#### Pro Features Include:
+- ✅ Advanced job search filters
+- ✅ Priority application processing  
+- ✅ Unlimited job applications
+- ✅ Premium support
+
+### Getting Started with Web App
+
+#### Prerequisites
+- Node.js 18 or later
+- MongoDB database
+- SSLCommerz merchant account (for payments)
+
+#### Environment Setup
+
+**Backend** (`web/server/.env`):
+```env
+# Server Configuration
+PORT=8080
+NODE_ENV=development
+
+# Database
+DB_URI=mongodb://localhost:27017
+DB_NAME=jobx_db
+DB_USER=your_db_user
+DB_PASS=your_db_password
+
+# JWT Secrets
+JWT_ACCESS_SECRET=your_access_secret
+JWT_REFRESH_SECRET=your_refresh_secret
+
+# SSLCommerz Configuration
+SSLC_STORE_ID=your_store_id
+SSLC_PASS=your_store_password
+JOBX_PRO_PRICE=500
+
+# URLs
+FRONTEND_URL=http://localhost:3000
+BACKEND_URL=http://localhost:8080
+```
+
+**Frontend** (`web/client/.env.local`):
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8080/api
+```
+
+#### Installation & Running
+
+```bash
+# Install dependencies
+cd web/server && npm install
+cd ../client && npm install
+
+# Start backend server
+cd web/server && npm run dev
+
+# Start frontend (in another terminal)
+cd web/client && npm run dev
+```
+
+The web application will be available at:
+- **Frontend**: http://localhost:3000
+- **Backend API**: http://localhost:8080/api
+
+### API Endpoints
+
+#### Authentication
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `POST /api/auth/refresh` - Refresh JWT token
+
+#### Payment
+- `POST /api/payment/intent` - Create payment intent
+- `POST /api/payment/update-status` - Update payment status
+
+#### User Management
+- `GET /api/user/me` - Get user profile
+- `PUT /api/user/profile` - Update user profile
+- `PUT /api/user/change-password` - Change password
 
 ## Security
 
-- All credentials are stored locally within your project.
-- API keys are only transmitted to their respective services.
-- OpenAI-powered email generation is executed locally using your API key.
-- Google Sheets integration uses service account authentication for secure access.
+### CLI Tool
+- All credentials are stored locally within your project
+- API keys are only transmitted to their respective services
+- OpenAI-powered email generation is executed locally using your API key
+- Google Sheets integration uses service account authentication for secure access
+
+### Web Application
+- **JWT Authentication**: Secure token-based authentication with refresh mechanism
+- **Password Hashing**: Bcrypt encryption for user passwords
+- **CORS Protection**: Configured cross-origin resource sharing
+- **Input Validation**: Zod schema validation for all API endpoints
+- **Payment Security**: SSLCommerz PCI DSS compliant payment processing
+- **Environment Variables**: Sensitive data stored in environment configuration
+- **Database Security**: MongoDB connection with authentication and encryption
 
 ## Contributing
 
