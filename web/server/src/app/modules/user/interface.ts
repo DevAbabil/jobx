@@ -12,6 +12,7 @@ export interface IUser {
   picture: string | null;
   role: Role;
   isVerified?: boolean;
+  isPro?: boolean;
   verificationToken?: string;
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;

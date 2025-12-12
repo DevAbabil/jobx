@@ -10,7 +10,7 @@ export const zPaymentIntentSchema = z.object({
 export const zPaymentStatusUpdateSchema = z.object({
   status: z.enum([
     PyamentStatus.SUCCESS,
-    PyamentStatus.FILED,
+    PyamentStatus.FAILED,
     PyamentStatus.PENDING,
   ]),
 });

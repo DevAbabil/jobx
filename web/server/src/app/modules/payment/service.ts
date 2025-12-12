@@ -1,61 +1,67 @@
 import crypto from 'node:crypto';
-import { SslCommerzPayment } from 'sslcommerz';
 import { AppError } from '@/app/errors';
 import { ENV } from '@/config';
-import { HTTP_CODE } from '@/shared';
+import { HTTP_CODE, StripePayment } from '@/shared';
 import type { IUser } from '../user/interface';
 import { PyamentStatus } from './interface';
 import { Payment } from './model';
 
-const sslcz = new SslCommerzPayment(ENV.SSLC_STORE_ID, ENV.SSLC_PASS, false);
+const stripe = new StripePayment(ENV.STRIPE_SECRET_KEY);
 
 export const createIntend = async (phone: string, user: Partial<IUser>) => {
-  const payment = await Payment.findOne({ user: user._id });
+  // Check if user already has a successful payment
+  const existingPayment = await Payment.findOne({ user: user._id });
 
-  if (payment?.status === PyamentStatus.SUCCESS)
+  if (existingPayment?.status === PyamentStatus.SUCCESS) {
     throw new AppError(
       HTTP_CODE.BAD_REQUEST,
-      `You've already subscribed pro features`
+      'You have already subscribed to Pro features'
     );
+  }
 
   const txrn_id = crypto.randomBytes(12).toString('hex');
 
-  const paymentIntentInfo = {
-    // Transaction Info
-    tran_id: txrn_id,
-    total_amount: ENV.JOBX_PRO_PRICE,
-    currency: 'BDT',
-
-    // Redirect URLs
-    success_url: `${ENV.FRONTEND_URL}/payment/succeed`,
-    fail_url: `${ENV.FRONTEND_URL}/payment/failed`,
-    cancel_url: `${ENV.FRONTEND_URL}/payment/canceled`,
-    ipn_url: `${ENV.BACKEND_URL}/api/payment/ipn`,
-
-    // Customer Info
-    cus_name: user.name,
-    cus_email: user.email,
-    cus_phone: phone,
-
-    // Shipping Info
-    shipping_method: 'NO',
-
-    // Product Info
-    product_name: 'Jobx Pro Features',
-  };
-
-  const response = await sslcz.init(paymentIntentInfo);
-
-  if (response.status === 'SUCCESS' && response?.GatewayPageURL) {
-    await Payment.create({
-      amout: ENV.JOBX_PRO_PRICE,
-      status: PyamentStatus.PENDING,
+  try {
+    const response = await stripe.createCheckoutSession({
+      amount: ENV.JOBX_PRO_PRICE,
+      currency: 'USD',
       txrn_id,
-      user: user._id,
+      customer_email: user.email || '',
+      customer_name: user.name || '',
+      customer_phone: phone,
     });
-    return {
-      GatewayPageURL: response?.GatewayPageURL,
-    };
+
+    if (response.status === 'SUCCESS' && response.checkout_url) {
+      // Create or update payment record
+      if (existingPayment) {
+        existingPayment.status = PyamentStatus.PENDING;
+        existingPayment.txrn_id = txrn_id;
+        await existingPayment.save();
+      } else {
+        await Payment.create({
+          amount: ENV.JOBX_PRO_PRICE,
+          status: PyamentStatus.PENDING,
+          txrn_id,
+          user: user._id,
+        });
+      }
+
+      return {
+        GatewayPageURL: response.checkout_url,
+        session_id: response.session_id,
+      };
+    } else {
+      throw new AppError(
+        HTTP_CODE.BAD_REQUEST,
+        'Failed to create Stripe checkout session'
+      );
+    }
+  } catch (error) {
+    console.error('Stripe payment error:', error);
+    throw new AppError(
+      HTTP_CODE.INTERNAL_SERVER_ERROR,
+      'Payment processing failed'
+    );
   }
 };
 
@@ -73,13 +79,26 @@ export const updatePaymentStatus = async (
   payment.status = status;
   await payment.save();
 
-  // If payment is successful, you might want to update user's pro status
-  // This depends on your User model structure
+  // If payment is successful, update user's pro status
   if (status === PyamentStatus.SUCCESS) {
-    // TODO: Update user's isPro or hasLifetimeAccess field
-    // const User = require('../user/model'); // Import user model
-    // await User.findByIdAndUpdate(payment.user, { isPro: true });
+    const { User } = await import('../user/model');
+    await User.findByIdAndUpdate(payment.user, { isPro: true });
   }
 
   return payment;
+};
+
+export const getUserPaymentStatus = async (userId: string) => {
+  const payment = await Payment.findOne({ user: userId });
+  const { User } = await import('../user/model');
+  const user = await User.findById(userId);
+
+  return {
+    hasPayment: !!payment,
+    isPaid: payment?.status === PyamentStatus.SUCCESS,
+    isPro: user?.isPro || false,
+    paymentStatus: payment?.status || null,
+    paymentAmount: payment?.amount || null,
+    transactionId: payment?.txrn_id || null,
+  };
 };

@@ -34,9 +34,8 @@ export const ENV = envsafe({
 
   VERCEL: str({ default: '0' }),
 
-  SSLC_STORE_ID: str(),
-  SSLC_PASS: str(),
   JOBX_PRO_PRICE: num(),
+  STRIPE_SECRET_KEY: str(),
 });
 
 export const IS_VERCEL = ENV.VERCEL === '1';

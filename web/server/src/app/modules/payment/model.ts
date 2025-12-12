@@ -3,7 +3,7 @@ import { Collection } from '@/config';
 import { type IPayment, PyamentStatus } from './interface';
 
 const paymentSchema = new Schema<IPayment>({
-  amout: {
+  amount: {
     type: Number,
     required: true,
     min: 0,

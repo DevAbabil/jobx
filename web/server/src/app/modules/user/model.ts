@@ -29,6 +29,10 @@ const userSchema = new Schema<IUser>(
       type: Boolean,
       default: false,
     },
+    isPro: {
+      type: Boolean,
+      default: false,
+    },
     verificationToken: {
       type: String,
     },
