@@ -5,11 +5,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "sh scripts/app.sh build",
-    "dev": "sh scripts/app.sh dev",
-    "start": "sh scripts/app.sh start",
-    "push": "sh ./scripts/push.sh",
-    "push:f": "sh ./scripts/push.sh force"
+    "build": "tsc --build && tsc-alias",
+    "dev": "NODE_ENV=development tsx --watch --require tsconfig-paths/register ./src/index.ts",
+    "start": "NODE_ENV=production node ./dist/index.js"
   },
   "keywords": [],
   "author": "",

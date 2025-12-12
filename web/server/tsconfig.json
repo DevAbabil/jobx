@@ -3,6 +3,9 @@
   "compilerOptions": {
     "types": ["node"],
     "baseUrl": ".",
+    "outDir": "./dist",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "paths": {
       "@src/*": ["../../src/*"],
       "@cli/*": ["../../src/cli/*"],
