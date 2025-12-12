@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Reply from <%= adminName %> - DevAbabil</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #eef2ff, #f0fdfa);
+      }
+      .email-container {
+        width: 100%;
+        border: 0;
+        border-spacing: 0;
+        border-collapse: collapse;
+      }
+      .email-container td {
+        padding: 0;
+      }
+      .content-table {
+        width: 650px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        border-spacing: 0;
+        border-collapse: collapse;
+      }
+      .logo {
+        font-size: 32px;
+        font-weight: bold;
+        margin: 0;
+        background: linear-gradient(to right, #60a5fa, #a78bfa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .tagline {
+        font-size: 14px;
+        color: #666;
+        margin: 5px 0 0;
+      }
+      .header-cell {
+        padding: 30px 20px;
+        text-align: center;
+      }
+      .content-cell {
+        padding: 20px;
+      }
+      .greeting {
+        color: #333;
+        margin-bottom: 10px;
+      }
+      .paragraph {
+        color: #444;
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 10px 0;
+      }
+      .reply-content {
+        margin: 12px 0;
+        padding: 14px;
+        background: #f0f9ff;
+        border-left: 4px solid #60a5fa;
+        border-radius: 6px;
+        color: #333;
+        font-size: 14px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+      }
+      .original-message {
+        margin: 12px 0;
+        padding: 14px;
+        background: #f9fafb;
+        border-left: 4px solid #a78bfa;
+        border-radius: 6px;
+        color: #333;
+        font-size: 14px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+      }
+      .message-label {
+        margin: 6px 0;
+        color: #6d28d9;
+        font-weight: bold;
+      }
+      .button-container {
+        text-align: center;
+        margin: 25px 0;
+      }
+      .button {
+        display: inline-block;
+        padding: 12px 20px;
+        background: linear-gradient(to right, #60a5fa, #a78bfa);
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+      .footer {
+        background: #f3f4f6;
+        border-top: 1px solid #e5e7eb;
+        padding: 20px;
+        border-radius: 0 0 12px 12px;
+        text-align: center;
+      }
+      .footer-text {
+        font-size: 13px;
+        color: #666;
+        margin: 0 0 10px;
+      }
+      .social-links {
+        font-size: 13px;
+        margin: 0;
+      }
+      .social-link {
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .portfolio-link {
+        color: #2563eb;
+      }
+      .github-link {
+        color: #333;
+      }
+      .gitlab-link {
+        color: #e24329;
+      }
+      .linkedin-link {
+        color: #0a66c2;
+      }
+      .twitter-link {
+        color: #1da1f2;
+      }
+      .copyright {
+        font-size: 12px;
+        color: #aaa;
+        margin-top: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <table class="email-container">
+      <tr>
+        <td align="center">
+          <table class="content-table">
+            <tr>
+              <td class="header-cell" align="center">
+                <!-- LOGO -->
+                <h1 class="logo">DevAbabil</h1>
+                <p class="tagline">💬 Reply to your message</p>
+              </td>
+            </tr>
+            <tr>
+              <td class="content-cell">
+                <h2 class="greeting">Hello!</h2>
+                <p class="paragraph">
+                  Thank you for reaching out to me. I've reviewed your message
+                  and here's my response:
+                </p>
+
+                <div class="reply-content"><%- content %></div>
+
+                <% if (originalMessage) { %>
+                <p class="message-label">Your Original Message:</p>
+                <div class="original-message"><%= originalMessage %></div>
+                <% } %>
+
+                <p class="paragraph">
+                  Feel free to continue our conversation by replying to this
+                  email. You can also explore my work and connect with me
+                  through my profiles below:
+                </p>
+
+                <!-- Explore Button -->
+                <div class="button-container">
+                  <a href="https://devababil.com" class="button">
+                    🔗 Visit My Portfolio
+                  </a>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="footer" align="center">
+                <p class="footer-text">🌐 Stay connected with me:</p>
+                <p class="social-links">
+                  <a
+                    href="https://devababil.com"
+                    class="social-link portfolio-link"
+                    >Portfolio</a
+                  >
+                  •
+                  <a
+                    href="https://github.com/DevAbabil"
+                    class="social-link github-link"
+                    >GitHub</a
+                  >
+                  •
+                  <a
+                    href="https://gitlab.com/DevAbabil"
+                    class="social-link gitlab-link"
+                    >GitLab</a
+                  >
+                  •
+                  <a
+                    href="https://linkedin.com/in/DevAbabil"
+                    class="social-link linkedin-link"
+                    >LinkedIn</a
+                  >
+                  •
+                  <a
+                    href="https://twitter.com/DevAbabil"
+                    class="social-link twitter-link"
+                    >Twitter</a
+                  >
+                </p>
+                <p class="copyright">
+                  © <%= new Date().getFullYear() %> DevAbabil. All rights
+                  reserved.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

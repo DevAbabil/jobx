@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Newsletter - DevAbabil</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: linear-gradient(135deg, #dbeafe, #ede9fe);
+      }
+      .email-container {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .content-table {
+        width: 650px;
+        background-color: #ffffff;
+        border-radius: 14px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
+      .header-cell {
+        padding: 40px 20px 30px;
+        text-align: center;
+        background: linear-gradient(to right, #60a5fa, #a78bfa);
+        color: #fff;
+      }
+      .logo {
+        font-size: 34px;
+        font-weight: 800;
+        margin: 0;
+        letter-spacing: 0.5px;
+      }
+      .tagline {
+        font-size: 14px;
+        color: #e0e7ff;
+        margin: 8px 0 0;
+      }
+      .content-cell {
+        padding: 28px;
+        color: #333;
+      }
+      .heading {
+        color: #1f2937;
+        margin-bottom: 12px;
+        font-size: 22px;
+      }
+      .message {
+        white-space: pre-wrap;
+        padding: 14px;
+        background: #f9fafb;
+        border-left: 4px solid #60a5fa;
+        border-radius: 6px;
+        color: #333;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-top: 8px;
+      }
+      .button-container {
+        text-align: center;
+        margin: 28px 0 10px;
+      }
+      .button {
+        display: inline-block;
+        padding: 14px 26px;
+        font-size: 15px;
+        font-weight: 600;
+        border-radius: 10px;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+      }
+      .button:hover {
+        transform: translateY(-2px);
+        opacity: 0.95;
+      }
+      .verify-button {
+        background: linear-gradient(to right, #22c55e, #16a34a);
+        color: #ffffff;
+        box-shadow: 0 4px 10px rgba(34, 197, 94, 0.3);
+      }
+      .portfolio-button {
+        background: linear-gradient(to right, #60a5fa, #a78bfa);
+        color: #ffffff;
+        box-shadow: 0 4px 10px rgba(96, 165, 250, 0.3);
+      }
+      .expiry-note {
+        text-align: center;
+        font-size: 13px;
+        color: #b91c1c;
+        margin-top: 8px;
+        font-style: italic;
+      }
+      .footer {
+        background: #f3f4f6;
+        border-top: 1px solid #e5e7eb;
+        padding: 24px 20px;
+        text-align: center;
+      }
+      .footer-text {
+        font-size: 14px;
+        color: #4b5563;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+      .social-links {
+        font-size: 13px;
+        margin: 0;
+      }
+      .social-link {
+        text-decoration: none;
+        margin: 0 4px;
+        font-weight: 500;
+      }
+      .portfolio-link {
+        color: #2563eb;
+      }
+      .github-link {
+        color: #333;
+      }
+      .gitlab-link {
+        color: #e24329;
+      }
+      .linkedin-link {
+        color: #0a66c2;
+      }
+      .twitter-link {
+        color: #1da1f2;
+      }
+      .footer-divider {
+        border-top: 1px solid #e5e7eb;
+        margin: 20px 0;
+      }
+      .footer-bottom {
+        font-size: 12px;
+        color: #9ca3af;
+        margin-top: 10px;
+      }
+      .unsubscribe-link {
+        color: #6b7280;
+        text-decoration: none;
+      }
+      .unsubscribe-link:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <table class="email-container">
+      <tr>
+        <td align="center">
+          <table class="content-table">
+            <!-- Header -->
+            <tr>
+              <td class="header-cell">
+                <h1 class="logo">DevAbabil</h1>
+                <p class="tagline">🚀 Welcome to My Newsletter</p>
+              </td>
+            </tr>
+
+            <!-- Content -->
+            <tr>
+              <td class="content-cell">
+                <h2 class="heading">🎉 Hello <%= name || "Subscriber" %>!</h2>
+                <p>
+                  Thanks for joining my newsletter community! You’ll receive
+                  exclusive updates, coding projects, and developer insights
+                  directly in your inbox at:
+                </p>
+                <p class="message"><%= email %></p>
+
+                <div class="button-container">
+                  <a href="<%= verifyLink %>" class="button verify-button">
+                    ✅ Verify Your Subscription
+                  </a>
+                  <p class="expiry-note">
+                    ⚠️ This link will expire in 24 hours.
+                  </p>
+                </div>
+
+                <div class="button-container">
+                  <a
+                    href="https://devababil.com"
+                    class="button portfolio-button"
+                  >
+                    🌐 Visit My Portfolio
+                  </a>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+              <td class="footer">
+                <p class="footer-text">🔗 Stay connected with me</p>
+                <p class="social-links">
+                  <a
+                    href="https://devababil.com"
+                    class="social-link portfolio-link"
+                    >Portfolio</a
+                  >
+                  •
+                  <a
+                    href="https://github.com/DevAbabil"
+                    class="social-link github-link"
+                    >GitHub</a
+                  >
+                  •
+                  <a
+                    href="https://gitlab.com/DevAbabil"
+                    class="social-link gitlab-link"
+                    >GitLab</a
+                  >
+                  •
+                  <a
+                    href="https://linkedin.com/in/DevAbabil"
+                    class="social-link linkedin-link"
+                    >LinkedIn</a
+                  >
+                  •
+                  <a
+                    href="https://twitter.com/DevAbabil"
+                    class="social-link twitter-link"
+                    >Twitter</a
+                  >
+                </p>
+
+                <div class="footer-divider"></div>
+
+                <p class="footer-bottom">
+                  © <%= new Date().getFullYear() %> DevAbabil. All rights
+                  reserved.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
