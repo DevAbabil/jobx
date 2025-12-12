@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { paymentApi } from '@/redux';
+import { extractError } from '@/utils';
 
 const PaymentCanceledPage = () => {
   const [message, setMessage] = useState('Processing cancellation...');
@@ -14,18 +15,17 @@ const PaymentCanceledPage = () => {
   useEffect(() => {
     const handlePaymentCancellation = async () => {
       try {
-        const result = await updatePaymentStatus({ status: 'FILED' }).unwrap();
+        const result = await updatePaymentStatus({ status: 'FAILED' }).unwrap();
 
         if (result.success) {
           setMessage('Payment was canceled. You can try again anytime.');
         } else {
           setMessage(result.message || 'Failed to update payment status');
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error('Error updating payment status:', error);
         setMessage(
-          error?.data?.message ||
-            'Something went wrong. Please contact support.'
+          extractError(error) || 'Something went wrong. Please contact support.'
         );
       }
     };

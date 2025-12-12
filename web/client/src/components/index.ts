@@ -9,6 +9,8 @@ export { default as FeaturesSection } from './home/features-section';
 export { default as FolderStructureSection } from './home/folder-structure-section';
 export { default as HeroSection } from './home/hero-section';
 export { default as InstallationSection } from './home/installation-section';
+// Payment Components
+export * from './payment';
 // UI Components
 export * from './ui/button';
 export * from './ui/card';

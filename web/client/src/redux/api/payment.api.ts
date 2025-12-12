@@ -10,17 +10,30 @@ interface PaymentIntentResponse {
 }
 
 interface PaymentStatusUpdateRequest {
-  status: 'SUCCESS' | 'FILED' | 'PENDING';
+  status: 'SUCCESS' | 'FAILED' | 'PENDING';
+}
+
+interface PaymentSessionVerifyRequest {
+  sessionId: string;
 }
 
 interface PaymentStatusUpdateResponse {
   txrn_id: string;
-  amout: number;
+  amount: number;
   status: string;
   user: string;
 }
 
-export default baseApi.injectEndpoints({
+interface PaymentStatusResponse {
+  hasPayment: boolean;
+  isPaid: boolean;
+  isPro: boolean;
+  paymentStatus: string | null;
+  paymentAmount: number | null;
+  transactionId: string | null;
+}
+
+const paymentApi = baseApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
     createPaymentIntent: builder.mutation<
@@ -44,5 +57,32 @@ export default baseApi.injectEndpoints({
       }),
       invalidatesTags: ['USER'], // Invalidate user data since payment status affects user
     }),
+    getPaymentStatus: builder.query<IResponse<PaymentStatusResponse>, void>({
+      query: () => ({
+        url: '/payment/status',
+        method: 'GET',
+      }),
+      providesTags: ['USER'],
+    }),
+    verifyPaymentSession: builder.mutation<
+      IResponse<PaymentStatusUpdateResponse>,
+      PaymentSessionVerifyRequest
+    >({
+      query: (body) => ({
+        url: '/payment/verify-session',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['USER'], // Invalidate user data since payment status affects user
+    }),
   }),
 });
+
+export const {
+  useCreatePaymentIntentMutation,
+  useUpdatePaymentStatusMutation,
+  useGetPaymentStatusQuery,
+  useVerifyPaymentSessionMutation,
+} = paymentApi;
+
+export default paymentApi;

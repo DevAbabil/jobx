@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { authApi, useAppDispatch, userApi } from '@/redux';
-import { Avatar } from '../ui/avatar';
+import { extractError } from '@/utils';
 import { Button } from '../ui/button';
 import { ThemeToggle } from './theme-toggle';
 
@@ -23,7 +23,7 @@ const Header = () => {
       toast.success('Signed out successfully');
       router.push('/login');
     } catch (error) {
-      toast.error('Failed to sign out');
+      toast.error(extractError(error) || 'Failed to sign out');
     }
   };
 

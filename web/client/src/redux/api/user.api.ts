@@ -1,7 +1,7 @@
 import type { IResponse, IUser } from '@/types';
 import baseApi from '../_baseApi';
 
-export default baseApi.injectEndpoints({
+const userApi = baseApi.injectEndpoints({
   overrideExisting: true,
   endpoints: (builder) => ({
     myProfile: builder.query<IResponse<IUser>, void>({
@@ -43,3 +43,12 @@ export default baseApi.injectEndpoints({
     }),
   }),
 });
+
+export const {
+  useMyProfileQuery,
+  useUpdatePictureMutation,
+  useUpdateProfileMutation,
+  useChangePasswordMutation,
+} = userApi;
+
+export default userApi;

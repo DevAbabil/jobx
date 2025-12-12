@@ -14,3 +14,7 @@ export const zPaymentStatusUpdateSchema = z.object({
     PyamentStatus.PENDING,
   ]),
 });
+
+export const zPaymentSessionVerifySchema = z.object({
+  sessionId: z.string().min(1, 'Session ID is required'),
+});

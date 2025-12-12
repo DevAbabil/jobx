@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { paymentApi } from '@/redux';
+import { extractError } from '@/utils';
 
 const PaymentFailedPage = () => {
   const [message, setMessage] = useState('Processing payment status...');
@@ -14,18 +15,17 @@ const PaymentFailedPage = () => {
   useEffect(() => {
     const handlePaymentFailure = async () => {
       try {
-        const result = await updatePaymentStatus({ status: 'FILED' }).unwrap();
+        const result = await updatePaymentStatus({ status: 'FAILED' }).unwrap();
 
         if (result.success) {
           setMessage('Payment failed. Please try again or contact support.');
         } else {
           setMessage(result.message || 'Failed to update payment status');
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error('Error updating payment status:', error);
         setMessage(
-          error?.data?.message ||
-            'Something went wrong. Please contact support.'
+          extractError(error) || 'Something went wrong. Please contact support.'
         );
       }
     };

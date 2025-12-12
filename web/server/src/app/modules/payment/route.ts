@@ -20,4 +20,21 @@ router.post(
   controller.updatePaymentStatus
 );
 
+router.post(
+  '/verify-session',
+  checkAuth(Role.USER),
+  validateRequest(validator.zPaymentSessionVerifySchema),
+  controller.verifyPaymentSession
+);
+
+router.get('/status', checkAuth(Role.USER), controller.getPaymentStatus);
+
+router.post('/webhook', controller.handleStripeWebhook);
+
+router.post(
+  '/test-success',
+  checkAuth(Role.USER),
+  controller.testPaymentSuccess
+);
+
 export default router;

@@ -59,6 +59,21 @@ export class StripePayment {
     }
   }
 
+  public async verifyCheckoutSession(sessionId: string) {
+    try {
+      const session = await this.stripe.checkout.sessions.retrieve(sessionId);
+      return {
+        status: session.status,
+        payment_status: session.payment_status,
+        session,
+        metadata: session.metadata,
+      };
+    } catch (error) {
+      console.error('Stripe Session Verification Error:', error);
+      throw error;
+    }
+  }
+
   public async createCheckoutSession(payload: {
     amount: number;
     currency: string;

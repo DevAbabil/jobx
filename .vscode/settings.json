@@ -16,5 +16,6 @@
   "[jsonc]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  "typescript.autoClosingTags": false
+  "typescript.autoClosingTags": false,
+  "kiroAgent.configureMCP": "Disabled"
 }
