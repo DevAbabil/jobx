@@ -1,21 +1,16 @@
 'use client';
 import { Code2, Menu, X } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { toast } from 'sonner';
-import { authApi, useAppDispatch, userApi } from '@/redux';
-import { extractError } from '@/utils';
+import { userApi } from '@/redux';
 import { Button } from '../ui/button';
 import { ThemeToggle } from './theme-toggle';
 
 const Header = () => {
-  const dispatch = useAppDispatch();
   const [menuOpen, setMenuOpen] = useState(false);
-  const router = useRouter();
   const pathname = usePathname();
   const { data: user } = userApi.useMyProfileQuery();
-  const [signout] = authApi.useSignoutMutation();
 
   const isActive = (path: string) => {
     if (path === '/dashboard') {
@@ -34,17 +29,6 @@ const Header = () => {
       : 'hover:text-accent';
 
     return `${baseClasses} ${activeClasses}`;
-  };
-
-  const handleSignOut = async () => {
-    try {
-      await signout().unwrap();
-      dispatch(userApi.util.resetApiState());
-      toast.success('Signed out successfully');
-      router.push('/login');
-    } catch (error) {
-      toast.error(extractError(error) || 'Failed to sign out');
-    }
   };
 
   return (
@@ -83,21 +67,10 @@ const Header = () => {
                 Dashboard
               </Link>
             )}
-            {user ? (
-              <Link
-                href={'/'}
-                onClick={() => {
-                  handleSignOut();
-                  setMenuOpen(false);
-                }}
-              >
-                Logout
-              </Link>
-            ) : (
+            {!user && (
               <Link
                 href="/login"
-                className="block text-sm hover:text-accent transition py-2"
-                onClick={() => setMenuOpen(false)}
+                className="text-sm hover:text-accent transition"
               >
                 Login
               </Link>
@@ -164,17 +137,7 @@ const Header = () => {
                 Dashboard
               </Link>
             )}
-            {user ? (
-              <Link
-                href={'/'}
-                onClick={() => {
-                  handleSignOut();
-                  setMenuOpen(false);
-                }}
-              >
-                Logout
-              </Link>
-            ) : (
+            {!user && (
               <Link
                 href="/login"
                 className="block text-sm hover:text-accent transition py-2"
