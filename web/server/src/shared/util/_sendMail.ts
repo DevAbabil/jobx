@@ -1,11 +1,11 @@
-import nodemailer from "nodemailer";
-import ejs from "ejs";
-import { join } from "path";
-import { ENV } from "@/config";
-import { TSendMail } from "@/interface";
+import { join } from 'node:path';
+import ejs from 'ejs';
+import nodemailer from 'nodemailer';
+import { ENV } from '@/config';
+import type { TSendMail } from '@/interface';
 
 export const mailTransporter = nodemailer.createTransport({
-  service: "Gmail",
+  service: 'Gmail',
   secure: true,
   port: 465,
   auth: {
@@ -18,7 +18,7 @@ export const sendMail: TSendMail = async (options) => {
   const { subject, to, template } = options;
 
   const html = await ejs.renderFile(
-    join(process.cwd(), "src", "shared", "templates", `${template?.name}.ejs`),
+    join(process.cwd(), 'src', 'shared', 'templates', `${template?.name}.ejs`),
     template?.data
   );
 

@@ -1,4 +1,4 @@
-import { Role } from "@/app/modules/user/interface";
+import { Role } from '@/app/modules/user/interface';
 
 export interface IJwtUserPayload {
   userId: string;

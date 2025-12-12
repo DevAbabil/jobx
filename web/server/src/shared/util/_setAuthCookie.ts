@@ -1,5 +1,5 @@
-import { ENV } from "@/config";
-import { Response } from "express";
+import type { Response } from 'express';
+import { ENV } from '@/config';
 
 export const setAuthCookie = (
   res: Response,
@@ -9,18 +9,18 @@ export const setAuthCookie = (
   }
 ) => {
   if (tokenInfo.accessToken) {
-    res.cookie("accessToken", tokenInfo.accessToken, {
+    res.cookie('accessToken', tokenInfo.accessToken, {
       httpOnly: true,
       secure: true,
-      sameSite: "none",
+      sameSite: 'none',
       maxAge: ENV.ACCESS_COOKIE_EXPIRE_TIME,
     });
   }
   if (tokenInfo.refreshToken) {
-    res.cookie("refreshToken", tokenInfo.refreshToken, {
+    res.cookie('refreshToken', tokenInfo.refreshToken, {
       httpOnly: true,
       secure: true,
-      sameSite: "none",
+      sameSite: 'none',
       maxAge: ENV.REFRESH_COOKIE_EXPIRE_TIME,
     });
   }

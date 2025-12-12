@@ -1,13 +1,13 @@
 import fs from 'node:fs';
 import { resolve } from 'node:path';
+import * as prompts from '@src/constants/prompts';
+import data from '@src/core/data';
+import { Efile, type IJobxApply, type TLocation } from '@src/types';
+import { logger, ROOT } from '@utils';
 import { markdownToHtml } from 'mth-htm';
 import { createTransport, type Transporter } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import OpenAIBase from 'openai';
-import * as prompts from '@/constants/prompts';
-import data from '@/core/data';
-import { Efile, type IJobxApply, type TLocation } from '@/types';
-import { logger, ROOT } from '@/utils';
 import spreadsheets from './spreadsheets';
 
 class Email {

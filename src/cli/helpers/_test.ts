@@ -1,9 +1,9 @@
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { Efile } from '@src/types';
+import { logger, ROOT } from '@utils';
 import colors from 'colors';
 import z, { ZodError, type ZodTypeAny } from 'zod';
-import { Efile } from '@/types';
-import { logger, ROOT } from '@/utils';
 
 const ZJobxCredentialsSchema = z
   .object({
@@ -175,22 +175,22 @@ const test = async (testFiles: (keyof typeof Efile)[]) => {
     Record<keyof typeof Efile, { data: unknown; schema: ZodTypeAny }>
   > = {
     [Efile['jobx.apply.json']]: {
-      data: (await import('@/core/data')).default.apply,
+      data: (await import('@src/core/data')).default.apply,
       schema: ZJobxApplySchema,
     },
     [Efile['jobx.config.json']]: {
-      data: (await import('@/core/data')).default.config,
+      data: (await import('@src/core/data')).default.config,
       schema: ZJobxConfigSchema,
     },
     [Efile['jobx.credentials.json']]: {
-      data: (await import('@/core/data')).default.credentials,
+      data: (await import('@src/core/data')).default.credentials,
       schema: ZJobxCredentialsSchema,
     },
   };
 
   let err: boolean = false;
 
-  const { AditionalFile } = (await import('@/core/data')).default;
+  const { AditionalFile } = (await import('@src/core/data')).default;
 
   if (!validateTextFile(AditionalFile.context)) {
     err = true;

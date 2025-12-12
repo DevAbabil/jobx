@@ -5,8 +5,8 @@ import {
   type IJobxApply,
   type IJobxConfig,
   type IJobxCredentials,
-} from '@/types';
-import { loadJson, ROOT } from '@/utils';
+} from '@src/types';
+import { loadJson, ROOT } from '@utils/index';
 
 const credentials: IJobxCredentials = loadJson<IJobxCredentials>(
   Efile['jobx.credentials.json']

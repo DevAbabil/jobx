@@ -1,3 +1,3 @@
-export * from '@/core/data';
-export { default as email } from '@/core/lib/email';
-export { default as spreadsheets } from '@/core/lib/spreadsheets';
+export * from '@src/core/data';
+export { default as email } from '@src/core/lib/email';
+export { default as spreadsheets } from '@src/core/lib/spreadsheets';

@@ -1,7 +1,7 @@
-import { Role } from "@/app/modules/user/interface";
-import { User } from "@/app/modules/user/model";
-import { ENV } from "@/config";
-import bcryptjs from "bcryptjs";
+import bcryptjs from 'bcryptjs';
+import { Role } from '@/app/modules/user/interface';
+import { User } from '@/app/modules/user/model';
+import { ENV } from '@/config';
 
 const userData = {
   name: ENV.ROOT_ADMIN_NAME,
@@ -25,7 +25,7 @@ export const runSeed = async () => {
       password: hashPassword,
       role: Role.SUPPER_ADMIN,
     });
-    console.log("SUPPER_ADMIN created!");
+    console.log('SUPPER_ADMIN created!');
   } else {
     await User.findByIdAndUpdate(
       user.id,
@@ -37,6 +37,6 @@ export const runSeed = async () => {
       },
       { runValidators: true }
     );
-    console.log("SUPPER_ADMIN updated!");
+    console.log('SUPPER_ADMIN updated!');
   }
 };

@@ -1,14 +1,14 @@
-import mongoose from "mongoose";
-import { ENV } from "./_env.config";
+import mongoose from 'mongoose';
+import { ENV } from './_env.config';
 
 export enum Collection {
-  Asset = "Asset",
-  GetInTouch = "GetInTouch",
-  Project = "Project",
-  User = "User",
-  Newsletter = "Newsletter",
-  Share = "Share",
-  Blog = "Blog",
+  Asset = 'Asset',
+  GetInTouch = 'GetInTouch',
+  Project = 'Project',
+  User = 'User',
+  Newsletter = 'Newsletter',
+  Share = 'Share',
+  Blog = 'Blog',
 }
 
 export const connectDB = async () => {
@@ -18,9 +18,9 @@ export const connectDB = async () => {
       user: ENV.DB_USER,
       pass: ENV.DB_PASS,
     });
-    console.log("Database connected!");
+    console.log('Database connected!');
   } catch (error) {
-    console.error("Database Connection failed!", error);
+    console.error('Database Connection failed!', error);
     throw error;
   }
 };

@@ -1,7 +1,7 @@
-import { createServer, Server } from "http";
-import app from "@/_app";
-import { ENV } from "@/config";
-import mongoose from "mongoose";
+import { createServer, type Server } from 'node:http';
+import mongoose from 'mongoose';
+import app from '@/_app';
+import { ENV } from '@/config';
 
 class DevAbabilServer {
   protected server: Server;
@@ -9,8 +9,8 @@ class DevAbabilServer {
   constructor() {
     this.server = createServer(app);
 
-    this.server.on("error", (err) => {
-      console.error("Server error:", err);
+    this.server.on('error', (err) => {
+      console.error('Server error:', err);
       this.cleanupAndExit(1);
     });
   }
@@ -33,10 +33,10 @@ class DevAbabilServer {
             else resolve();
           });
         });
-        console.log("Server has been closed");
+        console.log('Server has been closed');
       }
     } catch (error) {
-      console.error("Error during shutdown:", error);
+      console.error('Error during shutdown:', error);
       this.cleanupAndExit(1);
     } finally {
       await mongoose.disconnect();

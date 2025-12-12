@@ -1,11 +1,11 @@
-import app from "@/_app";
-import DevAbabilServer from "@/_server";
-import { connectDB, ENV, IS_VERCEL } from "@/config";
-import { runSeed } from "@/shared";
+import app from '@/_app';
+import DevAbabilServer from '@/_server';
+import { connectDB, ENV, IS_VERCEL } from '@/config';
+import { runSeed } from '@/shared';
 
 const initDB = async () => {
   await connectDB();
-  if (ENV.NODE_ENV === "development") await runSeed();
+  if (ENV.NODE_ENV === 'development') await runSeed();
   return true;
 };
 
@@ -22,15 +22,15 @@ const initDB = async () => {
       server.shutdown();
     };
 
-    process.on("uncaughtException", (err) =>
-      gracefulShutdown("uncaughtException")
+    process.on('uncaughtException', (_err) =>
+      gracefulShutdown('uncaughtException')
     );
-    process.on("unhandledRejection", (err) =>
-      gracefulShutdown("unhandledRejection")
+    process.on('unhandledRejection', (_err) =>
+      gracefulShutdown('unhandledRejection')
     );
 
-    process.on("SIGINT", () => gracefulShutdown("SIGINT"));
-    process.on("SIGTERM", () => gracefulShutdown("SIGTERM"));
+    process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+    process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
   } else {
     await initDB();
   }

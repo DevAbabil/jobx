@@ -18,6 +18,11 @@ export default defineConfig([
     esbuildOptions(options) {
       options.legalComments = 'none';
       options.platform = 'node';
+      options.alias = {
+        '@src': './src',
+        '@cli': './src/cli',
+        '@utils': './src/utils',
+      };
     },
   },
 ]);

@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { TErrorSources, TGenericErrorResponse } from "@/interface";
+import type mongoose from 'mongoose';
+import type { TErrorSources, TGenericErrorResponse } from '@/interface';
 
 export const handlerValidationError = (
   err: mongoose.Error.ValidationError
@@ -8,16 +8,16 @@ export const handlerValidationError = (
 
   const errors = Object.values(err.errors);
 
-  errors.forEach((errorObject: any) =>
+  errors.forEach((errorObject: any) => {
     errorSources.push({
       path: errorObject.path,
       message: errorObject.message,
-    })
-  );
+    });
+  });
 
   return {
     status: 400,
-    message: "Validation Error",
+    message: 'Validation Error',
     errorSources,
   };
 };

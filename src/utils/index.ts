@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { format } from 'date-fns';
-import { default as logger } from '@/utils/logger';
+import { default as logger } from './logger';
 export { logger };
 
 export const ROOT = process.cwd();

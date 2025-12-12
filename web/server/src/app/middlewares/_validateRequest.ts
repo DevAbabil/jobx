@@ -1,5 +1,5 @@
-import { catchAsync } from "@/shared/util";
-import { ZodObject, ZodRawShape } from "zod";
+import type { ZodObject, ZodRawShape } from 'zod';
+import { catchAsync } from '@/shared/util';
 
 export const validateRequest = (zs: ZodObject<ZodRawShape>) =>
   catchAsync(async (req, _, next) => {

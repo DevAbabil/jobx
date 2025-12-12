@@ -1,4 +1,4 @@
-import { TErrorSources, TGenericErrorResponse } from "@/interface";
+import type { TErrorSources, TGenericErrorResponse } from '@/interface';
 
 export const handlerZodError = (err: any): TGenericErrorResponse => {
   const errorSources: TErrorSources[] = [];
@@ -12,7 +12,7 @@ export const handlerZodError = (err: any): TGenericErrorResponse => {
 
   return {
     status: 400,
-    message: "Zod Error",
+    message: 'Zod Error',
     errorSources,
   };
 };

@@ -1,6 +1,6 @@
-import { Schema, model } from "mongoose";
-import { IUser, Role } from "./interface";
-import { Collection } from "@/config";
+import { model, Schema } from 'mongoose';
+import { Collection } from '@/config';
+import { type IUser, Role } from './interface';
 
 const userSchema = new Schema<IUser>(
   {

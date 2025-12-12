@@ -1,9 +1,9 @@
-import { AppError } from "@/app/errors";
-import { User } from "./model";
-import { HTTP_CODE } from "@/shared";
+import { AppError } from '@/app/errors';
+import { HTTP_CODE } from '@/shared';
+import { User } from './model';
 
 export const me = async (userId: string) => {
-  const user = await User.findById(userId).populate("picture");
+  const user = await User.findById(userId).populate('picture');
 
   if (!user) throw new AppError(HTTP_CODE.NOT_FOUND, `User not found`);
 
@@ -20,5 +20,5 @@ export const updatePicture = async (userId: string, pictureId: string) => {
   user.picture = pictureId as any;
   await user.save();
 
-  return await User.findById(userId).populate("picture").select("-password");
+  return await User.findById(userId).populate('picture').select('-password');
 };

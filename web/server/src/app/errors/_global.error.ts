@@ -1,18 +1,18 @@
-import { ErrorRequestHandler } from "express";
-import { TErrorSources } from "@/interface";
-import { ENV } from "@/config";
-import * as helper from "@/shared/helpers";
-import { AppError } from "@/app/errors";
+import type { ErrorRequestHandler } from 'express';
+import { AppError } from '@/app/errors';
+import { ENV } from '@/config';
+import type { TErrorSources } from '@/interface';
+import * as helper from '@/shared/helpers';
 
 export const globalErrorHandler: ErrorRequestHandler = async (
   err,
-  req,
+  _req,
   res,
-  next
+  _next
 ) => {
   let errorSources: Array<TErrorSources> = [];
   let status = 500;
-  let message = "Something Went Wrong!!";
+  let message = 'Something Went Wrong!!';
 
   //Duplicate error
   if (err.code === 11000) {
@@ -22,11 +22,11 @@ export const globalErrorHandler: ErrorRequestHandler = async (
   }
 
   // Object ID error / Cast Error
-  else if (err.name === "CastError") {
+  else if (err.name === 'CastError') {
     const simplifiedError = helper.handleCastError(err);
     status = simplifiedError.status;
     message = simplifiedError.message;
-  } else if (err.name === "ZodError") {
+  } else if (err.name === 'ZodError') {
     const simplifiedError = helper.handlerZodError(err);
     status = simplifiedError.status;
     message = simplifiedError.message;
@@ -34,7 +34,7 @@ export const globalErrorHandler: ErrorRequestHandler = async (
   }
 
   //Mongoose Validation Error
-  else if (err.name === "ValidationError") {
+  else if (err.name === 'ValidationError') {
     const simplifiedError = helper.handlerValidationError(err);
     status = simplifiedError.status;
     errorSources = simplifiedError.errorSources as Array<TErrorSources>;
@@ -52,12 +52,12 @@ export const globalErrorHandler: ErrorRequestHandler = async (
     message,
     errorSources,
     err:
-      ENV.NODE_ENV === "development"
+      ENV.NODE_ENV === 'development'
         ? (() => {
             const { stack, ...rest } = err;
             return rest;
           })()
         : null,
-    stack: ENV.NODE_ENV === "development" ? err.stack?.split("\n") : null,
+    stack: ENV.NODE_ENV === 'development' ? err.stack?.split('\n') : null,
   });
 };

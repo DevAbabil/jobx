@@ -1,6 +1,6 @@
 export const formatDuration = (totalSeconds: number) => {
-  if (isNaN(totalSeconds) || totalSeconds < 0)
-    throw new Error("Invalid seconds value");
+  if (Number.isNaN(totalSeconds) || totalSeconds < 0)
+    throw new Error('Invalid seconds value');
 
   const days = Math.floor(totalSeconds / 86400);
   const hours = Math.floor((totalSeconds % 86400) / 3600);

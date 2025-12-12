@@ -1,2 +1,2 @@
-export * from "./_ping";
-export * from "./_serverHealth";
+export * from './_ping';
+export * from './_serverHealth';

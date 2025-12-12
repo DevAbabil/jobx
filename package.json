@@ -12,7 +12,12 @@
     "start": "node ./dist/cli.js",
     "build": "sh ./scripts/build.sh",
     "publish:latest": "sh ./scripts/publish.sh",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
     "check": "sh ./scripts/check-filenames.sh && biome check --write --unsafe .",
+    "check:ci": "biome check .",
     "prepare": "husky",
     "reset-data": "rm jobx.* && cp -r data/* ./"
   },

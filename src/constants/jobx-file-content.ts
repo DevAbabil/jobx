@@ -4,8 +4,8 @@ import {
   type IJobxApply,
   type IJobxConfig,
   type IJobxCredentials,
-} from '@/types';
-import { ROOT } from '@/utils';
+} from '@src/types';
+import { ROOT } from '@utils';
 
 const data: {
   apply: Partial<Record<keyof IJobxApply, string>>;

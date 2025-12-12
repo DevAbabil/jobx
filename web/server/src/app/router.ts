@@ -1,5 +1,5 @@
-import { Router } from "express";
-import * as modules from "@/app/modules";
+import { Router } from 'express';
+import * as modules from '@/app/modules';
 
 const moduleRoutes: Array<Record<string, Router>> = [
   { auth: modules.authRoutes },

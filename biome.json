@@ -1,21 +1,8 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.3.7/schema.json",
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true
-  },
   "files": {
     "ignoreUnknown": false,
-    "includes": [
-      "src/**/*",
-      "scripts/**/*",
-      "docs/src/**/*.{ts,tsx,js,jsx}",
-      "*.ts",
-      "*.js",
-      "*.json",
-      "*.md"
-    ]
+    "includes": ["**", "!**/node_modules", "!**/dist", "!**/.next", "!**/*.css"]
   },
   "formatter": {
     "enabled": true,
@@ -39,13 +26,5 @@
       "trailingCommas": "es5",
       "semicolons": "always"
     }
-  },
-  "css": {
-    "parser": {
-      "cssModules": false
-    }
-  },
-  "assist": {
-    "enabled": true
   }
 }

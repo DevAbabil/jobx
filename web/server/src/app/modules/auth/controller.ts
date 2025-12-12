@@ -4,8 +4,8 @@ import {
   HTTP_CODE,
   sendResponse,
   setAuthCookie,
-} from "@/shared";
-import * as service from "./service";
+} from '@/shared';
+import * as service from './service';
 
 export const signInUser = catchAsync(async (req, res) => {
   const user = await service.signInUser(req.body);
@@ -25,22 +25,22 @@ export const signInUser = catchAsync(async (req, res) => {
   });
 });
 
-export const signOutUser = catchAsync(async (req, res) => {
-  res.clearCookie("accessToken", {
+export const signOutUser = catchAsync(async (_req, res) => {
+  res.clearCookie('accessToken', {
     httpOnly: true,
     secure: true,
-    sameSite: "none",
+    sameSite: 'none',
     maxAge: 0,
   });
-  res.clearCookie("refreshToken", {
+  res.clearCookie('refreshToken', {
     httpOnly: true,
     secure: true,
-    sameSite: "none",
+    sameSite: 'none',
     maxAge: 0,
   });
   sendResponse(res, {
     success: true,
     status: HTTP_CODE.OK,
-    message: "signout successfully!",
+    message: 'signout successfully!',
   });
 });

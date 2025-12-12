@@ -1,6 +1,6 @@
 import fs from 'node:fs';
-import jobxFileContent from '@/constants/jobx-file-content';
-import { logger } from '@/utils';
+import jobxFileContent from '@src/constants/jobx-file-content';
+import { logger } from '@utils';
 
 const init = () => {
   const existFile = Object.entries(jobxFileContent).filter(([_, { path }]) =>

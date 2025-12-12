@@ -1,10 +1,11 @@
-import { config } from "dotenv";
-import { envsafe, str, num } from "envsafe";
+import { config } from 'dotenv';
+import { envsafe, num, str } from 'envsafe';
+
 config();
 
 export const ENV = envsafe({
   PORT: num({ default: 3000 }),
-  NODE_ENV: str({ choices: ["development", "production"] }),
+  NODE_ENV: str({ choices: ['development', 'production'] }),
 
   WHITE_LIST_ORIGIN: str(),
   FRONTEND_URL: str(),
@@ -24,14 +25,14 @@ export const ENV = envsafe({
 
   JWT_ACCESS_SECRET: str(),
   JWT_REFRESH_SECRET: str(),
- 
+
   JWT_ACCESS_EXPIRES: str(),
   JWT_REFRESH_EXPIRES: str(),
- 
+
   ACCESS_COOKIE_EXPIRE_TIME: num(),
   REFRESH_COOKIE_EXPIRE_TIME: num(),
 
-  VERCEL: str({ default: "0" }),
+  VERCEL: str({ default: '0' }),
 });
 
-export const IS_VERCEL = ENV.VERCEL === "1";
+export const IS_VERCEL = ENV.VERCEL === '1';

@@ -1,13 +1,13 @@
-import { AppError } from "@/app/errors";
-import { IUser } from "../user/interface";
-import { User } from "../user/model";
-import { HTTP_CODE } from "@/shared";
-import bcryptjs from "bcryptjs";
+import bcryptjs from 'bcryptjs';
+import { AppError } from '@/app/errors';
+import { HTTP_CODE } from '@/shared';
+import type { IUser } from '../user/interface';
+import { User } from '../user/model';
 
 export const signInUser = async ({
   email,
   password,
-}: Pick<IUser, "email" | "password">) => {
+}: Pick<IUser, 'email' | 'password'>) => {
   const user = (
     await User.findOne({
       email: email,

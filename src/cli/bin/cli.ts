@@ -1,7 +1,7 @@
+import * as commands from '@cli/commands';
+import pkg from '@src/constants/pkg';
+import { logger } from '@utils';
 import { Command } from 'commander';
-import * as commands from '@/cli/commands';
-import pkg from '@/constants/pkg';
-import { logger } from '@/utils';
 
 const command = new Command();
 

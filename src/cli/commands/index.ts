@@ -1,8 +1,8 @@
+import * as helper from '@cli/helpers';
+import { Efile } from '@src/types';
+import { logger } from '@utils';
 import Table from 'cli-table3';
 import type { Command } from 'commander';
-import * as helper from '@/cli/helpers';
-import { Efile } from '@/types';
-import { logger } from '@/utils';
 
 export const init = (command: Command) => {
   command
@@ -51,7 +51,7 @@ export const mail = (command: Command) => {
     .command('generate')
     .description('Generate new job mail')
     .action(async () => {
-      const { email } = await import('@/core');
+      const { email } = await import('@src/core');
       await email.generate();
     });
 
@@ -59,7 +59,7 @@ export const mail = (command: Command) => {
     .command('submit')
     .description('Submit job mail')
     .action(async () => {
-      const { email } = await import('@/core');
+      const { email } = await import('@src/core');
       await email.submit();
     });
 };
@@ -83,7 +83,7 @@ export const sheet = (command: Command) => {
     .option('-i, --id <id>', 'Find by specific ID')
     .action(async (options: { page: string; limit: string; id?: string }) => {
       logger.start('Finding job records...');
-      const { spreadsheets } = await import('@/core');
+      const { spreadsheets } = await import('@src/core');
 
       const page = Number.parseInt(options.page, 10);
       const limit = Number.parseInt(options.limit, 10);
@@ -143,7 +143,7 @@ export const sheet = (command: Command) => {
     .command('delete <id>')
     .description('Delete job by submitted ID')
     .action(async (id: string) => {
-      const { spreadsheets } = await import('@/core');
+      const { spreadsheets } = await import('@src/core');
       spreadsheets.delete(id);
     });
 
@@ -157,7 +157,7 @@ export const sheet = (command: Command) => {
           terminate: true,
         });
 
-      const { spreadsheets } = await import('@/core');
+      const { spreadsheets } = await import('@src/core');
 
       const result = await spreadsheets.update(id, { [field]: value });
 

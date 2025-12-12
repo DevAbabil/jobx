@@ -1,6 +1,6 @@
 import fs from 'node:fs';
-import jobxFileContent from '@/constants/jobx-file-content';
-import { logger } from '@/utils';
+import jobxFileContent from '@src/constants/jobx-file-content';
+import { logger } from '@utils';
 
 const reset = (reset?: 'HARD' | 'SOFT') => {
   if (reset === 'SOFT') {

@@ -1,5 +1,5 @@
-import { catchAsync, HTTP_CODE, sendResponse } from "@/shared";
-import * as service from "./service";
+import { catchAsync, HTTP_CODE, sendResponse } from '@/shared';
+import * as service from './service';
 
 export const me = catchAsync(async (req, res) => {
   sendResponse(res, {

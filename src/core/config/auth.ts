@@ -1,5 +1,5 @@
+import data from '@src/core/data';
 import { JWT } from 'google-auth-library';
-import data from '@/core/data';
 
 export const sheetAuth = new JWT({
   email: data.credentials.client_email,

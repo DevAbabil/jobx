@@ -1,1 +1,1 @@
-export * from "./_httpStatusCode";
+export * from './_httpStatusCode';

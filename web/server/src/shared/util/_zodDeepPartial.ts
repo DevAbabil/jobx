@@ -1,4 +1,4 @@
-import { z, ZodType } from "zod";
+import { type ZodType, z } from 'zod';
 
 export const zodDeepPartial = <T extends ZodType>(schema: T): T => {
   if (schema instanceof z.ZodObject) {
