@@ -1,7 +1,7 @@
 'use client';
 import { Code2, Menu, X } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { authApi, useAppDispatch, userApi } from '@/redux';
@@ -13,8 +13,28 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const [menuOpen, setMenuOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const { data: user } = userApi.useMyProfileQuery();
   const [signout] = authApi.useSignoutMutation();
+
+  const isActive = (path: string) => {
+    if (path === '/dashboard') {
+      return pathname.startsWith('/dashboard');
+    }
+    return pathname === path || pathname.startsWith(path);
+  };
+
+  const getLinkClassName = (path: string, isMobile = false) => {
+    const baseClasses = isMobile
+      ? 'block text-sm transition py-2 relative'
+      : 'text-sm transition relative';
+
+    const activeClasses = isActive(path)
+      ? 'text-accent border-b-2 border-accent'
+      : 'hover:text-accent';
+
+    return `${baseClasses} ${activeClasses}`;
+  };
 
   const handleSignOut = async () => {
     try {
@@ -37,40 +57,28 @@ const Header = () => {
           </Link>
 
           <div className="hidden md:flex gap-8 items-center">
-            <Link
-              href="/features"
-              className="text-sm hover:text-accent transition"
-            >
+            <Link href="/features" className={getLinkClassName('/features')}>
               Features
             </Link>
             <Link
               href="/installation"
-              className="text-sm hover:text-accent transition"
+              className={getLinkClassName('/installation')}
             >
               Install
             </Link>
-            <Link
-              href="/structure"
-              className="text-sm hover:text-accent transition"
-            >
+            <Link href="/structure" className={getLinkClassName('/structure')}>
               Structure
             </Link>
-            <Link
-              href="/commands"
-              className="text-sm hover:text-accent transition"
-            >
+            <Link href="/commands" className={getLinkClassName('/commands')}>
               Commands
             </Link>
-            <Link
-              href="/config"
-              className="text-sm hover:text-accent transition"
-            >
+            <Link href="/config" className={getLinkClassName('/config')}>
               Config
             </Link>
             {user && (
               <Link
                 href="/dashboard"
-                className="text-sm hover:text-accent transition"
+                className={getLinkClassName('/dashboard')}
               >
                 Dashboard
               </Link>
@@ -114,35 +122,35 @@ const Header = () => {
           <div className="md:hidden pb-4 space-y-2">
             <Link
               href="/features"
-              className="block text-sm hover:text-accent transition py-2"
+              className={getLinkClassName('/features', true)}
               onClick={() => setMenuOpen(false)}
             >
               Features
             </Link>
             <Link
               href="/installation"
-              className="block text-sm hover:text-accent transition py-2"
+              className={getLinkClassName('/installation', true)}
               onClick={() => setMenuOpen(false)}
             >
               Install
             </Link>
             <Link
               href="/structure"
-              className="block text-sm hover:text-accent transition py-2"
+              className={getLinkClassName('/structure', true)}
               onClick={() => setMenuOpen(false)}
             >
               Structure
             </Link>
             <Link
               href="/commands"
-              className="block text-sm hover:text-accent transition py-2"
+              className={getLinkClassName('/commands', true)}
               onClick={() => setMenuOpen(false)}
             >
               Commands
             </Link>
             <Link
               href="/config"
-              className="block text-sm hover:text-accent transition py-2"
+              className={getLinkClassName('/config', true)}
               onClick={() => setMenuOpen(false)}
             >
               Config
@@ -150,7 +158,7 @@ const Header = () => {
             {user && (
               <Link
                 href="/dashboard"
-                className="block text-sm hover:text-accent transition py-2"
+                className={getLinkClassName('/dashboard', true)}
                 onClick={() => setMenuOpen(false)}
               >
                 Dashboard

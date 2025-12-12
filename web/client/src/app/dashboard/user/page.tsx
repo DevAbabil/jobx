@@ -152,23 +152,7 @@ const ProSubscriptionCard = () => {
               <span className="text-emerald-600 text-sm font-bold">✓</span>
             </div>
             <span className="text-gray-700 font-medium">
-              Advanced job search filters
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-5 bg-emerald-100 rounded-full flex items-center justify-center">
-              <span className="text-emerald-600 text-sm font-bold">✓</span>
-            </div>
-            <span className="text-gray-700 font-medium">
-              Priority application processing
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-5 h-5 bg-emerald-100 rounded-full flex items-center justify-center">
-              <span className="text-emerald-600 text-sm font-bold">✓</span>
-            </div>
-            <span className="text-gray-700 font-medium">
-              Unlimited job applications
+              Templates & Profiles
             </span>
           </div>
           <div className="flex items-center gap-3">
