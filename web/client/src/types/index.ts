@@ -1,7 +1,7 @@
 export enum Role {
-  USER = "USER",
-  ADMIN = "ADMIN",
-  SUPPER_ADMIN = "SUPPER_ADMIN",
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+  SUPPER_ADMIN = 'SUPPER_ADMIN',
 }
 
 // Model Types Start.....
@@ -11,6 +11,7 @@ export interface IUser {
   email: string;
   picture: string | null;
   role: Role;
+  isVerified: boolean;
   createdAt: string;
   updatedAt: string;
   __v: number;

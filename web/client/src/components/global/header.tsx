@@ -48,6 +48,13 @@ const Header = () => {
             >
               Config
             </Link>
+            <Link
+              href="/login"
+              className="block text-sm hover:text-accent transition py-2"
+              onClick={() => setMenuOpen(false)}
+            >
+              Login
+            </Link>
             <ThemeToggle />
           </div>
 
@@ -99,6 +106,13 @@ const Header = () => {
               onClick={() => setMenuOpen(false)}
             >
               Config
+            </Link>
+            <Link
+              href="/login"
+              className="block text-sm hover:text-accent transition py-2"
+              onClick={() => setMenuOpen(false)}
+            >
+              Login
             </Link>
           </div>
         )}

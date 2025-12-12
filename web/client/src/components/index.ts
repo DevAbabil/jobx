@@ -9,3 +9,11 @@ export { default as FeaturesSection } from './home/features-section';
 export { default as FolderStructureSection } from './home/folder-structure-section';
 export { default as HeroSection } from './home/hero-section';
 export { default as InstallationSection } from './home/installation-section';
+// UI Components
+export * from './ui/button';
+export * from './ui/card';
+export * from './ui/form';
+export * from './ui/input';
+export * from './ui/label';
+export * from './ui/table';
+export * from './ui/tabs';
