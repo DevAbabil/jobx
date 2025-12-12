@@ -2,14 +2,9 @@ import mongoose from 'mongoose';
 import { ENV } from './_env.config';
 
 export enum Collection {
-  Asset = 'Asset',
-  GetInTouch = 'GetInTouch',
-  Project = 'Project',
   User = 'User',
-  Newsletter = 'Newsletter',
-  Share = 'Share',
-  Blog = 'Blog',
   Otp = 'Otp',
+  Payment = 'Payment',
 }
 
 export const connectDB = async () => {

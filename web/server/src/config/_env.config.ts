@@ -33,6 +33,10 @@ export const ENV = envsafe({
   REFRESH_COOKIE_EXPIRE_TIME: num(),
 
   VERCEL: str({ default: '0' }),
+
+  SSLC_STORE_ID: str(),
+  SSLC_PASS: str(),
+  JOBX_PRO_PRICE: num(),
 });
 
 export const IS_VERCEL = ENV.VERCEL === '1';
